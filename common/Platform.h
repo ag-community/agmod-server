@@ -38,6 +38,7 @@
 
 // Misc C-runtime library headers
 #include <cmath>
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
