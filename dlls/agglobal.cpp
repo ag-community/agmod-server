@@ -1035,7 +1035,7 @@ void AgTrim(AgString& sTrim)
     if (b == -1) // No non-whitespaces
         sTrim = "";
     else
-        sTrim = string(sTrim, b, e - b + 1);
+        sTrim = std::string(sTrim, b, e - b + 1);
 }
 
 void AgLogError(const char* pszLog)
@@ -1288,7 +1288,7 @@ AgString AgReadFile(const char* pszFile)
     return sData;
 }
 
-typedef map<AgString, AgString, less<AgString> > AgAuthIDToGreeting;
+typedef std::map<AgString, AgString, std::less<AgString> > AgAuthIDToGreeting;
 static AgAuthIDToGreeting s_mapGreeting;
 void LoadGreetingMessages()
 {

@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-typedef map<AgString, int, less<AgString> > AgScoreLogMap;
+typedef std::map<AgString, int, std::less<AgString> > AgScoreLogMap;
 
 class AgScoreLog
 {

@@ -16,7 +16,7 @@ class CBasePlayer;
 // Contains list of all admins and ability to save/load/restore and admin.
 class AgAdminCache
 {
-    typedef list<AgAdmin*> AgAdminList;
+    typedef std::list<AgAdmin*> AgAdminList;
     AgAdminList m_lstAdmins;
 
 public:

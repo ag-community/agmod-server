@@ -1323,7 +1323,7 @@ void AgGameRules::SendMapListToClient(CBasePlayer* pPlayer, bool bStart)
     }
 
     //Send it over in chunks.
-    int iDataToSend = min((int)g_sMapList.size() - pPlayer->m_iMapListSent, MAX_MAPLIST_CHUNK);
+    int iDataToSend = V_min((int)g_sMapList.size() - pPlayer->m_iMapListSent, MAX_MAPLIST_CHUNK);
     AgString sChunk = g_sMapList.substr(pPlayer->m_iMapListSent, iDataToSend);
     pPlayer->m_iMapListSent += iDataToSend;
     MESSAGE_BEGIN(MSG_ONE, gmsgMapList, NULL, pPlayer->edict());

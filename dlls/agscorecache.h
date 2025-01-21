@@ -13,7 +13,7 @@
 class CBasePlayer;
 class AgScoreCache
 {
-    typedef map<AgString, AgScore*, less<AgString> > AgScoreMap;
+    typedef std::map<AgString, AgScore*, std::less<AgString> > AgScoreMap;
     AgScoreMap m_mapScores; //Holds the map score for each player.
 
 public:

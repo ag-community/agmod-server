@@ -49,12 +49,12 @@ protected:
 		int m_iDamageTaken;		//Damage taken
 		int m_iDamageGiven;   //Damage given
 		AgString m_sName;
-		typedef map<AgString, AgWeaponStats*, less<AgString> > AgWeaponStatsMap;
+		typedef std::map<AgString, AgWeaponStats*, std::less<AgString> > AgWeaponStatsMap;
 		AgWeaponStatsMap m_mapWeaponStats;
 		AgWeaponStats* GetWeaponStats(const char* pszItem);
 	};
 
-	typedef map<AgString, AgPlayerStats*, less<AgString> > AgPlayerStatsMap;
+	typedef std::map<AgString, AgPlayerStats*, std::less<AgString> > AgPlayerStatsMap;
 	AgPlayerStatsMap m_mapPlayerStats;
 
 	AgPlayerStats* GetStats(CBasePlayer* pPlayer);

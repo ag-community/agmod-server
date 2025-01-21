@@ -11,7 +11,7 @@
 
 class AgArena
 {
-    typedef list<int> AgWaitList;
+    typedef std::list<int> AgWaitList;
     enum ArenaStatus { Waiting, Countdown, Spawning, Playing, PlayerDied };
 
     AgWaitList  m_lstWaitList;

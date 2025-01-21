@@ -171,7 +171,7 @@ void AgSettings::ChangeNextLevel()
 void AgSettings::CalcNextMap()
 {
   //Calc next map, wont work with maps that are in more than one place in mapcycle file.
-  typedef list<AgString> AgMapList;
+  typedef std::list<AgString> AgMapList;
   AgMapList lstMaps;
 
   char *pszMapFile = (char*) CVAR_GET_STRING( "mapcyclefile" );
@@ -475,15 +475,15 @@ int AgReloadMapCycleFile(char* filename, mapcycle_t* cycle)
 					if (s && s[0])
 					{
 						item->minplayers = atoi(s);
-						item->minplayers = max(item->minplayers, 0);
-						item->minplayers = min(item->minplayers, gpGlobals->maxClients);
+						item->minplayers = V_max(item->minplayers, 0);
+						item->minplayers = V_min(item->minplayers, gpGlobals->maxClients);
 					}
 					s = g_engfuncs.pfnInfoKeyValue(szBuffer, "maxplayers");
 					if (s && s[0])
 					{
 						item->maxplayers = atoi(s);
-						item->maxplayers = max(item->maxplayers, 0);
-						item->maxplayers = min(item->maxplayers, gpGlobals->maxClients);
+						item->maxplayers = V_max(item->maxplayers, 0);
+						item->maxplayers = V_min(item->maxplayers, gpGlobals->maxClients);
 					}
 
 					// Remove keys

@@ -9,7 +9,7 @@
 
 class AgInfoIntermission
 {
-    typedef vector<edict_t*>  AgEdictArray;
+    typedef std::vector<edict_t*>  AgEdictArray;
     AgEdictArray m_arrInfoIntermission;
     bool         m_bInitialized;
 

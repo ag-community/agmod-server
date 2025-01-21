@@ -32,7 +32,7 @@ class AgGameRules : public CGameRules
 {
 protected:
     AgString m_sHostname;
-    typedef map<int, AgString, less<int> > AgIPAddress;
+    typedef std::map<int, AgString, std::less<int> > AgIPAddress;
     AgIPAddress			     m_mapIPAddress;
 
 public:

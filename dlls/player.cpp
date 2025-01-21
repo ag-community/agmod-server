@@ -4593,7 +4593,7 @@ void CBasePlayer :: UpdateClientData( void )
   {
     if ((int)m_hSpectateTarget->pev->health != m_iClientHealth)
     {
-      int iHealth = max( (int)m_hSpectateTarget->pev->health, 0 );  // make sure that no negative health values are sent
+      int iHealth = V_max( (int)m_hSpectateTarget->pev->health, 0 );  // make sure that no negative health values are sent
     
       // send "health" update message
       MESSAGE_BEGIN( MSG_ONE, gmsgHealth, NULL, pev );
@@ -4793,7 +4793,7 @@ void CBasePlayer :: UpdateClientData( void )
 						    // send "Ammo" update message
 						    MESSAGE_BEGIN( MSG_ONE, gmsgAmmoX, NULL, pev );
 							    WRITE_BYTE( i );
-							    WRITE_BYTE( max( min( pPlayerTarget->m_rgAmmo[i], 254 ), 0 ) );  // clamp the value to one byte
+							    WRITE_BYTE( V_max( V_min( pPlayerTarget->m_rgAmmo[i], 254 ), 0 ) );  // clamp the value to one byte
 						    MESSAGE_END();
 					    }
 				    }
@@ -5637,7 +5637,7 @@ void CBasePlayer::UpdatePlayerId()
           MESSAGE_BEGIN( MSG_ONE_UNRELIABLE, gmsgPlayerId, NULL, pev );
             WRITE_BYTE(pPlayer->entindex());
             WRITE_BYTE(1);
-            WRITE_SHORT((long)max((int)pPlayer->pev->health, 0 ));
+            WRITE_SHORT((long)V_max((int)pPlayer->pev->health, 0 ));
             WRITE_SHORT((long)pPlayer->pev->armorvalue);
           MESSAGE_END();
         }

@@ -16,13 +16,9 @@
 #include <set>
 #include <vector>
 
-using namespace std;
-
-typedef string         AgString;
-
-typedef string AgString;
-typedef list<AgString> AgStringList;
-typedef set<AgString, less<AgString> > AgStringSet;
+typedef std::string AgString;
+typedef std::list<AgString> AgStringList;
+typedef std::set<AgString, std::less<AgString> > AgStringSet;
 
 #define ADD_SERVER_COMMAND	( *g_engfuncs.pfnAddServerCommand )
 extern DLL_GLOBAL bool		g_fGameOver;

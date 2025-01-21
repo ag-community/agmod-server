@@ -33,7 +33,7 @@ public:
 class AgCTFFileItemCache
 {
     bool  m_bInitDone;
-    typedef list<AgCTFFileItem*>  AgCTFFileItemList;
+    typedef std::list<AgCTFFileItem*>  AgCTFFileItemList;
     AgCTFFileItemList m_lstFileItems;
 
     void Load(CBasePlayer* pPlayer = NULL);

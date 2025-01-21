@@ -14,7 +14,7 @@
 
 class AgGameMode
 {
-    typedef map<AgString, AgGame*, less<AgString> > AgGameMap;
+    typedef std::map<AgString, AgGame*, std::less<AgString> > AgGameMap;
     AgGameMap m_mapGames;
     void LoadGames();
     AgGame* pCurrent;

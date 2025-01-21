@@ -36,7 +36,7 @@ public:
 class AgDOMFileItemCache
 {
     bool  m_bInitDone;
-    typedef list<AgDOMFileItem*>  AgDOMFileItemList;
+    typedef std::list<AgDOMFileItem*>  AgDOMFileItemList;
     AgDOMFileItemList m_lstFileItems;
 
     void Load(CBasePlayer* pPlayer = NULL);

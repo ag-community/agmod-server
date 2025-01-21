@@ -60,7 +60,7 @@ AgDOM::~AgDOM()
 {
 }
 
-typedef list<int> boo;
+typedef std::list<int> boo;
 
 void AgDOM::PlayerInitHud(CBasePlayer* pPlayer)
 {
