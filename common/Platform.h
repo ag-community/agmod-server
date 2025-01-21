@@ -37,6 +37,7 @@
 #include "archtypes.h"     // DAL
 
 // Misc C-runtime library headers
+#include <cctype>
 #include <cmath>
 #include <cstdint>
 #include <cstdio>

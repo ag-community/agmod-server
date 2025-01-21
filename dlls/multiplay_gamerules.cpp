@@ -30,10 +30,6 @@
 #include	"voice_gamemgr.h"
 #include	"hltv.h"
 
-#if !defined ( _WIN32 )
-#include <ctype.h>
-#endif
-
 //++ BulliT
 #include "aggamerules.h"
 #include "multiplay_gamerules.h"

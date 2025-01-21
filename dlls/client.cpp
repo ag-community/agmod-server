@@ -42,10 +42,6 @@
 #include "cvar.h"
 #include "speedrunstats.h"
 
-#if !defined ( _WIN32 )
-#include <ctype.h>
-#endif
-
 //++ BulliT
 #include "agglobal.h"
 //-- Martin Webrant
