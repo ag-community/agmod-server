@@ -63,6 +63,7 @@
 #define strupr _strupr
 
 #define DLLEXPORT __declspec( dllexport )
+#define DLLHIDDEN
 #else // _WIN32
 typedef uint32 ULONG;
 typedef unsigned char BYTE;
@@ -79,6 +80,7 @@ typedef int BOOL;
 #define _alloca alloca
 
 #define DLLEXPORT __attribute__ ( ( visibility( "default" ) ) )
+#define DLLHIDDEN __attribute__ ( ( visibility( "hidden" ) ) )
 #endif //_WIN32
 
 #define V_min(a,b)  (((a) < (b)) ? (a) : (b))
