@@ -61,8 +61,6 @@
 
 #define DLLEXPORT __declspec( dllexport )
 #else // _WIN32
-#define FALSE 0
-#define TRUE (!FALSE)
 typedef uint32 ULONG;
 typedef unsigned char BYTE;
 typedef int BOOL;
