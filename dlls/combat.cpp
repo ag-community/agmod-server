@@ -263,7 +263,7 @@ BOOL CBaseMonster :: HasHumanGibs( void )
 		 myClass == CLASS_HUMAN_PASSIVE  ||
 		 myClass == CLASS_PLAYER )
 
-		 return TRUE;
+		 return true;
 
 	return false;
 }
@@ -280,7 +280,7 @@ BOOL CBaseMonster :: HasAlienGibs( void )
 		 myClass == CLASS_ALIEN_PREDATOR  ||
 		 myClass == CLASS_ALIEN_PREY )
 
-		 return TRUE;
+		 return true;
 
 	return false;
 }
@@ -316,7 +316,7 @@ void CBaseMonster :: GibMonster( void )
 			CGib::SpawnHeadGib( pev );
 			CGib::SpawnRandomGibs( pev, 4, 1 );	// throw some human gibs.
 		}
-		gibbed = TRUE;
+		gibbed = true;
 	}
 	else if ( HasAlienGibs() )
 	{
@@ -324,7 +324,7 @@ void CBaseMonster :: GibMonster( void )
 		{
 			CGib::SpawnRandomGibs( pev, 4, 0 );	// Throw alien gibs
 		}
-		gibbed = TRUE;
+		gibbed = true;
 	}
 
 	if ( !IsPlayer() )
@@ -381,7 +381,7 @@ Activity CBaseMonster :: GetDeathActivity ( void )
 
 	case HITGROUP_GENERIC:
 		// try to pick a death based on attack direction
-		fTriedDirection = TRUE;
+		fTriedDirection = true;
 
 		if ( flDot > 0.3 )
 		{
@@ -395,7 +395,7 @@ Activity CBaseMonster :: GetDeathActivity ( void )
 
 	default:
 		// try to pick a death based on attack direction
-		fTriedDirection = TRUE;
+		fTriedDirection = true;
 
 		if ( flDot > 0.3 )
 		{
@@ -541,7 +541,7 @@ BOOL CBaseMonster::ShouldGibMonster( int iGib )
 {
 	// Commented out so they never gib, and thus they always drop items (if any) upon death
 	//if ( ( iGib == GIB_NORMAL && pev->health < GIB_HEALTH_VALUE ) || ( iGib == GIB_ALWAYS ) )
-	//	return TRUE;
+	//	return true;
 	
 	return false;
 }
@@ -1226,7 +1226,7 @@ BOOL CBaseMonster :: FInViewCone ( CBaseEntity *pEntity )
 
 	if ( flDot > m_flFieldOfView )
 	{
-		return TRUE;
+		return true;
 	}
 	else
 	{
@@ -1253,7 +1253,7 @@ BOOL CBaseMonster :: FInViewCone ( Vector *pOrigin )
 
 	if ( flDot > m_flFieldOfView )
 	{
-		return TRUE;
+		return true;
 	}
 	else
 	{
@@ -1290,7 +1290,7 @@ BOOL CBaseEntity :: FVisible ( CBaseEntity *pEntity )
 	}
 	else
 	{
-		return TRUE;// line of sight is valid.
+		return true;// line of sight is valid.
 	}
 }
 
@@ -1313,7 +1313,7 @@ BOOL CBaseEntity :: FVisible ( const Vector &vecOrigin )
 	}
 	else
 	{
-		return TRUE;// line of sight is valid.
+		return true;// line of sight is valid.
 	}
 }
 

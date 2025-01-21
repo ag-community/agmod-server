@@ -73,7 +73,7 @@ CGameStudioModelRenderer
 */
 CGameStudioModelRenderer::CGameStudioModelRenderer( void )
 {
-	// If you want to predict animations locally, set this to TRUE
+	// If you want to predict animations locally, set this to true
 	// NOTE:  The animation code is somewhat broken, but gives you a sense for how
 	//  to do client side animation of the predicted player in a third person game.
 	m_bLocal = false;
@@ -542,7 +542,7 @@ float StudioFrameAdvance ( client_anim_state_t *st, float framerate, float flInt
 			st->frame -= (int)(st->frame / 256.0) * 256.0;
 		else
 			st->frame = (st->frame < 0.0) ? 0 : 255;
-		st->m_fSequenceFinished = TRUE;	// just in case it wasn't caught in GetEvents
+		st->m_fSequenceFinished = true;	// just in case it wasn't caught in GetEvents
 	}
 
 	return flInterval;

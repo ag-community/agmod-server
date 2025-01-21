@@ -75,7 +75,7 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 	ASSERT(!(m_nFlags & WF_MODALLOOP)); // window must not already be in modal state
 
 	// for tracking the idle time state
-	BOOL bIdle = TRUE;
+	BOOL bIdle = true;
 	LONG lIdleCount = 0;
 	BOOL bShowIdle = (dwFlags & MLF_SHOWONIDLE) && !(GetStyle() & WS_VISIBLE);
 	HWND hWndParent = ::GetParent(m_hWnd);
@@ -125,7 +125,7 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 		// phase2: pump messages while available
 		do
 		{
-			BOOL ShouldPump = TRUE;
+			BOOL ShouldPump = true;
 
 			ASSERT(ContinueModal());
 
@@ -164,7 +164,7 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 				// reset "no idle" state after pumping "normal" message
 				if (AfxGetThread()->IsIdleMessage(pMsg))
 				{
-					bIdle = TRUE;
+					bIdle = true;
 					lIdleCount = 0;
 				}
 			}
@@ -206,7 +206,7 @@ int CServerCtrlDlg::DoModal()
 	if (hWndParent != NULL && ::IsWindowEnabled(hWndParent))
 	{
 		::EnableWindow(hWndParent, false);
-		bEnableParent = TRUE;
+		bEnableParent = true;
 	}
 
 	TRY
@@ -239,7 +239,7 @@ int CServerCtrlDlg::DoModal()
 	END_CATCH_ALL
 
 	if (bEnableParent)
-		::EnableWindow(hWndParent, TRUE);
+		::EnableWindow(hWndParent, true);
 	if (hWndParent != NULL && ::GetActiveWindow() == m_hWnd)
 		::SetActiveWindow(hWndParent);
 
@@ -268,13 +268,13 @@ BOOL CServerCtrlDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, true);			// Set big icon
 	SetIcon(m_hIcon, false);		// Set small icon
 	
 	// TODO: Add extra initialization here
-	SetPumpIfQueued( TRUE );
+	SetPumpIfQueued( true );
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	return true;  // return true  unless you set the focus to a control
 }
 
 // If you add a minimize button to your dialog, you will need the code below
@@ -449,7 +449,7 @@ void CServerCtrlDlg::OnBtnStart( void )
 	SA.nLength = sizeof( SA );
 
 	// HLDS must be able to inherit the handles we pass via command line so we need to mark the handle as inheritable
-	SA.bInheritHandle = TRUE;
+	SA.bInheritHandle = true;
 	SA.lpSecurityDescriptor = NULL;
 
 	// Create handles && hlds process
@@ -478,7 +478,7 @@ void CServerCtrlDlg::OnBtnStart( void )
 	sprintf( sz, "%s\\hlds.exe +sv_lan 1 -HFILE %i -HPARENT %i -HCHILD %i", szdir, (int)m_hMappedFile, (int)m_hSend, (int)m_hReceive );
 
 	// Run it
-	if ( !CreateProcess( NULL, sz, &SA, NULL, TRUE, 0, NULL, szdir, &SI, &PI ) )
+	if ( !CreateProcess( NULL, sz, &SA, NULL, true, 0, NULL, szdir, &SI, &PI ) )
 	{
 		AfxMessageBox( "Couldn't create dedicated server process?  Correct path", MB_OK );
 	}

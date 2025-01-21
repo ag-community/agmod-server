@@ -179,7 +179,7 @@ public:
 	// Information query
 	//
 
-	bool IsEnemy( CBaseEntity *ent ) const;					///< returns TRUE if given entity is our enemy
+	bool IsEnemy( CBaseEntity *ent ) const;					///< returns true if given entity is our enemy
 	int GetEnemiesRemaining( void ) const;					///< return number of enemies left alive
 	int GetFriendsRemaining( void ) const;					///< return number of friends left alive
 

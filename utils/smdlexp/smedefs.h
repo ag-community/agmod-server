@@ -86,7 +86,7 @@ private:
 
 
 	// Is this MAX file just the reference frame, or an animation?
-	// If TRUE, the "bones" and "mesh" files will be created.
+	// If true, the "bones" and "mesh" files will be created.
 	// If false, the "rots" file will be created.
 	BOOL		m_fReferenceFrame;
 };
@@ -98,7 +98,7 @@ private:
 class SmdExportClassDesc : public ClassDesc
 {
 public:
-	int				IsPublic		(void)					{ return TRUE;								}
+	int				IsPublic		(void)					{ return true;								}
 	void *			Create			(BOOL loading=false)	{ return new SmdExportClass;				}
 	const TCHAR *	ClassName		(void)					{ return _T("SmdExport");					}
 	SClass_ID 		SuperClassID	(void)					{ return SCENE_EXPORT_CLASS_ID;				}

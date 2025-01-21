@@ -27,7 +27,7 @@
 #endif
 //-- Martin Webrant
 
-#define USE_SCOPE	TRUE
+#define USE_SCOPE	true
 
 enum python_e {
 	PYTHON_IDLE1 = 0,
@@ -67,7 +67,7 @@ int CPython::AddToPlayer( CBasePlayer *pPlayer )
 		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		return true;
 	}
 	return false;
 }
@@ -135,7 +135,7 @@ void CPython::SecondaryAttack( void )
 	}
 	else
 	{
-		m_fInZoom = TRUE;
+		m_fInZoom = true;
 		m_pPlayer->m_iFOV = 40;
 	}
 #else
@@ -146,7 +146,7 @@ void CPython::SecondaryAttack( void )
 	}
 	else if ( m_pPlayer->pev->fov != 40 )
 	{
-		m_fInZoom = TRUE;
+		m_fInZoom = true;
 		m_pPlayer->pev->fov = m_pPlayer->m_iFOV = 40;
 	}
 #endif
@@ -309,7 +309,7 @@ class CPythonAmmo : public CBasePlayerAmmo
 		if (pOther->GiveAmmo( AMMO_357BOX_GIVE, "357", _357_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return TRUE;
+			return true;
 		}
 		return false;
 	}

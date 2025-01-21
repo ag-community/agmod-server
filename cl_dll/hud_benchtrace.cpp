@@ -201,7 +201,7 @@ void Trace_StartTrace( int *results, int *finished, const char *server )
 
 	Trace_Cleanup();
 
-	tp.hEventDone = CreateEvent( NULL, TRUE, false, NULL );
+	tp.hEventDone = CreateEvent( NULL, true, false, NULL );
 	if ( !tp.hEventDone )
 	{
 		return;

@@ -144,23 +144,23 @@ BOOL AgGameRules::ClientCommand(CBasePlayer* pPlayer, const char* pcmd)
 
     //First check if its a client command. weaponswith,say etc.
     if (m_Client.HandleCommand(pPlayer))
-        return TRUE;
+        return true;
 
     //Server command?
     if (Command.HandleCommand(pPlayer))
-        return TRUE;
+        return true;
 
     //Gamemode?
     if (GameMode.HandleCommand(pPlayer))
-        return TRUE;
+        return true;
 
     //Vote?
     if (m_Vote.HandleCommand(pPlayer))
-        return TRUE;
+        return true;
 
 #ifdef AGSTATS
     if (Stats.HandleCommand(pPlayer))
-        return TRUE;
+        return true;
 #endif
 
     //We didn't handle it
@@ -294,7 +294,7 @@ void AgGameRules::PlayerSpawn(CBasePlayer* pPlayer)
 
     pPlayer->pev->weapons |= (1 << WEAPON_SUIT);
 
-    addDefault = TRUE;
+    addDefault = true;
 
     while (pWeaponEntity = UTIL_FindEntityByClassname(pWeaponEntity, "game_player_equip"))
     {
@@ -316,7 +316,7 @@ void AgGameRules::PlayerSpawn(CBasePlayer* pPlayer)
 
             if (1 > ag_ban_longjump.value)
             {
-                pPlayer->m_fLongJump = TRUE;
+                pPlayer->m_fLongJump = true;
                 g_engfuncs.pfnSetPhysicsKeyValue(pPlayer->edict(), "slj", "1");
                 pPlayer->OnPickupLongjump();
             }
@@ -382,7 +382,7 @@ void AgGameRules::PlayerSpawn(CBasePlayer* pPlayer)
 
             if (0 < ag_start_longjump.value)
             {
-                pPlayer->m_fLongJump = TRUE;
+                pPlayer->m_fLongJump = true;
                 g_engfuncs.pfnSetPhysicsKeyValue(pPlayer->edict(), "slj", "1");
                 pPlayer->OnPickupLongjump();
             }
@@ -476,7 +476,7 @@ BOOL AgGameRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWe
     if (!pPlayer->m_pActiveItem)
     {
         // player doesn't have an active item!
-        return TRUE;
+        return true;
     }
 
     if (!pPlayer->m_pActiveItem->CanHolster())
@@ -487,7 +487,7 @@ BOOL AgGameRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWe
 
     if (pPlayer->ShouldWeaponSwitch() && (pPlayer->GetWeaponWeight(pWeapon) > pPlayer->GetWeaponWeight(pPlayer->m_pActiveItem)))
     {
-        return TRUE;
+        return true;
     }
     return false;
 }
@@ -534,7 +534,7 @@ BOOL AgGameRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurr
                 {
                     if (pPlayer->SwitchWeapon(pCheck))
                     {
-                        return TRUE;
+                        return true;
                     }
                 }
             }
@@ -568,7 +568,7 @@ BOOL AgGameRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurr
 
     pPlayer->SwitchWeapon(pBest);
 
-    return TRUE;
+    return true;
 }
 
 const char* AgGameRules::GetIPAddress(edict_t* pEntity)
@@ -589,7 +589,7 @@ BOOL AgGameRules::ClientConnected(edict_t* pEntity, const char* pszName, const c
         if (0 == m_mapIPAddress.size())
         {
             m_mapIPAddress.insert(AgIPAddress::value_type(ENTINDEX(pEntity), pszAddress));
-            return TRUE;
+            return true;
         }
 
         AgIPAddress::iterator itrIPAddress = m_mapIPAddress.find(ENTINDEX(pEntity));
@@ -598,7 +598,7 @@ BOOL AgGameRules::ClientConnected(edict_t* pEntity, const char* pszName, const c
         else
             (*itrIPAddress).second = ENTINDEX(pEntity);
     }
-    return TRUE;
+    return true;
 }
 
 void AgGameRules::ClientDisconnected(edict_t* pClient)
@@ -794,7 +794,7 @@ BOOL AgGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pItem
         return false;
 
     if (ARENA == AgGametype() && m_Arena.CanHaveItem())
-        return TRUE;
+        return true;
 
     const char* pszClass = STRING(pItem->pev->classname);
     if (0 == strncmp(pszClass, "weapon_", 7) ||
@@ -832,7 +832,7 @@ BOOL AgGameRules::CanHaveItem(CBasePlayer* pPlayer, CItem* pItem)
         return false;
 
     if (ARENA == AgGametype() && m_Arena.CanHaveItem())
-        return TRUE;
+        return true;
 
     const char* pszClass = STRING(pItem->pev->classname);
     if (0 == strncmp(pszClass, "item_", 5))
@@ -844,7 +844,7 @@ BOOL AgGameRules::CanHaveItem(CBasePlayer* pPlayer, CItem* pItem)
                 return 1 > s_Bans[i].pBan->value;
         }
     }
-    return TRUE;
+    return true;
 }
 
 BOOL AgGameRules::IsAllowedToSpawn(const char* pszClass)
@@ -862,7 +862,7 @@ BOOL AgGameRules::IsAllowedToSpawn(const char* pszClass)
         }
     }
 
-    return TRUE;
+    return true;
 }
 
 BOOL AgGameRules::IsAllowedToSpawn(CBaseEntity* pEntity)
@@ -872,7 +872,7 @@ BOOL AgGameRules::IsAllowedToSpawn(CBaseEntity* pEntity)
         return false;
 
     if (ARENA == AgGametype() && m_Arena.CanHaveItem())
-        return TRUE;
+        return true;
 
     return IsAllowedToSpawn(STRING(pEntity->pev->classname));
 }

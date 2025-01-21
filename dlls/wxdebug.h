@@ -76,26 +76,26 @@ void WINAPI DbgOutString(LPCTSTR psz);
 #define DBGOUT(_x_) DbgOutString(_x_)
 
 #define ValidateReadPtr(p,cb) \
-    {if(IsBadReadPtr((PVOID)p,cb) == TRUE) \
+    {if(IsBadReadPtr((PVOID)p,cb) == true) \
         DBGBREAK("Invalid read pointer");}
 
 #define ValidateWritePtr(p,cb) \
-    {if(IsBadWritePtr((PVOID)p,cb) == TRUE) \
+    {if(IsBadWritePtr((PVOID)p,cb) == true) \
         DBGBREAK("Invalid write pointer");}
 
 #define ValidateReadWritePtr(p,cb) \
     {ValidateReadPtr(p,cb) ValidateWritePtr(p,cb)}
 
 #define ValidateStringPtr(p) \
-    {if(IsBadStringPtr((LPCTSTR)p,INFINITE) == TRUE) \
+    {if(IsBadStringPtr((LPCTSTR)p,INFINITE) == true) \
         DBGBREAK("Invalid string pointer");}
 
 #define ValidateStringPtrA(p) \
-    {if(IsBadStringPtrA((LPCSTR)p,INFINITE) == TRUE) \
+    {if(IsBadStringPtrA((LPCSTR)p,INFINITE) == true) \
         DBGBREAK("Invalid ANSII string pointer");}
 
 #define ValidateStringPtrW(p) \
-    {if(IsBadStringPtrW((LPCWSTR)p,INFINITE) == TRUE) \
+    {if(IsBadStringPtrW((LPCWSTR)p,INFINITE) == true) \
         DBGBREAK("Invalid UNICODE string pointer");}
 
 #else // !_DEBUG

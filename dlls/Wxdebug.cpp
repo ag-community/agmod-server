@@ -68,7 +68,7 @@ void WINAPI DbgInitialise(HINSTANCE hInst)
     if (!m_bInit)
     {
         //InitializeCriticalSection(&m_CSDebug);
-        m_bInit = TRUE;
+        m_bInit = true;
         m_hInst = hInst;
         DbgInitModuleName();
         DbgInitModuleSettings();

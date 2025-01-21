@@ -33,7 +33,7 @@ public:
 	CNavNode *GetParent( void ) const;
 
 	void MarkAsVisited( NavDirType dir );					///< mark the given direction as having been visited
-	BOOL HasVisited( NavDirType dir );						///< return TRUE if the given direction has already been searched
+	BOOL HasVisited( NavDirType dir );						///< return true if the given direction has already been searched
 	BOOL IsBiLinked( NavDirType dir ) const;			///< node is bidirectionally linked to another node in the given direction
 	BOOL IsClosedCell( void ) const;							///< node is the NW corner of a bi-linked quad of nodes
 

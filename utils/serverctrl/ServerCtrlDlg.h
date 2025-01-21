@@ -70,7 +70,7 @@ private:
 	int						m_nPendingRequest;				// The last request we issued
 	int						m_nPendingLines;				// Number of console lines we want to receive
 
-	BOOL					m_bOnlyPumpIfMessageInQueue;	// TRUE if we should only go into PumpMessage ( which blocks ) if we have seen a message in the MSG queue using PeekMessage
+	BOOL					m_bOnlyPumpIfMessageInQueue;	// true if we should only go into PumpMessage ( which blocks ) if we have seen a message in the MSG queue using PeekMessage
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -637,7 +637,7 @@ void AgSettings::CalcNextMap()
 	strcpy(szFirstMapInList, "boot_camp");  // the absolute default level is hldm1
 
 	int	curplayers;
-	BOOL do_cycle = TRUE;
+	BOOL do_cycle = true;
 
 	// find the map to change to
 	char* mapcfile = (char*)CVAR_GET_STRING("mapcyclefile");
@@ -683,12 +683,12 @@ void AgSettings::CalcNextMap()
 			{
 				if (curplayers >= item->minplayers)
 				{
-					found = TRUE;
+					found = true;
 					minplayers = item->minplayers;
 				}
 				else
 				{
-					keeplooking = TRUE;
+					keeplooking = true;
 				}
 			}
 
@@ -696,19 +696,19 @@ void AgSettings::CalcNextMap()
 			{
 				if (curplayers <= item->maxplayers)
 				{
-					found = TRUE;
+					found = true;
 					maxplayers = item->maxplayers;
 				}
 				else
 				{
-					keeplooking = TRUE;
+					keeplooking = true;
 				}
 			}
 
 			if (keeplooking)
 				continue;
 
-			found = TRUE;
+			found = true;
 			break;
 		}
 

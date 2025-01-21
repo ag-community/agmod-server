@@ -406,7 +406,7 @@ void AgCTF::AddPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
         || FStrEq(CTF_TEAM2_NAME, pKilled->m_szTeamName) && pKilled->m_bFlagTeam1)
     {
         //He killed the flag carrier.
-        pAttacker->AddPoints(ag_ctf_carrierkillpoints.value, TRUE);
+        pAttacker->AddPoints(ag_ctf_carrierkillpoints.value, true);
     }
 
     //Check if he is 192 units within his own flag (defending)
@@ -422,7 +422,7 @@ void AgCTF::AddPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled)
         float fDistance = (vtFlag - vtPlayer).Length();
         if (fDistance < 192)
             //Add points for defending.
-            pAttacker->AddPoints(ag_ctf_defendpoints.value, TRUE);
+            pAttacker->AddPoints(ag_ctf_defendpoints.value, true);
     }
 }
 
@@ -554,8 +554,8 @@ void AgCTFFlag::Capture(CBasePlayer* pPlayer, const char* m_szTeamName)
     UTIL_ClientPrintAll(HUD_PRINTCENTER, szText);
 
     //Give the player the points
-    pPlayer->AddPoints(ag_ctf_capturepoints.value, TRUE);
-    pPlayer->AddPointsToTeam(ag_ctf_teamcapturepoints.value, TRUE);
+    pPlayer->AddPoints(ag_ctf_capturepoints.value, true);
+    pPlayer->AddPointsToTeam(ag_ctf_teamcapturepoints.value, true);
 
     //And give the team a capture
     if (FStrEq(CTF_TEAM1_NAME, m_szTeamName))
@@ -719,7 +719,7 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
                 UTIL_ClientPrintAll(HUD_PRINTCENTER, szText);
                 UTIL_Remove(this);
 
-                pPlayer->AddPoints(ag_ctf_returnpoints.value, TRUE);
+                pPlayer->AddPoints(ag_ctf_returnpoints.value, true);
 
                 MESSAGE_BEGIN(MSG_ALL, gmsgCTFSound);
                 WRITE_BYTE(BlueFlagReturned);
@@ -760,7 +760,7 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
                 WRITE_BYTE(RedFlagReturned);
                 MESSAGE_END();
 
-                pPlayer->AddPoints(ag_ctf_returnpoints.value, TRUE);
+                pPlayer->AddPoints(ag_ctf_returnpoints.value, true);
             }
             //but don't pick it up!
             return false;
@@ -811,13 +811,13 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
         if (FStrEq(CTF_TEAM1_NAME, m_szTeamName))
         {
             if (!g_bTeam1FlagLost)
-                pPlayer->AddPoints(ag_ctf_stealpoints.value, TRUE);
+                pPlayer->AddPoints(ag_ctf_stealpoints.value, true);
             sprintf(szText, "%s got the %s flag!\n", STRING(pPlayer->pev->netname), CTF_TEAM1_NAME);
         }
         else if (FStrEq(CTF_TEAM2_NAME, m_szTeamName))
         {
             if (!g_bTeam2FlagLost)
-                pPlayer->AddPoints(ag_ctf_stealpoints.value, TRUE);
+                pPlayer->AddPoints(ag_ctf_stealpoints.value, true);
             sprintf(szText, "%s got the %s flag!\n", STRING(pPlayer->pev->netname), CTF_TEAM2_NAME);
         }
 
@@ -901,7 +901,7 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
 
         UTIL_SendDirectorMessage(pPlayer->edict(), this->edict(), 8 | DRC_FLAG_DRAMATIC);
 
-        return TRUE;
+        return true;
     }
     return false;
 }
@@ -985,7 +985,7 @@ class AgCTFFlagTeamOP4 : public AgCTFFlag
         if (FStrEq(pkvd->szKeyName, "goal_no"))
         {
             m_iTeam = atoi(pkvd->szValue);
-            pkvd->fHandled = TRUE;
+            pkvd->fHandled = true;
         }
         else if (FStrEq(pkvd->szKeyName, "ctf_flag")) //HLE map compatibility hack
         {
@@ -994,7 +994,7 @@ class AgCTFFlagTeamOP4 : public AgCTFFlag
             else if (2 == atoi(pkvd->szValue))
                 m_iTeam = 1;
 
-            pkvd->fHandled = TRUE;
+            pkvd->fHandled = true;
         }
         else
             AgCTFFlag::KeyValue(pkvd);
@@ -1287,13 +1287,13 @@ void AgCTFSpawn::KeyValue(KeyValueData* pkvd)
     if (FStrEq(pkvd->szKeyName, "master"))
     {
         pev->netname = ALLOC_STRING(pkvd->szValue);
-        pkvd->fHandled = TRUE;
+        pkvd->fHandled = true;
     }
     //OP4 map compatibility
     else if (FStrEq(pkvd->szKeyName, "team_no"))
     {
         m_iTeam = atoi(pkvd->szValue);
-        pkvd->fHandled = TRUE;
+        pkvd->fHandled = true;
     }
     else
         CPointEntity::KeyValue(pkvd);

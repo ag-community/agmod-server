@@ -365,8 +365,8 @@ void AgDOMControlPoint::Think(void)
 
             //Give the player the points
             if (pCapturingPlayer && FStrEq(pCapturingPlayer->m_szTeamName, m_szTeamName))
-                pCapturingPlayer->AddPoints(ag_dom_controlpoints.value, TRUE);
-            //pCapturingPlayer->AddPointsToTeam(ag_dom_controlpoints.value, TRUE);  // is this required?
+                pCapturingPlayer->AddPoints(ag_dom_controlpoints.value, true);
+            //pCapturingPlayer->AddPointsToTeam(ag_dom_controlpoints.value, true);  // is this required?
             else if (pCapturingPlayer)
                 pCapturingPlayer = NULL;
 

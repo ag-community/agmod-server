@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2002, Valve LLC, All rights reserved. ============
 //
 // Purpose: 
 //
@@ -38,7 +38,7 @@ bool UTIL_IsNameTaken( const char *name, bool ignoreHumans )
 		if (FStrEq( STRING( player->pev->netname ), "" ))
 			continue;
 
-		if (player->IsPlayer() && (((CBasePlayer *)player)->IsBot() == TRUE))
+		if (player->IsPlayer() && (((CBasePlayer *)player)->IsBot() == true))
 		{
 			// bots can have prefixes so we need to check the name
 			// against the profile name instead.

@@ -424,17 +424,17 @@ int main(int argc, char* argv[])
 		}
 		else if (!strcmp(argv[i],"-italic"))
 		{
-			bItalic = TRUE;
+			bItalic = true;
 			printf ( "italic set\n");
 		}
 		else if (!strcmp(argv[i],"-bold"))
 		{
-			bBold = TRUE;
+			bBold = true;
 			printf ( "bold set\n");
 		}
 		else if (!strcmp(argv[i],"-underline"))
 		{
-			bUnderline = TRUE;
+			bUnderline = true;
 			printf ( "underline set\n");
 		}
 		else if ( argv[i][0] == '-' )

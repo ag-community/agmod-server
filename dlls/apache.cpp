@@ -852,7 +852,7 @@ BOOL CApache :: FireGun( )
 			m_pBeam->SetStartPos( tr.vecEndPos );
 		}
 #endif
-		return TRUE;
+		return true;
 	}
 	else
 	{

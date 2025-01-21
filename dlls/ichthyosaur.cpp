@@ -337,7 +337,7 @@ BOOL CIchthyosaur :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
 	if ( flDot >= 0.7 && m_flEnemyTouched > gpGlobals->time - 0.2 )
 	{
-		return TRUE;
+		return true;
 	}
 	return false;
 }
@@ -348,7 +348,7 @@ void CIchthyosaur::BiteTouch( CBaseEntity *pOther )
 	if ( pOther == m_hEnemy ) 
 	{
 		m_flEnemyTouched = gpGlobals->time;
-		m_bOnAttack = TRUE;
+		m_bOnAttack = true;
 	}
 }
 
@@ -375,7 +375,7 @@ BOOL CIchthyosaur :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( flDot > -0.7 && (m_bOnAttack || ( flDist <= 192 && m_idealDist <= 192)))
 	{
-		return TRUE;
+		return true;
 	}
 
 	return false;
@@ -438,7 +438,7 @@ void CIchthyosaur :: HandleAnimEvent( MonsterEvent_t *pEvent )
 
 				if (DotProduct( vecShootDir, gpGlobals->v_forward ) > 0.707)
 				{
-					m_bOnAttack = TRUE;
+					m_bOnAttack = true;
 					pHurt->pev->punchangle.z = -18;
 					pHurt->pev->punchangle.x = 5;
 					pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 300;
@@ -447,14 +447,14 @@ void CIchthyosaur :: HandleAnimEvent( MonsterEvent_t *pEvent )
 						pHurt->pev->angles.x += RANDOM_FLOAT( -35, 35 );
 						pHurt->pev->angles.y += RANDOM_FLOAT( -90, 90 );
 						pHurt->pev->angles.z = 0;
-						pHurt->pev->fixangle = TRUE;
+						pHurt->pev->fixangle = true;
 					}
 					pHurt->TakeDamage( pev, pev, gSkillData.ichthyosaurDmgShake, DMG_SLASH );
 				}
 			}
 			BiteSound();
 
-			bDidAttack = TRUE;
+			bDidAttack = true;
 		}
 		break;
 	default:
@@ -553,11 +553,11 @@ Schedule_t* CIchthyosaur::GetSchedule()
 		}
 		if ( HasConditions( bits_COND_HEAVY_DAMAGE ) )
 		{
-			m_bOnAttack = TRUE;
+			m_bOnAttack = true;
 		}
 		if ( pev->health < pev->max_health - 20 )
 		{
-			m_bOnAttack = TRUE;
+			m_bOnAttack = true;
 		}
 
 		return GetScheduleOfType( SCHED_STANDOFF );
@@ -612,7 +612,7 @@ void CIchthyosaur::StartTask(Task_t *pTask)
 		}
 		else
 		{
-			m_bOnAttack = TRUE;
+			m_bOnAttack = true;
 		}
 		CFlyingMonster::StartTask(pTask);
 		break;
@@ -1081,7 +1081,7 @@ Vector CIchthyosaur::DoProbe(const Vector &Probe)
 		if (tr.flFraction < frac)
 		{
 			frac = tr.flFraction;
-			bBumpedSomething = TRUE;
+			bBumpedSomething = true;
 			WallNormal = tr.vecPlaneNormal;
 		}
 	}

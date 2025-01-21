@@ -102,7 +102,7 @@ void CBasePlayer::Spectate_Start(bool bResetScore)
 
     pev->health = 1; //Remove clientside screentilt. If you find this one helpful - give me credit because I spent 3 hours a friday night figuring it out!  
 
-    EnableControl(TRUE);
+    EnableControl(true);
 
     if (m_pTank != NULL)
     {
@@ -124,7 +124,7 @@ void CBasePlayer::Spectate_Start(bool bResetScore)
     SetBits(m_afPhysicsFlags, PFLAG_OBSERVER);
     UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
 
-    pev->fixangle = TRUE;
+    pev->fixangle = true;
     pev->solid = SOLID_NOT;
     pev->takedamage = DAMAGE_NO;
     pev->movetype = MOVETYPE_NOCLIP;
@@ -191,7 +191,7 @@ void CBasePlayer::Spectate_Stop(bool bIntermediateSpawn)
     if (!g_pGameRules->FPlayerCanRespawn(this))
         return;
 
-    EnableControl(TRUE);
+    EnableControl(true);
 
     //Reset flags.
     Spectate_Init();

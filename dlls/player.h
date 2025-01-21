@@ -59,7 +59,7 @@ constexpr float GAMEMODE_VARS_REQUEST_COOLDOWN = 5.0f;
 //-----------------------------------------------------
 #define CSUITPLAYLIST	4		// max of 4 suit sentences queued up at any time
 
-#define SUIT_GROUP			TRUE
+#define SUIT_GROUP			true
 #define	SUIT_SENTENCE		false
 
 #define	SUIT_REPEAT_OK		0
@@ -245,8 +245,8 @@ public:
 	virtual	BOOL IsPlayer( void ) { return !IsSpectator(); }			// Spectators should return false for this, they aren't "players" as far as game logic is concerned
 //-- Martin Webrant
 
-	virtual BOOL IsNetClient( void ) { return TRUE; }		// Bots should return false for this, they can't receive NET messages
-															// Spectators should return TRUE for this
+	virtual BOOL IsNetClient( void ) { return true; }		// Bots should return false for this, they can't receive NET messages
+															// Spectators should return true for this
 	virtual const char *TeamID( void );
 
 	virtual int		Save( CSave &save );

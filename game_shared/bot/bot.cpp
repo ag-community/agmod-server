@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2002, Valve LLC, All rights reserved. ============
 //
 // Purpose: 
 //
@@ -405,7 +405,7 @@ void CBot::ClientCommand( const char *cmd, const char *arg1, const char *arg2, c
 
 //--------------------------------------------------------------------------------------------------------------
 /**
- * Returns TRUE if given entity is our enemy
+ * Returns true if given entity is our enemy
  */
 bool CBot::IsEnemy( CBaseEntity *ent ) const
 {

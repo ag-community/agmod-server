@@ -164,7 +164,7 @@ bool AgClient::HandleCommand(CBasePlayer* pPlayer)
             else
                 pszTeamName = g_pGameRules->GetIndexedTeamName(iTeam);
             if (strlen(pszTeamName))
-                g_pGameRules->ChangePlayerTeam(pPlayer, pszTeamName, TRUE, TRUE);
+                g_pGameRules->ChangePlayerTeam(pPlayer, pszTeamName, true, true);
         }
 
         if (pPlayer->IsSpectator())

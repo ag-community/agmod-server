@@ -18,7 +18,7 @@
 //===================================================================
 // Prototype declarations
 //
-int GetIndexOfINode(INode *pnode,BOOL fAssertPropExists = TRUE);
+int GetIndexOfINode(INode *pnode,BOOL fAssertPropExists = true);
 void SetIndexOfINode(INode *pnode, int inode);
 BOOL FUndesirableNode(INode *pnode);
 BOOL FNodeMarkedToSkip(INode *pnode);
@@ -59,13 +59,13 @@ static int AssertFailedFunc(char *sz)
 //
 BOOL WINAPI DllMain( HINSTANCE hinstDLL, ULONG fdwReason, LPVOID lpvReserved) 
 {	
-	static int fFirstTimeHere = TRUE;
+	static int fFirstTimeHere = true;
 	if (fFirstTimeHere)
 	{
 		fFirstTimeHere = false;
 		hInstance = hinstDLL;
 	}
-	return TRUE;
+	return true;
 }
 
 	
@@ -124,13 +124,13 @@ int SmdExportClass::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BO
 
 	if ( hasStringPropertyValue( "referenceFrame", "YES", i ) )
 	{
-		m_fReferenceFrame	= TRUE ;
-		suppressPrompts		= TRUE ;
+		m_fReferenceFrame	= true ;
+		suppressPrompts		= true ;
 	}
 	else if ( hasStringPropertyValue( "referenceFrame", "NO", i ) )
 	{
 		m_fReferenceFrame	= false ;
-		suppressPrompts		= TRUE ;
+		suppressPrompts		= true ;
 	}
 
 	// Present the user with the Export Options dialog if desired
@@ -216,7 +216,7 @@ BOOL SmdExportClass::CollectNodes( ExpInterface *pexpiface)
 	procCollectNodes.m_phec = this;
 	(void) pexpiface->theScene->EnumTree(&procCollectNodes);
 	
-	return TRUE;
+	return true;
 }
 
 
@@ -230,7 +230,7 @@ BOOL SmdExportClass::DumpBones(FILE *pFile, ExpInterface *pexpiface)
 	(void) pexpiface->theScene->EnumTree(&procDumpNodes);
 	fprintf(pFile, "end\n" );
 
-	return TRUE;
+	return true;
 }
 
 	
@@ -253,7 +253,7 @@ BOOL SmdExportClass::DumpRotations(FILE *pFile, ExpInterface *pexpiface)
 	}
 	fprintf(pFile, "end\n" );
 
-	return TRUE;
+	return true;
 }
 	
 	
@@ -267,7 +267,7 @@ BOOL SmdExportClass::DumpModel( FILE *pFile, ExpInterface *pexpiface)
 	procDumpModel.m_tvToDump = m_tvStart;
 	(void) pexpiface->theScene->EnumTree(&procDumpModel);
 	fprintf(pFile, "end\n" );
-	return TRUE;
+	return true;
 }	
 
 
@@ -484,7 +484,7 @@ Modifier *FindPhysiqueModifier (INode *nodePtr)
 int DumpModelTEP::callback(INode *pnode)
 {
 	Object*	pobj;
-	int	fHasMat = TRUE;
+	int	fHasMat = true;
 
 	// clear physique export parameters
 	m_mcExport = NULL;
@@ -566,7 +566,7 @@ int DumpModelTEP::callback(INode *pnode)
 		   if (m_mcExport)
 		   {
 		       // convert all vertices to Rigid 
-                m_mcExport->ConvertToRigid(TRUE);
+                m_mcExport->ConvertToRigid(true);
 		   }
 		}
 	}
@@ -863,10 +863,10 @@ static BOOL CALLBACK ExportOptionsDlgProc(
 		case IDOK:
 			pexp->m_fReferenceFrame	= IsDlgButtonChecked(hDlg, IDC_CHECK_REFFRAME);
 			EndDialog(hDlg, 1);		// 1 indicates "ok to export"
-			return TRUE;
+			return true;
 		case IDCANCEL:				// 0 indicates "cancel export"
 			EndDialog(hDlg, 0);
-			return TRUE;
+			return true;
 		case IDC_CHECK_SKELETAL:
 		case IDC_CHECK_REFFRAME:
 			CheckRadioButton(hDlg, IDC_CHECK_SKELETAL, IDC_CHECK_REFFRAME, LOWORD(wParam));
@@ -926,7 +926,7 @@ void SetIndexOfINode(INode *pnode, int inode)
 
 
 //=============================================================
-// Returns TRUE if a node should be ignored during tree traversal.
+// Returns true if a node should be ignored during tree traversal.
 //
 BOOL FUndesirableNode(INode *pnode)
 {
@@ -935,21 +935,21 @@ BOOL FUndesirableNode(INode *pnode)
 
 	// Don't care about lights, dummies, and cameras
 	if (pobj->SuperClassID() == CAMERA_CLASS_ID)
-		return TRUE;
+		return true;
 	if (pobj->SuperClassID() == LIGHT_CLASS_ID)
-		return TRUE;
+		return true;
 
 	return false;
 
 	// Actually, if it's not selected, pretend it doesn't exist!
 	//if (!pnode->Selected())
-	//	return TRUE;
+	//	return true;
 	//return false;
 }
 
 
 //=============================================================
-// Returns TRUE if a node has been marked as skippable
+// Returns true if a node has been marked as skippable
 //
 BOOL FNodeMarkedToSkip(INode *pnode)
 {

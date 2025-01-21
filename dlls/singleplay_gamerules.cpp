@@ -81,7 +81,7 @@ BOOL CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem 
 	if ( !pPlayer->m_pActiveItem )
 	{
 		// player doesn't have an active item!
-		return TRUE;
+		return true;
 	}
 
 	if ( !pPlayer->m_pActiveItem->CanHolster() )
@@ -89,7 +89,7 @@ BOOL CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem 
 		return false;
 	}
 
-	return TRUE;
+	return true;
 	*/
 	return AgGameRules::FShouldSwitchWeapon(pPlayer, pWeapon);
 }
@@ -106,7 +106,7 @@ BOOL CHalfLifeRules :: GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem 
 //=========================================================
 BOOL CHalfLifeRules :: ClientConnected( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ] )
 {
-	return TRUE;
+	return true;
 }
 
 void CHalfLifeRules :: InitHUD( CBasePlayer *pl )
@@ -141,7 +141,7 @@ void CHalfLifeRules :: PlayerSpawn( CBasePlayer *pPlayer )
 
 	pPlayer->pev->weapons |= (1 << WEAPON_SUIT);
 
-	addDefault = TRUE;
+	addDefault = true;
 
 	while (pWeaponEntity = UTIL_FindEntityByClassname(pWeaponEntity, "game_player_equip"))
 	{
@@ -156,7 +156,7 @@ void CHalfLifeRules :: PlayerSpawn( CBasePlayer *pPlayer )
 
 		if (0 < ag_start_longjump.value)
 		{
-			pPlayer->m_fLongJump = TRUE;
+			pPlayer->m_fLongJump = true;
 			g_engfuncs.pfnSetPhysicsKeyValue(pPlayer->edict(), "slj", "1");
 			pPlayer->OnPickupLongjump();
 		}
@@ -234,7 +234,7 @@ void CHalfLifeRules :: PlayerThink( CBasePlayer *pPlayer )
 //=========================================================
 BOOL CHalfLifeRules :: FPlayerCanRespawn( CBasePlayer *pPlayer )
 {
-	return TRUE;
+	return true;
 }
 
 //=========================================================
@@ -323,7 +323,7 @@ int CHalfLifeRules :: WeaponShouldRespawn( CBasePlayerItem *pWeapon )
 //=========================================================
 BOOL CHalfLifeRules::CanHaveItem( CBasePlayer *pPlayer, CItem *pItem )
 {
-	return TRUE;
+	return true;
 }
 
 //=========================================================
@@ -368,7 +368,7 @@ Vector CHalfLifeRules::VecItemRespawnSpot( CItem *pItem )
 //=========================================================
 BOOL CHalfLifeRules::IsAllowedToSpawn( CBaseEntity *pEntity )
 {
-	return TRUE;
+	return true;
 	//return AgGameRules::IsAllowedToSpawn(pEntity);
 }
 
@@ -445,7 +445,7 @@ int CHalfLifeRules::PlayerRelationship( CBaseEntity *pPlayer, CBaseEntity *pTarg
 //=========================================================
 BOOL CHalfLifeRules :: FAllowMonsters( void )
 {
-	return TRUE;
+	return true;
 }
 
 void CHalfLifeRules :: EndMultiplayerGame()

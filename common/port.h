@@ -70,12 +70,12 @@ typedef struct RECT_s
 #ifdef __cplusplus
 
 //#undef false
-//#undef TRUE
+//#undef true
 
 #ifdef OSX
 //#else
 //const bool	false		= false;
-//const bool	TRUE		= true;
+//const bool	true		= true;
 #endif
 #endif
 

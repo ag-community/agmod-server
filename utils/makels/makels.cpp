@@ -41,7 +41,7 @@ int main(int argc, void **argv)
 	HANDLE hFile, hScriptFile;
 	WIN32_FIND_DATA FindData;
 	BOOL fWrite;
-	BOOL fContinue = TRUE;
+	BOOL fContinue = true;
 	DWORD dwWritten;
 
 	printf("makels Copyright (c) 1998 Valve L.L.C., %s\n", __DATE__ );

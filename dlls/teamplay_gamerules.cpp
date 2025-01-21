@@ -73,7 +73,7 @@ CHalfLifeTeamplay :: CHalfLifeTeamplay()
 	}
 	// Has the server set teams
 	if ( strlen( m_szTeamList ) )
-		m_teamLimit = TRUE;
+		m_teamLimit = true;
 	else
 		m_teamLimit = false;
 
@@ -200,21 +200,21 @@ BOOL CHalfLifeTeamplay :: ClientCommand( CBasePlayer *pPlayer, const char *pcmd 
 {
 //++ BulliT
   if (CHalfLifeMultiplay::ClientCommand(pPlayer,pcmd))
-    return TRUE;
+    return true;
 //-- Martin Webrant
 	if(g_VoiceGameMgr.ClientCommand(pPlayer, pcmd))
-		return TRUE;
+		return true;
 
 	if ( FStrEq( pcmd, "menuselect" ) )
 	{
 		if ( CMD_ARGC() < 2 )
-			return TRUE;
+			return true;
 
 		int slot = atoi( CMD_ARGV(1) );
 
 		// select the item from the current menu
 
-		return TRUE;
+		return true;
 	}
 
 	return false;
@@ -371,8 +371,8 @@ void CHalfLifeTeamplay::ChangePlayerTeam( CBasePlayer *pPlayer, const char *pTea
 	if ( bKill )
 	{
 		// kill the player,  remove a death,  and let them start on the new team
-		m_DisableDeathMessages = TRUE;
-		m_DisableDeathPenalty = TRUE;
+		m_DisableDeathMessages = true;
+		m_DisableDeathPenalty = true;
 
 		if (ag_match_running.value != 0.0f && ag_match_teamchange_suicide_penalty.value >= 1.0f)
 		{
@@ -505,13 +505,13 @@ void CHalfLifeTeamplay::ClientUserInfoChanged( CBasePlayer *pPlayer, char *infob
 		pPlayer->m_szTeamName,
 		mdls );
 
-	ChangePlayerTeam( pPlayer, mdls, TRUE, TRUE );
+	ChangePlayerTeam( pPlayer, mdls, true, true );
 
 	pPlayer->m_flLastModelChange = AgTime();
 
 	// recount stuff
 //++ BulliT
-	//RecountTeams( TRUE );
+	//RecountTeams( true );
 //	RecountTeams();
   //MSGTEST ResendScoreBoard();
 //-- Martin Webrant
@@ -572,7 +572,7 @@ void CHalfLifeTeamplay :: PlayerKilled( CBasePlayer *pVictim, entvars_t *pKiller
 //=========================================================
 BOOL CHalfLifeTeamplay::IsTeamplay( void )
 {
-	return TRUE;
+	return true;
 }
 
 BOOL CHalfLifeTeamplay::FPlayerCanTakeDamage( CBasePlayer *pPlayer, CBaseEntity *pAttacker )
@@ -685,9 +685,9 @@ const char *CHalfLifeTeamplay::GetIndexedTeamName( int teamIndex )
 BOOL CHalfLifeTeamplay::IsValidTeam( const char *pTeamName ) 
 {
 	if ( !m_teamLimit )	// Any team is valid if the teamlist isn't set
-		return TRUE;
+		return true;
 
-	return ( GetTeamIndex( pTeamName ) != -1 ) ? TRUE : false;
+	return ( GetTeamIndex( pTeamName ) != -1 ) ? true : false;
 }
 
 const char *CHalfLifeTeamplay::TeamWithFewestPlayers( void )

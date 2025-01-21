@@ -224,8 +224,8 @@ public:
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	virtual int AddToPlayer( CBasePlayer *pPlayer );	// return TRUE if the item you want the item added to the player inventory
-	virtual int AddDuplicate( CBasePlayerItem *pItem ) { return false; }	// return TRUE if you want your duplicate removed from world
+	virtual int AddToPlayer( CBasePlayer *pPlayer );	// return true if the item you want the item added to the player inventory
+	virtual int AddDuplicate( CBasePlayerItem *pItem ) { return false; }	// return true if you want your duplicate removed from world
 	void EXPORT DestroyItem( void );
 	void EXPORT DefaultTouch( CBaseEntity *pOther );	// default weapon touch
 	void EXPORT FallThink ( void );// when an item is first spawned, this think is run to determine when the object has hit the ground.
@@ -235,11 +235,11 @@ public:
 	void FallInit( void );
 	void CheckRespawn( void );
 	virtual int GetItemInfo(ItemInfo *p) { return 0; };	// returns 0 if struct not filled out
-	virtual BOOL CanDeploy( void ) { return TRUE; };
+	virtual BOOL CanDeploy( void ) { return true; };
 	virtual BOOL Deploy( )								// returns is deploy was successful
-		 { return TRUE; };
+		 { return true; };
 
-	virtual BOOL CanHolster( void ) { return TRUE; };// can this weapon be put away right now?
+	virtual BOOL CanHolster( void ) { return true; };// can this weapon be put away right now?
 	virtual void Holster( int skiplocal = 0 );
 	virtual void UpdateItemInfo( void ) { return; };
 
@@ -294,10 +294,10 @@ public:
 	virtual int AddToPlayer( CBasePlayer *pPlayer );
 	virtual int AddDuplicate( CBasePlayerItem *pItem );
 
-	virtual int ExtractAmmo( CBasePlayerWeapon *pWeapon ); //{ return TRUE; };			// Return TRUE if you can add ammo to yourself when picked up
-	virtual int ExtractClipAmmo( CBasePlayerWeapon *pWeapon );// { return TRUE; };			// Return TRUE if you can add ammo to yourself when picked up
+	virtual int ExtractAmmo( CBasePlayerWeapon *pWeapon ); //{ return true; };			// Return true if you can add ammo to yourself when picked up
+	virtual int ExtractClipAmmo( CBasePlayerWeapon *pWeapon );// { return true; };			// Return true if you can add ammo to yourself when picked up
 
-	virtual int AddWeapon( void ) { ExtractAmmo( this ); return TRUE; };	// Return TRUE if you want to add yourself to the player
+	virtual int AddWeapon( void ) { ExtractAmmo( this ); return true; };	// Return true if you want to add yourself to the player
 
 	// generic "shared" ammo handlers
 	BOOL AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry );
@@ -366,7 +366,7 @@ class CBasePlayerAmmo : public CBaseEntity
 public:
 	virtual void Spawn( void );
 	void EXPORT DefaultTouch( CBaseEntity *pOther ); // default weapon touch
-	virtual BOOL AddAmmo( CBaseEntity *pOther ) { return TRUE; };
+	virtual BOOL AddAmmo( CBaseEntity *pOther ) { return true; };
 
 	CBaseEntity* Respawn( void );
 	void EXPORT Materialize( void );
@@ -485,7 +485,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -520,7 +520,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -550,7 +550,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -581,7 +581,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -615,7 +615,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -655,7 +655,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -707,7 +707,7 @@ public:
 	void WeaponIdle( void );
 
 	void UpdateSpot( void );
-	BOOL ShouldWeaponIdle( void ) { return TRUE; };
+	BOOL ShouldWeaponIdle( void ) { return true; };
 
 	CLaserSpot *m_pSpot;
 	int m_fSpotActive;
@@ -716,7 +716,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -783,7 +783,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -842,7 +842,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -884,7 +884,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -912,7 +912,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -948,7 +948,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -978,7 +978,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif
@@ -1007,7 +1007,7 @@ public:
 	virtual BOOL UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
-		return TRUE;
+		return true;
 #else
 		return false;
 #endif

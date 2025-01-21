@@ -161,10 +161,10 @@ BOOL CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay,
 	//!!UNDONE -- reload sound goes here !!!
 	SendWeaponAnim( iAnim, UseDecrement(), body );
 
-	m_fInReload = TRUE;
+	m_fInReload = true;
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 3;
-	return TRUE;
+	return true;
 }
 
 /*
@@ -179,7 +179,7 @@ BOOL CBasePlayerWeapon :: CanDeploy( void )
 	if ( !pszAmmo1() )
 	{
 		// this weapon doesn't use ammo, can always deploy.
-		return TRUE;
+		return true;
 	}
 
 	if ( pszAmmo1() )
@@ -199,7 +199,7 @@ BOOL CBasePlayerWeapon :: CanDeploy( void )
 		return false;
 	}
 
-	return TRUE;
+	return true;
 }
 
 /*
@@ -220,7 +220,7 @@ BOOL CBasePlayerWeapon :: DefaultDeploy( char *szViewModel, char *szWeaponModel,
 	g_irunninggausspred = false;
 	m_pPlayer->m_flNextAttack = 0.5;
 	m_flTimeWeaponIdle = 1.0;
-	return TRUE;
+	return true;
 }
 
 /*
@@ -343,7 +343,7 @@ void CBasePlayerWeapon::ItemPostFrame( void )
 	{
 		if ( pszAmmo2() && !m_pPlayer->m_rgAmmo[SecondaryAmmoIndex()] )
 		{
-			m_fFireOnEmpty = TRUE;
+			m_fFireOnEmpty = true;
 		}
 
 		SecondaryAttack();
@@ -353,7 +353,7 @@ void CBasePlayerWeapon::ItemPostFrame( void )
 	{
 		if ( (m_iClip == 0 && pszAmmo1()) || (iMaxClip() == -1 && !m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] ) )
 		{
-			m_fFireOnEmpty = TRUE;
+			m_fFireOnEmpty = true;
 		}
 
 		PrimaryAttack();
