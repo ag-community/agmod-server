@@ -53,8 +53,8 @@ AgString AgSanitizedShortGamename();
 //++ muphicks
 enum enumGameType { STANDARD = 0, ARENA = 1, LMS = 2, CTF = 3, ARCADE = 4, SGBOW = 5, INSTAGIB = 6, DOM = 7 };
 //-- muphicks
-extern DLL_GLOBAL BYTE g_GameType;
-inline BYTE AgGametype()
+extern DLL_GLOBAL byte g_GameType;
+inline byte AgGametype()
 {
     return g_GameType;
 };

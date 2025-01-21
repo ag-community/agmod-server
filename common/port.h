@@ -5,7 +5,7 @@
 #if !defined PORT_H
 #define PORT_H
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"     // DAL
 
 #ifdef _WIN32
 
@@ -26,7 +26,6 @@
 #include <errno.h>
 #include <sys/ioctl.h>
 
-typedef unsigned char BYTE;
 typedef short int WORD;
 typedef int32 LONG;
 //typedef uint32 ULONG;

@@ -20,7 +20,7 @@ DLL_GLOBAL AgGameMode GameMode;
 DLL_GLOBAL AgGame* g_pGame = NULL;
 DLL_GLOBAL AgString g_sGamemode;
 DLL_GLOBAL AgString g_sNextmode;
-DLL_GLOBAL BYTE g_GameType = STANDARD;
+DLL_GLOBAL byte g_GameType = STANDARD;
 
 static constexpr float STANDARD_FPS_VALUES[] = {30.0, 60.0, 72.0, 100.0, 125.0, 144.0, 200.0, 250.0, 500.0, 1000.0};
 

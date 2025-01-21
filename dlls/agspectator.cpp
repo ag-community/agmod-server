@@ -96,7 +96,7 @@ void CBasePlayer::Spectate_Start(bool bResetScore)
     // clear any clientside entities attached to this player
     MESSAGE_BEGIN(MSG_PAS, SVC_TEMPENTITY, pev->origin);
     WRITE_BYTE(TE_KILLPLAYERATTACHMENTS);
-    WRITE_BYTE((BYTE)entindex());
+    WRITE_BYTE((byte)entindex());
     MESSAGE_END();
 
 
