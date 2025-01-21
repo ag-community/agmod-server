@@ -3421,7 +3421,7 @@ CBaseEntity* CBaseMonster :: DropItem ( char *pszItemName, const Vector &vecPos,
 	if ( !pszItemName )
 	{
 		ALERT ( at_console, "DropItem() - No item name!\n" );
-		return NULL;
+		return nullptr;
 	}
 
 	CBaseEntity *pItem = CBaseEntity::Create( pszItemName, vecPos, vecAng, edict() );
@@ -3436,7 +3436,7 @@ CBaseEntity* CBaseMonster :: DropItem ( char *pszItemName, const Vector &vecPos,
 	else
 	{
 		ALERT ( at_console, "DropItem() - Didn't create!\n" );
-		return false;
+		return nullptr;
 	}
 
 }
