@@ -36,7 +36,7 @@
 #define SF_TRIGGER_HURT_CLIENTONLYFIRE	16// trigger hurt will only fire its target if it is hurting a client
 #define SF_TRIGGER_HURT_CLIENTONLYTOUCH 32// only clients may touch this trigger.
 
-extern DLL_GLOBAL BOOL		g_fGameOver;
+extern DLL_GLOBAL bool		g_fGameOver;
 
 extern void SetMovedir(entvars_t* pev);
 extern Vector VecBModelOrigin( entvars_t* pevBModel );
@@ -273,7 +273,7 @@ public:
 	void EXPORT ManagerReport( void );
 #endif
 
-	BOOL		HasTarget( string_t targetname );
+	bool		HasTarget( string_t targetname );
 	
 	int ObjectCaps( void ) { return CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
@@ -288,8 +288,8 @@ public:
 	int		m_iTargetName	[ MAX_MULTI_TARGETS ];// list if indexes into global string array
 	float	m_flTargetDelay [ MAX_MULTI_TARGETS ];// delay (in seconds) from time of manager fire to target fire
 private:
-	inline BOOL IsClone( void ) { return (pev->spawnflags & SF_MULTIMAN_CLONE) ? true : false; }
-	inline BOOL ShouldClone( void ) 
+	inline bool IsClone( void ) { return (pev->spawnflags & SF_MULTIMAN_CLONE) ? true : false; }
+	inline bool ShouldClone( void ) 
 	{ 
 		if ( IsClone() )
 			return false;
@@ -373,7 +373,7 @@ void CMultiManager :: Spawn( void )
 }
 
 
-BOOL CMultiManager::HasTarget( string_t targetname )
+bool CMultiManager::HasTarget( string_t targetname )
 { 
 	for ( int i = 0; i < m_cTargets; i++ )
 		if ( FStrEq(STRING(targetname), STRING(m_iTargetName[i])) )
@@ -1210,7 +1210,7 @@ void CBaseTrigger::CounterUse( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 	if (m_cTriggersLeft < 0)
 		return;
 	
-	BOOL fTellActivator =
+	bool fTellActivator =
 		(m_hActivator != 0) &&
 		FClassnameIs(m_hActivator->pev, "player") &&
 		!FBitSet(pev->spawnflags, SPAWNFLAG_NOMESSAGE);

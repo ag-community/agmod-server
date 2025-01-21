@@ -38,7 +38,7 @@ public:
 	void Precache( void );
 
 	// This is done to fix spawn flag collisions between this class and a derived class
-	virtual BOOL IsTogglePlat( void ) { return (pev->spawnflags & SF_PLAT_TOGGLE) ? true : false; }
+	virtual bool IsTogglePlat( void ) { return (pev->spawnflags & SF_PLAT_TOGGLE) ? true : false; }
 
 	virtual int	Save( CSave &save );
 	virtual int	Restore( CRestore &restore );
@@ -405,7 +405,7 @@ void CFuncPlat :: PlatUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 	if ( IsTogglePlat() )
 	{
 		// Top is off, bottom is on
-		BOOL on = (m_toggle_state == TS_AT_BOTTOM) ? true : false;
+		bool on = (m_toggle_state == TS_AT_BOTTOM) ? true : false;
 
 		if ( !ShouldToggle( useType, on ) )
 			return;
@@ -646,7 +646,7 @@ public:
 
 	entvars_t	*m_pevCurrentTarget;
 	int			m_sounds;
-	BOOL		m_activated;
+	bool		m_activated;
 };
 
 LINK_ENTITY_TO_CLASS( func_train, CFuncTrain );
@@ -992,7 +992,7 @@ void CFuncTrackTrain :: KeyValue( KeyValueData *pkvd )
 }
 
 
-void CFuncTrackTrain :: NextThink( float thinkTime, BOOL alwaysThink )
+void CFuncTrackTrain :: NextThink( float thinkTime, bool alwaysThink )
 {
 	if ( alwaysThink )
 		pev->flags |= FL_ALWAYSTHINK;
@@ -1350,7 +1350,7 @@ void CFuncTrackTrain :: SetControls( entvars_t *pevControls )
 }
 
 
-BOOL CFuncTrackTrain :: OnControls( entvars_t *pevTest )
+bool CFuncTrackTrain :: OnControls( entvars_t *pevTest )
 {
 	Vector offset = pevTest->origin - pev->origin;
 
@@ -1634,7 +1634,7 @@ public:
 	virtual void	HitTop( void );
 	void			Touch( CBaseEntity *pOther );
 	virtual void	UpdateAutoTargets( int toggleState );
-	virtual	BOOL	IsTogglePlat( void ) { return true; }
+	virtual	bool	IsTogglePlat( void ) { return true; }
 
 	void			DisableUse( void ) { m_use = 0; }
 	void			EnableUse( void ) { m_use = 1; }
@@ -2126,7 +2126,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	BOOL			m_on;
+	bool			m_on;
 };
 
 

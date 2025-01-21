@@ -640,7 +640,7 @@ void CBasePlayerItem::DefaultTouch( CBaseEntity *pOther )
 		SetThink(NULL);
 }
 
-BOOL CanAttack( float attack_time, float curtime, BOOL isPredicted )
+bool CanAttack( float attack_time, float curtime, bool isPredicted )
 {
 #if defined( CLIENT_WEAPONS )
 	if ( !isPredicted )
@@ -825,7 +825,7 @@ int CBasePlayerWeapon::AddToPlayer( CBasePlayer *pPlayer )
 
 int CBasePlayerWeapon::UpdateClientData( CBasePlayer *pPlayer )
 {
-	BOOL bSend = false;
+	bool bSend = false;
 	int state = 0;
 	if ( pPlayer->m_pActiveItem == this )
 	{
@@ -899,7 +899,7 @@ void CBasePlayerWeapon::SendWeaponAnim( int iAnim, int skiplocal, int body )
 	MESSAGE_END();
 }
 
-BOOL CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry )
+bool CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry )
 {
 	int iIdAmmo;
 
@@ -937,7 +937,7 @@ BOOL CBasePlayerWeapon :: AddPrimaryAmmo( int iCount, char *szName, int iMaxClip
 }
 
 
-BOOL CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
+bool CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
 {
 	int iIdAmmo;
 
@@ -959,7 +959,7 @@ BOOL CBasePlayerWeapon :: AddSecondaryAmmo( int iCount, char *szName, int iMax )
 // (does it have ammo loaded? do I have any ammo for the 
 // weapon?, etc)
 //=========================================================
-BOOL CBasePlayerWeapon :: IsUseable( void )
+bool CBasePlayerWeapon :: IsUseable( void )
 {
 	if ( m_iClip <= 0 )
 	{
@@ -973,9 +973,9 @@ BOOL CBasePlayerWeapon :: IsUseable( void )
 	return true;
 }
 
-BOOL CBasePlayerWeapon :: CanDeploy( void )
+bool CBasePlayerWeapon :: CanDeploy( void )
 {
-	BOOL bHasAmmo = 0;
+	bool bHasAmmo = 0;
 
 	if ( !pszAmmo1() )
 	{
@@ -1003,7 +1003,7 @@ BOOL CBasePlayerWeapon :: CanDeploy( void )
 	return true;
 }
 
-BOOL CBasePlayerWeapon :: DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal /* = 0 */, int body )
+bool CBasePlayerWeapon :: DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal /* = 0 */, int body )
 {
 	if (!CanDeploy( ))
 		return false;
@@ -1022,7 +1022,7 @@ BOOL CBasePlayerWeapon :: DefaultDeploy( char *szViewModel, char *szWeaponModel,
 }
 
 
-BOOL CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay, int body )
+bool CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay, int body )
 {
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		return false;
@@ -1043,7 +1043,7 @@ BOOL CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay,
 	return true;
 }
 
-BOOL CBasePlayerWeapon :: PlayEmptySound( void )
+bool CBasePlayerWeapon :: PlayEmptySound( void )
 {
 	if (m_iPlayEmptySound)
 	{
@@ -1394,7 +1394,7 @@ void CWeaponBox::Touch( CBaseEntity *pOther )
 //=========================================================
 // CWeaponBox - PackWeapon: Add this weapon to the box
 //=========================================================
-BOOL CWeaponBox::PackWeapon( CBasePlayerItem *pWeapon )
+bool CWeaponBox::PackWeapon( CBasePlayerItem *pWeapon )
 {
 	// is one of these weapons already packed in this box?
 	if ( HasWeapon( pWeapon ) )
@@ -1445,7 +1445,7 @@ BOOL CWeaponBox::PackWeapon( CBasePlayerItem *pWeapon )
 //=========================================================
 // CWeaponBox - PackAmmo
 //=========================================================
-BOOL CWeaponBox::PackAmmo( int iszName, int iCount )
+bool CWeaponBox::PackAmmo( int iszName, int iCount )
 {
 	int iMaxCarry;
 
@@ -1510,7 +1510,7 @@ int CWeaponBox::GiveAmmo( int iCount, char *szName, int iMax, int *pIndex/* = NU
 // CWeaponBox::HasWeapon - is a weapon of this type already
 // packed in this box?
 //=========================================================
-BOOL CWeaponBox::HasWeapon( CBasePlayerItem *pCheckItem )
+bool CWeaponBox::HasWeapon( CBasePlayerItem *pCheckItem )
 {
 	CBasePlayerItem *pItem = m_rgpPlayerItems[pCheckItem->iItemSlot()];
 
@@ -1529,7 +1529,7 @@ BOOL CWeaponBox::HasWeapon( CBasePlayerItem *pCheckItem )
 //=========================================================
 // CWeaponBox::IsEmpty - is there anything in this box?
 //=========================================================
-BOOL CWeaponBox::IsEmpty( void )
+bool CWeaponBox::IsEmpty( void )
 {
 	int i;
 

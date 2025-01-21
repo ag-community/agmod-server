@@ -189,7 +189,7 @@ public:
 
 	void NodeStart( int iszNextNode );
 	void NodeReach( void );
-	BOOL ShouldGoToNode( void );
+	bool ShouldGoToNode( void );
 
 	void SetYawSpeed( void );
 	int  Classify ( void );
@@ -256,7 +256,7 @@ public:
 
 	void DeathNotice( entvars_t *pevChild );
 
-	BOOL CanLayCrab( void ) 
+	bool CanLayCrab( void ) 
 	{ 
 		if ( m_crabTime < gpGlobals->time && m_crabCount < BIG_MAXCHILDREN )
 		{
@@ -285,9 +285,9 @@ public:
 		pev->absmax = pev->origin + Vector( 95, 95, 190 );
 	}
 
-	BOOL CheckMeleeAttack1( float flDot, float flDist );	// Slash
-	BOOL CheckMeleeAttack2( float flDot, float flDist );	// Lay a crab
-	BOOL CheckRangeAttack1( float flDot, float flDist );	// Mortar launch
+	bool CheckMeleeAttack1( float flDot, float flDist );	// Slash
+	bool CheckMeleeAttack2( float flDot, float flDist );	// Lay a crab
+	bool CheckRangeAttack1( float flDot, float flDist );	// Mortar launch
 
 	virtual int	Save( CSave &save );
 	virtual int	Restore( CRestore &restore );
@@ -762,7 +762,7 @@ void CBigMomma::NodeReach( void )
 
 
 	// Slash
-BOOL CBigMomma::CheckMeleeAttack1( float flDot, float flDist )
+bool CBigMomma::CheckMeleeAttack1( float flDot, float flDist )
 {
 	if (flDot >= 0.7)
 	{
@@ -774,14 +774,14 @@ BOOL CBigMomma::CheckMeleeAttack1( float flDot, float flDist )
 
 
 // Lay a crab
-BOOL CBigMomma::CheckMeleeAttack2( float flDot, float flDist )
+bool CBigMomma::CheckMeleeAttack2( float flDot, float flDist )
 {
 	return CanLayCrab();
 }
 
 
 // Mortar launch
-BOOL CBigMomma::CheckRangeAttack1( float flDot, float flDist )
+bool CBigMomma::CheckRangeAttack1( float flDot, float flDist )
 {
 	if ( flDist <= BIG_MORTARDIST && m_mortarTime < gpGlobals->time )
 	{
@@ -895,7 +895,7 @@ Schedule_t *CBigMomma::GetScheduleOfType( int Type )
 }
 
 
-BOOL CBigMomma::ShouldGoToNode( void )
+bool CBigMomma::ShouldGoToNode( void )
 {
 	if ( HasMemory( bits_MEMORY_ADVANCE_NODE ) )
 	{

@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2002, Valve LLC, All rights reserved. ============
 //
 // Purpose: 
 //
@@ -71,7 +71,7 @@ public:
 	CBotManager();
 
 	virtual void ClientDisconnect( CBasePlayer * pPlayer ) = 0;
-	virtual BOOL ClientCommand( CBasePlayer * pPlayer, const char * pcmd ) = 0;
+	virtual bool ClientCommand( CBasePlayer * pPlayer, const char * pcmd ) = 0;
 
 	virtual void ServerActivate( void ) = 0;
 	virtual void ServerDeactivate( void ) = 0;

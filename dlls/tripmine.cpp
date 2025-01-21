@@ -266,7 +266,7 @@ void CTripmineGrenade :: MakeBeam( void )
 
 void CTripmineGrenade :: BeamBreakThink( void  )
 {
-	BOOL bBlowup = 0;
+	bool bBlowup = 0;
 
 	TraceResult tr;
 
@@ -408,7 +408,7 @@ int CTripmine::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CTripmine::Deploy( )
+bool CTripmine::Deploy( )
 {
 	//pev->body = 0;
 	return DefaultDeploy( "models/v_tripmine.mdl", "models/p_tripmine.mdl", TRIPMINE_DRAW, "trip" );

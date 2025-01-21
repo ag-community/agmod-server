@@ -61,8 +61,8 @@ public:
 
 	void Flight( void );
 
-	BOOL AbsorbSphere( void );
-	BOOL EmitSphere( void );
+	bool AbsorbSphere( void );
+	bool EmitSphere( void );
 	void TargetSphere( USE_TYPE useType, float value );
 	CBaseEntity *RandomTargetname( const char *szName );
 	void ShootBalls( void );
@@ -187,7 +187,7 @@ public:
 	void ZapInit( CBaseEntity *pEnemy );
 
 	void EXPORT HoverThink( void );
-	BOOL CircleTarget( Vector vecTarget );
+	bool CircleTarget( Vector vecTarget );
 	void EXPORT DissipateThink( void );
 
 	void EXPORT ZapThink( void );
@@ -973,7 +973,7 @@ void CNihilanth :: Flight( void )
 }
 
 
-BOOL CNihilanth :: AbsorbSphere( void )
+bool CNihilanth :: AbsorbSphere( void )
 {
 	for (int i = 0; i < N_SPHERES; i++)
 	{
@@ -990,7 +990,7 @@ BOOL CNihilanth :: AbsorbSphere( void )
 }
 
 
-BOOL CNihilanth :: EmitSphere( void )
+bool CNihilanth :: EmitSphere( void )
 {
 	m_iActiveSpheres = 0;
 	int empty = 0;
@@ -1730,9 +1730,9 @@ void CNihilanthHVR :: DissipateThink( void  )
 }
 
 
-BOOL CNihilanthHVR :: CircleTarget( Vector vecTarget )
+bool CNihilanthHVR :: CircleTarget( Vector vecTarget )
 {
-	BOOL fClose = false;
+	bool fClose = false;
 
 	Vector vecDest = vecTarget;
 	Vector vecEst = pev->origin + pev->velocity * 0.5;

@@ -75,8 +75,8 @@ public:
 	void  StartTask( Task_t *pTask );
 	void  RunTask( Task_t *pTask );
 
-	BOOL  CheckMeleeAttack1 ( float flDot, float flDist );
-	BOOL  CheckRangeAttack1 ( float flDot, float flDist );
+	bool  CheckMeleeAttack1 ( float flDot, float flDist );
+	bool  CheckRangeAttack1 ( float flDot, float flDist );
 
 	float ChangeYaw( int speed );
 	Activity GetStoppedActivity( void );
@@ -98,7 +98,7 @@ public:
 	float m_flBlink;
 
 	float m_flEnemyTouched;
-	BOOL  m_bOnAttack;
+	bool  m_bOnAttack;
 
 	float m_flMaxSpeed;
 	float m_flMinSpeed;
@@ -333,7 +333,7 @@ int	CIchthyosaur :: Classify ( void )
 //=========================================================
 // CheckMeleeAttack1
 //=========================================================
-BOOL CIchthyosaur :: CheckMeleeAttack1 ( float flDot, float flDist )
+bool CIchthyosaur :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
 	if ( flDot >= 0.7 && m_flEnemyTouched > gpGlobals->time - 0.2 )
 	{
@@ -371,7 +371,7 @@ void CIchthyosaur::CombatUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 // CheckRangeAttack1  - swim in for a chomp
 //
 //=========================================================
-BOOL CIchthyosaur :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CIchthyosaur :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( flDot > -0.7 && (m_bOnAttack || ( flDist <= 192 && m_idealDist <= 192)))
 	{
@@ -1070,7 +1070,7 @@ Vector CIchthyosaur::DoProbe(const Vector &Probe)
 {
 	Vector WallNormal = Vector(0,0,-1); // WATER normal is Straight Down for fish.
 	float frac;
-	BOOL bBumpedSomething = ProbeZ(pev->origin, Probe, &frac);
+	bool bBumpedSomething = ProbeZ(pev->origin, Probe, &frac);
 
 	TraceResult tr;
 	TRACE_MONSTER_HULL(edict(), pev->origin, Probe, dont_ignore_monsters, edict(), &tr);

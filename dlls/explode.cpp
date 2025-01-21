@@ -259,8 +259,8 @@ void CEnvExplosion::Smoke( void )
 
 // HACKHACK -- create one of these and fake a keyvalue to get the right explosion setup
 //++ BulliT
-//void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, BOOL doDamage )
-void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, BOOL doDamage, CBaseEntity* pEnt )
+//void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, bool doDamage )
+void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, bool doDamage, CBaseEntity* pEnt )
 //-- Martin Webrant
 {
 	KeyValueData	kvd;

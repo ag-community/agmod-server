@@ -81,7 +81,7 @@ public:
 
 	unsigned int GetID( void ) const	{ return m_id; }	///< return bot's unique ID
 
-	virtual BOOL IsBot( void ) { return true; }	
+	virtual bool IsBot( void ) { return true; }	
 
 	virtual void SpawnBot( void ) = 0;
 	virtual void Upkeep( void ) = 0;						///< lightweight maintenance, invoked frequently

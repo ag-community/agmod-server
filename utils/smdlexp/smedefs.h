@@ -22,7 +22,7 @@
 //
 class SmdExportClass : public SceneExport
 {
-	friend BOOL CALLBACK ExportOptionsDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+	friend bool CALLBACK ExportOptionsDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 	friend class DumpModelTEP;
 	friend class DumpDeformsTEP;
 
@@ -42,7 +42,7 @@ public:
 	virtual unsigned int	Version			(void)		{ return 201;					}
 	virtual void			ShowAbout		(HWND hWnd)	{ return;						}
 	// virtual int				DoExport		(const TCHAR *name, ExpInterface *ei, Interface *i);
-	virtual int		DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BOOL suppressPrompts=false, DWORD options=0); // Export	file
+	virtual int		DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, bool suppressPrompts=false, DWORD options=0); // Export	file
 
 	// Integer constants for this class
 	enum
@@ -78,17 +78,17 @@ protected:
 	void					VariantToString( const PROPVARIANT *propertyVariant, TCHAR *buffer, int bufferSize );
 
 private:
-	BOOL					CollectNodes	(ExpInterface *expiface);
-	BOOL					DumpBones		(FILE *pFile, ExpInterface *pexpiface);
-	BOOL					DumpRotations	(FILE *pFile, ExpInterface *pexpiface);
-	BOOL					DumpModel		(FILE *pFile, ExpInterface *pexpiface);
-	BOOL					DumpDeforms		(FILE *pFile, ExpInterface *pexpiface);
+	bool					CollectNodes	(ExpInterface *expiface);
+	bool					DumpBones		(FILE *pFile, ExpInterface *pexpiface);
+	bool					DumpRotations	(FILE *pFile, ExpInterface *pexpiface);
+	bool					DumpModel		(FILE *pFile, ExpInterface *pexpiface);
+	bool					DumpDeforms		(FILE *pFile, ExpInterface *pexpiface);
 
 
 	// Is this MAX file just the reference frame, or an animation?
 	// If true, the "bones" and "mesh" files will be created.
 	// If false, the "rots" file will be created.
-	BOOL		m_fReferenceFrame;
+	bool		m_fReferenceFrame;
 };
 
 
@@ -99,7 +99,7 @@ class SmdExportClassDesc : public ClassDesc
 {
 public:
 	int				IsPublic		(void)					{ return true;								}
-	void *			Create			(BOOL loading=false)	{ return new SmdExportClass;				}
+	void *			Create			(bool loading=false)	{ return new SmdExportClass;				}
 	const TCHAR *	ClassName		(void)					{ return _T("SmdExport");					}
 	SClass_ID 		SuperClassID	(void)					{ return SCENE_EXPORT_CLASS_ID;				}
 	Class_ID 		ClassID			(void)					{ return Class_ID(0x774a43fd, 0x794d2210);	}

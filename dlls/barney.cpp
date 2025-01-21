@@ -58,7 +58,7 @@ public:
 	void StartTask( Task_t *pTask );
 	virtual int	ObjectCaps( void ) { return CTalkMonster :: ObjectCaps() | FCAP_IMPULSE_USE; }
 	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
-	BOOL CheckRangeAttack1 ( float flDot, float flDist );
+	bool CheckRangeAttack1 ( float flDot, float flDist );
 	
 	void DeclineFollowing( void );
 
@@ -79,10 +79,10 @@ public:
 	virtual int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	BOOL	m_fGunDrawn;
+	bool	m_fGunDrawn;
 	float	m_painTime;
 	float	m_checkAttackTime;
-	BOOL	m_lastAttackCheck;
+	bool	m_lastAttackCheck;
 
 	// UNDONE: What is this for?  It isn't used?
 	float	m_flPlayerDamage;// how much pain has the player inflicted on me?
@@ -313,7 +313,7 @@ void CBarney :: SetYawSpeed ( void )
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CBarney :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CBarney :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( flDist <= 1024 && flDot >= 0.5 )
 	{
@@ -490,7 +490,7 @@ void CBarney :: TalkInit()
 }
 
 
-static BOOL IsFacing( entvars_t *pevTest, const Vector &reference )
+static bool IsFacing( entvars_t *pevTest, const Vector &reference )
 {
 	Vector vecDir = (reference - pevTest->origin);
 	vecDir.z = 0;

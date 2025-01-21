@@ -91,9 +91,9 @@ int CCrowbar::GetItemInfo(ItemInfo *p)
 
 
 
-BOOL CCrowbar::Deploy( )
+bool CCrowbar::Deploy( )
 {
-	BOOL result = DefaultDeploy( "models/v_crowbar.mdl", "models/p_crowbar.mdl", CROWBAR_DRAW, "crowbar" );
+	bool result = DefaultDeploy( "models/v_crowbar.mdl", "models/p_crowbar.mdl", CROWBAR_DRAW, "crowbar" );
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.1;
 
 	return result;

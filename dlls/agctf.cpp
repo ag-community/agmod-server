@@ -688,7 +688,7 @@ void AgCTFFlag::Materialize(void)
     SetThink(&AgCTFFlag::Think);
 }
 
-BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
+bool AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
 {
     char szText[201];
 
@@ -1276,7 +1276,7 @@ class AgCTFSpawn : public CPointEntity
     int m_iTeam;
 public:
     void		KeyValue(KeyValueData* pkvd);
-    BOOL		IsTriggered(CBaseEntity* pEntity);
+    bool		IsTriggered(CBaseEntity* pEntity);
     void    Spawn(void);
 
 private:
@@ -1299,9 +1299,9 @@ void AgCTFSpawn::KeyValue(KeyValueData* pkvd)
         CPointEntity::KeyValue(pkvd);
 }
 
-BOOL AgCTFSpawn::IsTriggered(CBaseEntity* pEntity)
+bool AgCTFSpawn::IsTriggered(CBaseEntity* pEntity)
 {
-    BOOL master = UTIL_IsMasterTriggered(pev->netname, pEntity);
+    bool master = UTIL_IsMasterTriggered(pev->netname, pEntity);
 
     return master;
 }

@@ -25,7 +25,7 @@ typedef list<AgString> AgStringList;
 typedef set<AgString, less<AgString> > AgStringSet;
 
 #define ADD_SERVER_COMMAND	( *g_engfuncs.pfnAddServerCommand )
-extern DLL_GLOBAL BOOL		g_fGameOver;
+extern DLL_GLOBAL bool		g_fGameOver;
 
 extern cvar_t	fraglimit;
 extern cvar_t	timelimit;

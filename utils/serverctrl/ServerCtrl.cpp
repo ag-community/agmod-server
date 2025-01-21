@@ -35,7 +35,7 @@ CServerCtrlApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CServerCtrlApp initialization
 
-BOOL CServerCtrlApp::InitInstance()
+bool CServerCtrlApp::InitInstance()
 {
 	// Standard initialization
 

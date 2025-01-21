@@ -93,9 +93,9 @@ public:
 	void PrescheduleThink( void );
 	void SetActivity ( Activity NewActivity );
 	void WriteBeamColor ( void );
-	BOOL CheckRangeAttack1 ( float flDot, float flDist );
-	BOOL FValidateHintType ( short sHint );
-	BOOL FCanActiveIdle ( void );
+	bool CheckRangeAttack1 ( float flDot, float flDist );
+	bool FValidateHintType ( short sHint );
+	bool FCanActiveIdle ( void );
 	Schedule_t *GetScheduleOfType ( int Type );
 	Schedule_t *GetSchedule( void );
 
@@ -106,8 +106,8 @@ public:
 	static TYPEDESCRIPTION m_SaveData[];
 
 	int m_iSpriteTexture;
-	BOOL m_fAsleep;// some houndeyes sleep in idle mode if this is set, the houndeye is lying down
-	BOOL m_fDontBlink;// don't try to open/close eye if this bit is set!
+	bool m_fAsleep;// some houndeyes sleep in idle mode if this is set, the houndeye is lying down
+	bool m_fDontBlink;// don't try to open/close eye if this bit is set!
 	Vector	m_vecPackCenter; // the center of the pack. The leader maintains this by averaging the origins of all pack members.
 };
 LINK_ENTITY_TO_CLASS( monster_houndeye, CHoundeye );
@@ -134,7 +134,7 @@ int	CHoundeye :: Classify ( void )
 //=========================================================
 //  FValidateHintType 
 //=========================================================
-BOOL CHoundeye :: FValidateHintType ( short sHint )
+bool CHoundeye :: FValidateHintType ( short sHint )
 {
 	int i;
 
@@ -162,7 +162,7 @@ BOOL CHoundeye :: FValidateHintType ( short sHint )
 //=========================================================
 // FCanActiveIdle
 //=========================================================
-BOOL CHoundeye :: FCanActiveIdle ( void )
+bool CHoundeye :: FCanActiveIdle ( void )
 {
 	if ( InSquad() )
 	{
@@ -191,7 +191,7 @@ BOOL CHoundeye :: FCanActiveIdle ( void )
 // try to get within half of their max attack radius before
 // attacking, so as to increase their chances of doing damage.
 //=========================================================
-BOOL CHoundeye :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CHoundeye :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( flDist <= ( HOUNDEYE_MAX_ATTACK_RADIUS * 0.5 ) && flDot >= 0.3 )
 	{

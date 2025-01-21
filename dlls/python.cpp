@@ -102,7 +102,7 @@ void CPython::Precache( void )
 	m_usFirePython = PRECACHE_EVENT( 1, "events/python.sc" );
 }
 
-BOOL CPython::Deploy( )
+bool CPython::Deploy( )
 {
 	// enable laser sight geometry.
 	pev->body = 1;
@@ -304,7 +304,7 @@ class CPythonAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_357ammobox.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) 
+	bool AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		if (pOther->GiveAmmo( AMMO_357BOX_GIVE, "357", _357_MAX_CARRY ) != -1)
 		{

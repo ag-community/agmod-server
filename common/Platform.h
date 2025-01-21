@@ -67,7 +67,6 @@
 #define DLLEXPORT __declspec( dllexport )
 #define DLLHIDDEN
 #else // _WIN32
-typedef int BOOL;
 #define MAX_PATH PATH_MAX
 #define _vsnprintf(a,b,c,d) vsnprintf(a,b,c,d)
 

@@ -50,7 +50,7 @@ public:
 	virtual int	BloodColor( void ) { return DONT_BLEED; }
 	virtual void Killed( entvars_t *pevAttacker, int iGib );
 
-	BOOL m_fRegisteredSound;// whether or not this grenade has issued its DANGER sound to the world sound list yet.
+	bool m_fRegisteredSound;// whether or not this grenade has issued its DANGER sound to the world sound list yet.
 };
 
 
@@ -235,11 +235,11 @@ public:
 	void FallInit( void );
 	void CheckRespawn( void );
 	virtual int GetItemInfo(ItemInfo *p) { return 0; };	// returns 0 if struct not filled out
-	virtual BOOL CanDeploy( void ) { return true; };
-	virtual BOOL Deploy( )								// returns is deploy was successful
+	virtual bool CanDeploy( void ) { return true; };
+	virtual bool Deploy( )								// returns is deploy was successful
 		 { return true; };
 
-	virtual BOOL CanHolster( void ) { return true; };// can this weapon be put away right now?
+	virtual bool CanHolster( void ) { return true; };// can this weapon be put away right now?
 	virtual void Holster( int skiplocal = 0 );
 	virtual void UpdateItemInfo( void ) { return; };
 
@@ -300,22 +300,22 @@ public:
 	virtual int AddWeapon( void ) { ExtractAmmo( this ); return true; };	// Return true if you want to add yourself to the player
 
 	// generic "shared" ammo handlers
-	BOOL AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry );
-	BOOL AddSecondaryAmmo( int iCount, char *szName, int iMaxCarry );
+	bool AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry );
+	bool AddSecondaryAmmo( int iCount, char *szName, int iMaxCarry );
 
 	virtual void UpdateItemInfo( void ) {};	// updates HUD state
 
 	int m_iPlayEmptySound;
 	int m_fFireOnEmpty;		// True when the gun is empty and the player is still holding down the
 							// attack key(s)
-	virtual BOOL PlayEmptySound( void );
+	virtual bool PlayEmptySound( void );
 	virtual void ResetEmptySound( void );
 
 	virtual void SendWeaponAnim( int iAnim, int skiplocal = 1, int body = 0 );  // skiplocal is 1 if client is predicting weapon animations
 
-	virtual BOOL CanDeploy( void );
-	virtual BOOL IsUseable( void );
-	BOOL DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal = 0, int body = 0 );
+	virtual bool CanDeploy( void );
+	virtual bool IsUseable( void );
+	bool DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal = 0, int body = 0 );
 	int DefaultReload( int iClipSize, int iAnim, float fDelay, int body = 0 );
 
 	virtual void ItemPostFrame( void );	// called each frame by the player PostThink
@@ -326,9 +326,9 @@ public:
 	virtual void WeaponIdle( void ) { return; }					// called when no buttons pressed
 	virtual int UpdateClientData( CBasePlayer *pPlayer );		// sends hud info to client dll, if things have changed
 	virtual void RetireWeapon( void );
-	virtual BOOL ShouldWeaponIdle( void ) {return false; };
+	virtual bool ShouldWeaponIdle( void ) {return false; };
 	virtual void Holster( int skiplocal = 0 );
-	virtual BOOL UseDecrement( void ) { return false; };
+	virtual bool UseDecrement( void ) { return false; };
 	
 	int	PrimaryAmmoIndex(); 
 	int	SecondaryAmmoIndex(); 
@@ -366,7 +366,7 @@ class CBasePlayerAmmo : public CBaseEntity
 public:
 	virtual void Spawn( void );
 	void EXPORT DefaultTouch( CBaseEntity *pOther ); // default weapon touch
-	virtual BOOL AddAmmo( CBaseEntity *pOther ) { return true; };
+	virtual bool AddAmmo( CBaseEntity *pOther ) { return true; };
 
 	CBaseEntity* Respawn( void );
 	void EXPORT Materialize( void );
@@ -440,7 +440,7 @@ class CWeaponBox : public CBaseEntity
 	void Spawn( void );
 	void Touch( CBaseEntity *pOther );
 	void KeyValue( KeyValueData *pkvd );
-	BOOL IsEmpty( void );
+	bool IsEmpty( void );
 	int  GiveAmmo( int iCount, char *szName, int iMax, int *pIndex = NULL );
 	void SetObjectCollisionBox( void );
 
@@ -450,9 +450,9 @@ public:
 	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	BOOL HasWeapon( CBasePlayerItem *pCheckItem );
-	BOOL PackWeapon( CBasePlayerItem *pWeapon );
-	BOOL PackAmmo( int iszName, int iCount );
+	bool HasWeapon( CBasePlayerItem *pCheckItem );
+	bool PackWeapon( CBasePlayerItem *pWeapon );
+	bool PackAmmo( int iszName, int iCount );
 	
 	CBasePlayerItem	*m_rgpPlayerItems[MAX_ITEM_TYPES];// one slot for each 
 
@@ -477,12 +477,12 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	void GlockFire( float flSpread, float flCycleTime, BOOL fUseAutoAim );
-	BOOL Deploy( void );
+	void GlockFire( float flSpread, float flCycleTime, bool fUseAutoAim );
+	bool Deploy( void );
 	void Reload( void );
 	void WeaponIdle( void );
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -512,12 +512,12 @@ public:
 
 	void PrimaryAttack( void );
 	int Swing( int fFirst );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( int skiplocal = 0 );
 	int m_iSwing;
 	TraceResult m_trHit;
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -539,15 +539,15 @@ public:
 	int AddToPlayer( CBasePlayer *pPlayer );
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( int skiplocal = 0 );
 	void Reload( void );
 	void WeaponIdle( void );
 	float m_flSoundDelay;
 
-	BOOL m_fInZoom;// don't save this. 
+	bool m_fInZoom;// don't save this. 
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -572,13 +572,13 @@ public:
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
 	int SecondaryAmmoIndex( void );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Reload( void );
 	void WeaponIdle( void );
 	float m_flNextAnimTime;
 	int m_iShell;
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -605,14 +605,14 @@ public:
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
 	int AddToPlayer( CBasePlayer *pPlayer );
-	BOOL Deploy( );
+	bool Deploy( );
 	void Holster( int skiplocal = 0 );
 	void Reload( void );
 	void WeaponIdle( void );
 
 	int m_fInZoom; // don't save this
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -645,14 +645,14 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	BOOL Deploy( );
+	bool Deploy( );
 	void Reload( void );
 	void WeaponIdle( void );
 	int m_fInReload;
 	float m_flNextReload;
 	int m_iShell;
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -698,8 +698,8 @@ public:
 	int GetItemInfo(ItemInfo *p);
 	int AddToPlayer( CBasePlayer *pPlayer );
 
-	BOOL Deploy( void );
-	BOOL CanHolster( void );
+	bool Deploy( void );
+	bool CanHolster( void );
 	void Holster( int skiplocal = 0 );
 
 	void PrimaryAttack( void );
@@ -707,13 +707,13 @@ public:
 	void WeaponIdle( void );
 
 	void UpdateSpot( void );
-	BOOL ShouldWeaponIdle( void ) { return true; };
+	bool ShouldWeaponIdle( void ) { return true; };
 
 	CLaserSpot *m_pSpot;
 	int m_fSpotActive;
 	int m_cActiveRockets;// how many missiles in flight from this launcher right now?
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -761,7 +761,7 @@ public:
 	int GetItemInfo(ItemInfo *p);
 	int AddToPlayer( CBasePlayer *pPlayer );
 
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( int skiplocal = 0  );
 
 	void PrimaryAttack( void );
@@ -778,9 +778,9 @@ public:
 
 	// was this weapon just fired primary or secondary?
 	// we need to know so we can pick the right set of effects. 
-	BOOL m_fPrimaryFire;
+	bool m_fPrimaryFire;
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -809,7 +809,7 @@ public:
 	int GetItemInfo(ItemInfo *p);
 	int AddToPlayer( CBasePlayer *pPlayer );
 
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( int skiplocal = 0 );
 
 	void UpdateEffect( const Vector &startPoint, const Vector &endPoint, float timeBlend );
@@ -829,7 +829,7 @@ public:
 
 	void Fire( const Vector &vecOrigSrc, const Vector &vecDir );
 
-	BOOL HasAmmo( void );
+	bool HasAmmo( void );
 
 	void UseAmmo( int count );
 	
@@ -839,7 +839,7 @@ public:
 	CBeam				*m_pNoise;
 	CSprite				*m_pSprite;
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -854,7 +854,7 @@ private:
 	float				m_shootTime;
 	EGON_FIREMODE		m_fireMode;
 	float				m_shakeTime;
-	BOOL				m_deployed;
+	bool				m_deployed;
 
 	unsigned short m_usEgonFire;
 };
@@ -870,8 +870,8 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	BOOL Deploy( void );
-	BOOL IsUseable( void );
+	bool Deploy( void );
+	bool IsUseable( void );
 	void Holster( int skiplocal = 0 );
 	void Reload( void );
 	void WeaponIdle( void );
@@ -881,7 +881,7 @@ public:
 	
 	int m_iFirePhase;// don't save me.
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -904,12 +904,12 @@ public:
 	int GetItemInfo(ItemInfo *p);
 
 	void PrimaryAttack( void );
-	BOOL Deploy( void );
-	BOOL CanHolster( void );
+	bool Deploy( void );
+	bool CanHolster( void );
 	void Holster( int skiplocal = 0 );
 	void WeaponIdle( void );
 	
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -937,15 +937,15 @@ public:
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
 	int AddDuplicate( CBasePlayerItem *pOriginal );
-	BOOL CanDeploy( void );
-	BOOL Deploy( void );
-	BOOL IsUseable( void );
+	bool CanDeploy( void );
+	bool Deploy( void );
+	bool IsUseable( void );
 	
 	void Holster( int skiplocal = 0 );
 	void WeaponIdle( void );
 	void Throw( void );
 	
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -971,11 +971,11 @@ public:
 	}
 
 	void PrimaryAttack( void );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( int skiplocal = 0 );
 	void WeaponIdle( void );
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;
@@ -999,12 +999,12 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( int skiplocal = 0 );
 	void WeaponIdle( void );
 	int m_fJustThrown;
 
-	virtual BOOL UseDecrement( void )
+	virtual bool UseDecrement( void )
 	{ 
 #if defined( CLIENT_WEAPONS )
 		return true;

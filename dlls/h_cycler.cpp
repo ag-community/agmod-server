@@ -44,7 +44,7 @@ public:
 	void Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
 	// Don't treat as a live target
-	virtual BOOL IsAlive( void ) { return false; }
+	virtual bool IsAlive( void ) { return false; }
 
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
@@ -314,7 +314,7 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( int skiplocal = 0 );
 	int m_iszModel;
 	int m_iModel;
@@ -339,7 +339,7 @@ void CWeaponCycler::Spawn( )
 
 
 
-BOOL CWeaponCycler::Deploy( )
+bool CWeaponCycler::Deploy( )
 {
 	m_pPlayer->pev->viewmodel = m_iszModel;
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;

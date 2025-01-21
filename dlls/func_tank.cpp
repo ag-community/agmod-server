@@ -65,11 +65,11 @@ public:
 	// Bmodels don't go across transitions
 	virtual int	ObjectCaps( void ) { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	inline BOOL IsActive( void ) { return (pev->spawnflags & SF_TANK_ACTIVE)?true:false; }
+	inline bool IsActive( void ) { return (pev->spawnflags & SF_TANK_ACTIVE)?true:false; }
 	inline void TankActivate( void ) { pev->spawnflags |= SF_TANK_ACTIVE; pev->nextthink = pev->ltime + 0.1; m_fireLast = 0; }
 	inline void TankDeactivate( void ) { pev->spawnflags &= ~SF_TANK_ACTIVE; m_fireLast = 0; StopRotSound(); }
-	inline BOOL CanFire( void ) { return (gpGlobals->time - m_lastSightTime) < m_persist; }
-	BOOL		InRange( float range );
+	inline bool CanFire( void ) { return (gpGlobals->time - m_lastSightTime) < m_persist; }
+	bool		InRange( float range );
 
 	// Acquire a target.  pPlayer is a player in the PVS
 	edict_t		*FindTarget( edict_t *pPlayer );
@@ -89,8 +89,8 @@ public:
 	virtual int	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	BOOL OnControls( entvars_t *pevTest );
-	BOOL StartControl( CBasePlayer* pController );
+	bool OnControls( entvars_t *pevTest );
+	bool StartControl( CBasePlayer* pController );
 	void StopControl( void );
 	void ControllerPostFrame( void );
 
@@ -326,7 +326,7 @@ void CFuncTank :: KeyValue( KeyValueData *pkvd )
 
 //==================================================================================
 // TANK CONTROLLING
-BOOL CFuncTank :: OnControls( entvars_t *pevTest )
+bool CFuncTank :: OnControls( entvars_t *pevTest )
 {
 	if ( !(pev->spawnflags & SF_TANK_CANCONTROL) )
 		return false;
@@ -339,7 +339,7 @@ BOOL CFuncTank :: OnControls( entvars_t *pevTest )
 	return false;
 }
 
-BOOL CFuncTank :: StartControl( CBasePlayer *pController )
+bool CFuncTank :: StartControl( CBasePlayer *pController )
 {
 	if ( m_pController != NULL )
 		return false;
@@ -459,7 +459,7 @@ edict_t *CFuncTank :: FindTarget( edict_t *pPlayer )
 
 
 
-BOOL CFuncTank :: InRange( float range )
+bool CFuncTank :: InRange( float range )
 {
 	if ( range < m_minRange )
 		return false;
@@ -485,7 +485,7 @@ void CFuncTank::TrackTarget( void )
 {
 	TraceResult tr;
 	edict_t *pPlayer = FIND_CLIENT_IN_PVS( edict() );
-	BOOL updateTime = false, lineOfSight;
+	bool updateTime = false, lineOfSight;
 	Vector angles, direction, targetPosition, barrelEnd;
 	edict_t *pTarget;
 
@@ -598,7 +598,7 @@ void CFuncTank::TrackTarget( void )
 
 	if ( CanFire() && ( (fabs(distX) < m_pitchTolerance && fabs(distY) < m_yawTolerance) || (pev->spawnflags & SF_TANK_LINEOFSIGHT) ) )
 	{
-		BOOL fire = false;
+		bool fire = false;
 		Vector forward;
 		UTIL_MakeVectorsPrivate( pev->angles, forward, NULL, NULL );
 

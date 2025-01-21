@@ -123,7 +123,7 @@ int CGauss::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CGauss::Deploy( )
+bool CGauss::Deploy( )
 {
 	m_pPlayer->m_flPlayAftershock = 0.0;
 	return DefaultDeploy( "models/v_gauss.mdl", "models/p_gauss.mdl", GAUSS_DRAW, "gauss" );
@@ -714,7 +714,7 @@ class CGaussAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_gaussammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) 
+	bool AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		if (pOther->GiveAmmo( AMMO_URANIUMBOX_GIVE, "uranium", URANIUM_MAX_CARRY ) != -1)
 		{

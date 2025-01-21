@@ -36,7 +36,7 @@ static int num_teams = 0;
 static char s_szLeastPlayers[MAX_TEAMNAME_LENGTH];
 //-- Martin Webrant
 
-extern DLL_GLOBAL BOOL		g_fGameOver;
+extern DLL_GLOBAL bool		g_fGameOver;
 
 CHalfLifeTeamplay :: CHalfLifeTeamplay()
 {
@@ -196,7 +196,7 @@ void CHalfLifeTeamplay :: Think ( void )
 // the user has typed a command which is unrecognized by everything else;
 // this check to see if the gamerules knows anything about the command
 //=========================================================
-BOOL CHalfLifeTeamplay :: ClientCommand( CBasePlayer *pPlayer, const char *pcmd )
+bool CHalfLifeTeamplay :: ClientCommand( CBasePlayer *pPlayer, const char *pcmd )
 {
 //++ BulliT
   if (CHalfLifeMultiplay::ClientCommand(pPlayer,pcmd))
@@ -354,7 +354,7 @@ void CHalfLifeTeamplay::InitHUD( CBasePlayer *pPlayer )
 }
 
 
-void CHalfLifeTeamplay::ChangePlayerTeam( CBasePlayer *pPlayer, const char *pTeamName, BOOL bKill, BOOL bGib )
+void CHalfLifeTeamplay::ChangePlayerTeam( CBasePlayer *pPlayer, const char *pTeamName, bool bKill, bool bGib )
 {
 	int damageFlags = DMG_GENERIC;
 	int clientIndex = pPlayer->entindex();
@@ -570,12 +570,12 @@ void CHalfLifeTeamplay :: PlayerKilled( CBasePlayer *pVictim, entvars_t *pKiller
 //=========================================================
 // IsTeamplay
 //=========================================================
-BOOL CHalfLifeTeamplay::IsTeamplay( void )
+bool CHalfLifeTeamplay::IsTeamplay( void )
 {
 	return true;
 }
 
-BOOL CHalfLifeTeamplay::FPlayerCanTakeDamage( CBasePlayer *pPlayer, CBaseEntity *pAttacker )
+bool CHalfLifeTeamplay::FPlayerCanTakeDamage( CBasePlayer *pPlayer, CBaseEntity *pAttacker )
 {
 	if ( pAttacker && pPlayer->IsTeammate(pAttacker) )
 	{
@@ -613,7 +613,7 @@ int CHalfLifeTeamplay::PlayerRelationship( CBaseEntity *pPlayer, CBaseEntity *pT
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeTeamplay::ShouldAutoAim( CBasePlayer *pPlayer, edict_t *target )
+bool CHalfLifeTeamplay::ShouldAutoAim( CBasePlayer *pPlayer, edict_t *target )
 {
 	// always autoaim, unless target is a teammate
 	CBaseEntity *pTgt = CBaseEntity::Instance( target );
@@ -682,7 +682,7 @@ const char *CHalfLifeTeamplay::GetIndexedTeamName( int teamIndex )
 }
 
 
-BOOL CHalfLifeTeamplay::IsValidTeam( const char *pTeamName ) 
+bool CHalfLifeTeamplay::IsValidTeam( const char *pTeamName ) 
 {
 	if ( !m_teamLimit )	// Any team is valid if the teamlist isn't set
 		return true;

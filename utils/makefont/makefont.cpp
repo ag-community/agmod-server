@@ -28,9 +28,9 @@ extern "C"
 
 #define FONT_TAG	6  // Font's are the 6th tag after the TYP_LUMPY base ( 64 )...i.e., type == 70
 
-BOOL		bItalic = false;
-BOOL		bBold   = false;
-BOOL		bUnderline = false;
+bool		bItalic = false;
+bool		bBold   = false;
+bool		bUnderline = false;
 
 char		fontname[ 256 ];
 int			pointsize[3] = { 9, 11, 15 };
@@ -97,7 +97,7 @@ Renders TT font into memory dc and creates appropriate qfont_t structure
 
 // YWB:  Sigh, VC 6.0's global optimizer causes weird stack fixups in release builds.  Disable the globabl optimizer for this function.
 #pragma optimize( "g", off )
-qfont_t *CreateConsoleFont( char *pszFont, int nPointSize, BOOL bItalic, BOOL bUnderline, BOOL bBold, int *outsize )
+qfont_t *CreateConsoleFont( char *pszFont, int nPointSize, bool bItalic, bool bUnderline, bool bBold, int *outsize )
 {
 	HDC hdc;
 	HDC hmemDC;

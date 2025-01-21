@@ -18,10 +18,10 @@
 //===================================================================
 // Prototype declarations
 //
-int GetIndexOfINode(INode *pnode,BOOL fAssertPropExists = true);
+int GetIndexOfINode(INode *pnode,bool fAssertPropExists = true);
 void SetIndexOfINode(INode *pnode, int inode);
-BOOL FUndesirableNode(INode *pnode);
-BOOL FNodeMarkedToSkip(INode *pnode);
+bool FUndesirableNode(INode *pnode);
+bool FNodeMarkedToSkip(INode *pnode);
 float FlReduceRotation(float fl);
 
 
@@ -57,7 +57,7 @@ static int AssertFailedFunc(char *sz)
 //===================================================================
 // Required plug-in export functions
 //
-BOOL WINAPI DllMain( HINSTANCE hinstDLL, ULONG fdwReason, LPVOID lpvReserved) 
+bool WINAPI DllMain( HINSTANCE hinstDLL, ULONG fdwReason, LPVOID lpvReserved) 
 {	
 	static int fFirstTimeHere = true;
 	if (fFirstTimeHere)
@@ -114,7 +114,7 @@ DESTRUCTOR SmdExportClass::~SmdExportClass(void)
 }
 
 
-int SmdExportClass::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BOOL suppressPrompts, DWORD options) 
+int SmdExportClass::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, bool suppressPrompts, DWORD options) 
 {
 	ExpInterface	*pexpiface = ei;	// Hungarian
 	Interface		*piface = i;		// Hungarian
@@ -197,7 +197,7 @@ int SmdExportClass::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BO
 }
 	
 	
-BOOL SmdExportClass::CollectNodes( ExpInterface *pexpiface)
+bool SmdExportClass::CollectNodes( ExpInterface *pexpiface)
 {
 	// Count total nodes in the model, so I can alloc array
 	// Also "brands" each node with node index, or with "skip me" marker.
@@ -220,7 +220,7 @@ BOOL SmdExportClass::CollectNodes( ExpInterface *pexpiface)
 }
 
 
-BOOL SmdExportClass::DumpBones(FILE *pFile, ExpInterface *pexpiface)
+bool SmdExportClass::DumpBones(FILE *pFile, ExpInterface *pexpiface)
 {
 	// Dump bone names
 	DumpNodesTEP procDumpNodes;
@@ -234,7 +234,7 @@ BOOL SmdExportClass::DumpBones(FILE *pFile, ExpInterface *pexpiface)
 }
 
 	
-BOOL SmdExportClass::DumpRotations(FILE *pFile, ExpInterface *pexpiface)
+bool SmdExportClass::DumpRotations(FILE *pFile, ExpInterface *pexpiface)
 {
 	// Dump bone-rotation info, for each frame
 	// Also dumps root-node translation info (the model's world-position at each frame)
@@ -257,7 +257,7 @@ BOOL SmdExportClass::DumpRotations(FILE *pFile, ExpInterface *pexpiface)
 }
 	
 	
-BOOL SmdExportClass::DumpModel( FILE *pFile, ExpInterface *pexpiface)
+bool SmdExportClass::DumpModel( FILE *pFile, ExpInterface *pexpiface)
 {
 	// Dump mesh info: vertices, normals, UV texture map coords, bone assignments
 	DumpModelTEP procDumpModel;
@@ -362,7 +362,7 @@ int DumpNodesTEP::callback(INode *pnode)
 	
 	// The model's root is a child of the real "scene root"
 	TSTR strNodeName(pnode->GetName());
-	BOOL fNodeIsRoot = pnodeParent->IsRootNode( );
+	bool fNodeIsRoot = pnodeParent->IsRootNode( );
 	
 	int iNode = ::GetIndexOfINode(pnode);
 	int iNodeParent = ::GetIndexOfINode(pnodeParent, !fNodeIsRoot/*fAssertPropExists*/);
@@ -401,7 +401,7 @@ int DumpFrameRotationsTEP::callback(INode *pnode)
 
 	// The model's root is a child of the real "scene root"
 	INode *pnodeParent = pnode->GetParentNode();
-	BOOL fNodeIsRoot = pnodeParent->IsRootNode( );
+	bool fNodeIsRoot = pnodeParent->IsRootNode( );
 
 	// Get Node's "Local" Transformation Matrix
 	Matrix3 mat3NodeTM		= pnode->GetNodeTM(m_tvToDump);
@@ -510,7 +510,7 @@ int DumpModelTEP::callback(INode *pnode)
 
 	// The model's root is a child of the real "scene root"
 	INode *pnodeParent = pnode->GetParentNode();
-	BOOL fNodeIsRoot = pnodeParent->IsRootNode( );
+	bool fNodeIsRoot = pnodeParent->IsRootNode( );
 
 	// Get node's material: should be a multi/sub (if it has a material at all)
 	Mtl *pmtlNode = pnode->GetMtl();
@@ -530,7 +530,7 @@ int DumpModelTEP::callback(INode *pnode)
 	ObjectState os = pnode->EvalWorldState(m_tvToDump);
 	pobj = os.obj;
 	TriObject *ptriobj;
-	BOOL fConvertedToTriObject = 
+	bool fConvertedToTriObject = 
 		pobj->CanConvertToType(triObjectClassID) &&
 		(ptriobj = (TriObject*)pobj->ConvertToType(m_tvToDump, triObjectClassID)) != NULL;
 	if (!fConvertedToTriObject)
@@ -842,7 +842,7 @@ Point3 DumpModelTEP::Pt3GetRVertexNormal(RVertex *prvertex, DWORD smGroupFace)
 //===========================================================
 // Dialog proc for export options
 //
-static BOOL CALLBACK ExportOptionsDlgProc(
+static bool CALLBACK ExportOptionsDlgProc(
 	HWND	hDlg,
 	UINT	message,
 	WPARAM	wParam,
@@ -893,7 +893,7 @@ typedef struct
 const int MAX_NAMEMAP = 512;
 static NAMEMAP g_rgnm[MAX_NAMEMAP];
 
-int GetIndexOfINode(INode *pnode, BOOL fAssertPropExists)
+int GetIndexOfINode(INode *pnode, bool fAssertPropExists)
 {
 	TSTR strNodeName(pnode->GetName());
 	for (int inm = 0; inm < g_inmMac; inm++)
@@ -928,7 +928,7 @@ void SetIndexOfINode(INode *pnode, int inode)
 //=============================================================
 // Returns true if a node should be ignored during tree traversal.
 //
-BOOL FUndesirableNode(INode *pnode)
+bool FUndesirableNode(INode *pnode)
 {
 	// Get Node's underlying object, and object class name
 	Object *pobj = pnode->GetObjectRef();
@@ -951,7 +951,7 @@ BOOL FUndesirableNode(INode *pnode)
 //=============================================================
 // Returns true if a node has been marked as skippable
 //
-BOOL FNodeMarkedToSkip(INode *pnode)
+bool FNodeMarkedToSkip(INode *pnode)
 {
 	return (::GetIndexOfINode(pnode) == SmdExportClass::UNDESIRABLE_NODE_MARKER);
 }

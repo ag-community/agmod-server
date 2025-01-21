@@ -40,23 +40,23 @@ public:
     virtual ~AgGameRules();
 
     //Overidden
-    virtual BOOL ClientCommand(CBasePlayer* pPlayer, const char* pcmd);
+    virtual bool ClientCommand(CBasePlayer* pPlayer, const char* pcmd);
 
     virtual int DeadPlayerWeapons(CBasePlayer* pPlayer);
     virtual int DeadPlayerAmmo(CBasePlayer* pPlayer);
 
-    virtual BOOL FPlayerCanRespawn(CBasePlayer* pPlayer);
+    virtual bool FPlayerCanRespawn(CBasePlayer* pPlayer);
     virtual void PlayerSpawn(CBasePlayer* pPlayer);
-    virtual BOOL FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);// should the player switch to this weapon?
-    virtual BOOL GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon);
+    virtual bool FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);// should the player switch to this weapon?
+    virtual bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon);
 
-    virtual BOOL ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
+    virtual bool ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
     virtual void ClientDisconnected(edict_t* pClient);// a client just disconnected from the server
 
     virtual int IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled);
-    virtual BOOL CanHaveItem(CBasePlayer* pPlayer, CItem* pItem);
-    virtual BOOL CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);// The player is touching an CBasePlayerItem, do I give it to him?
-    virtual BOOL IsAllowedToSpawn(CBaseEntity* pEntity);
+    virtual bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem);
+    virtual bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);// The player is touching an CBasePlayerItem, do I give it to him?
+    virtual bool IsAllowedToSpawn(CBaseEntity* pEntity);
     virtual void PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor);// Called each time a player dies
     virtual void DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor);
 
@@ -65,7 +65,7 @@ public:
 
     virtual void GoToIntermission();
 
-    virtual BOOL FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker);
+    virtual bool FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker);
 
     virtual void RefreshSkillData(void);
 
@@ -77,7 +77,7 @@ public:
     void    ResendScoreBoard();
     void    HLTV_ResendScoreBoard();
     //AgString GetTeamWithFewestPlayers();
-    virtual BOOL IsAllowedToSpawn(const char* pszClass);
+    virtual bool IsAllowedToSpawn(const char* pszClass);
 
     void SendMapListToClient(CBasePlayer* pPlayer, bool bStart);
 

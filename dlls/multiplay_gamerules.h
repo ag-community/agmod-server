@@ -49,39 +49,39 @@ public:
 	// GR_Think
 	virtual void Think(void);
 	virtual void RefreshSkillData(void);
-	virtual BOOL IsAllowedToSpawn(CBaseEntity* pEntity);
-	virtual BOOL FAllowFlashlight(void);
+	virtual bool IsAllowedToSpawn(CBaseEntity* pEntity);
+	virtual bool FAllowFlashlight(void);
 
-	virtual BOOL FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);
-	virtual BOOL GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon);
+	virtual bool FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);
+	virtual bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon);
 
 	// Functions to verify the single/multiplayer status of a game
-	virtual BOOL IsMultiplayer(void);
-	virtual BOOL IsDeathmatch(void);
-	virtual BOOL IsCoOp(void);
+	virtual bool IsMultiplayer(void);
+	virtual bool IsDeathmatch(void);
+	virtual bool IsCoOp(void);
 
 	// Client connection/disconnection
 		// If ClientConnected returns false, the connection is rejected and the user is provided the reason specified in
 		//  svRejectReason
 		// Only the client's name and remote address are provided to the dll for verification.
-	virtual BOOL ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
+	virtual bool ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
 	virtual void InitHUD(CBasePlayer* pl);		// the client dll is ready for updating
 	virtual void ClientDisconnected(edict_t* pClient);
 	virtual void UpdateGameMode(CBasePlayer* pPlayer);  // the client needs to be informed of the current game mode
 
 // Client damage rules
 	virtual float FlPlayerFallDamage(CBasePlayer* pPlayer);
-	virtual BOOL  FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker);
+	virtual bool  FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker);
 
 	// Client spawn/respawn control
 	virtual void PlayerSpawn(CBasePlayer* pPlayer);
 	virtual void PlayerThink(CBasePlayer* pPlayer);
-	virtual BOOL FPlayerCanRespawn(CBasePlayer* pPlayer);
+	virtual bool FPlayerCanRespawn(CBasePlayer* pPlayer);
 	virtual float FlPlayerSpawnTime(CBasePlayer* pPlayer);
 	virtual edict_t* GetPlayerSpawnSpot(CBasePlayer* pPlayer);
 
-	virtual BOOL AllowAutoTargetCrosshair(void);
-	virtual BOOL ClientCommand(CBasePlayer* pPlayer, const char* pcmd);
+	virtual bool AllowAutoTargetCrosshair(void);
+	virtual bool ClientCommand(CBasePlayer* pPlayer, const char* pcmd);
 
 	// Client kills/scoring
 	virtual int IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled);
@@ -90,7 +90,7 @@ public:
 
 	// Weapon retrieval
 	virtual void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);
-	virtual BOOL CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);// The player is touching an CBasePlayerItem, do I give it to him?
+	virtual bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);// The player is touching an CBasePlayerItem, do I give it to him?
 
 // Weapon spawn/respawn control
 	virtual int WeaponShouldRespawn(CBasePlayerItem* pWeapon);
@@ -99,7 +99,7 @@ public:
 	virtual Vector VecWeaponRespawnSpot(CBasePlayerItem* pWeapon);
 
 	// Item retrieval
-	virtual BOOL CanHaveItem(CBasePlayer* pPlayer, CItem* pItem);
+	virtual bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem);
 	virtual void PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem);
 
 	// Item spawn/respawn control
@@ -129,11 +129,11 @@ public:
 	virtual const char* GetTeamID(CBaseEntity* pEntity) { return ""; }
 	virtual int PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget);
 
-	virtual BOOL PlayTextureSounds(void) { return false; }
-	virtual BOOL PlayFootstepSounds(CBasePlayer* pl, float fvol);
+	virtual bool PlayTextureSounds(void) { return false; }
+	virtual bool PlayFootstepSounds(CBasePlayer* pl, float fvol);
 
 	// Monsters
-	virtual BOOL FAllowMonsters(void);
+	virtual bool FAllowMonsters(void);
 
 	// Immediately end a multiplayer game
 	virtual void EndMultiplayerGame(void) { GoToIntermission(); }
@@ -144,7 +144,7 @@ protected:
 	virtual void ChangeLevel(void);
 	virtual void GoToIntermission(void);
 	float m_flIntermissionEndTime;
-	BOOL m_iEndIntermissionButtonHit;
+	bool m_iEndIntermissionButtonHit;
 	void SendMOTDToClient(edict_t* client);
 };
 

@@ -38,19 +38,19 @@ public:
 
 	// GR_Think
 	virtual void Think(void);
-	virtual BOOL IsAllowedToSpawn(CBaseEntity* pEntity);
-	virtual BOOL FAllowFlashlight(void) { return true; };
+	virtual bool IsAllowedToSpawn(CBaseEntity* pEntity);
+	virtual bool FAllowFlashlight(void) { return true; };
 
-	virtual BOOL FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);
-	virtual BOOL GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon);
+	virtual bool FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);
+	virtual bool GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon);
 
 	// Functions to verify the single/multiplayer status of a game
-	virtual BOOL IsMultiplayer(void);
-	virtual BOOL IsDeathmatch(void);
-	virtual BOOL IsCoOp(void);
+	virtual bool IsMultiplayer(void);
+	virtual bool IsDeathmatch(void);
+	virtual bool IsCoOp(void);
 
 	// Client connection/disconnection
-	virtual BOOL ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
+	virtual bool ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
 	virtual void InitHUD(CBasePlayer* pl);		// the client dll is ready for updating
 	virtual void ClientDisconnected(edict_t* pClient);
 
@@ -60,10 +60,10 @@ public:
 	// Client spawn/respawn control
 	virtual void PlayerSpawn(CBasePlayer* pPlayer);
 	virtual void PlayerThink(CBasePlayer* pPlayer);
-	virtual BOOL FPlayerCanRespawn(CBasePlayer* pPlayer);
+	virtual bool FPlayerCanRespawn(CBasePlayer* pPlayer);
 	virtual float FlPlayerSpawnTime(CBasePlayer* pPlayer);
 
-	virtual BOOL AllowAutoTargetCrosshair(void);
+	virtual bool AllowAutoTargetCrosshair(void);
 
 	// Client kills/scoring
 	virtual int IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKilled);
@@ -80,7 +80,7 @@ public:
 	virtual Vector VecWeaponRespawnSpot(CBasePlayerItem* pWeapon);
 
 	// Item retrieval
-	virtual BOOL CanHaveItem(CBasePlayer* pPlayer, CItem* pItem);
+	virtual bool CanHaveItem(CBasePlayer* pPlayer, CItem* pItem);
 	virtual void PlayerGotItem(CBasePlayer* pPlayer, CItem* pItem);
 
 	// Item spawn/respawn control
@@ -107,7 +107,7 @@ public:
 	virtual int DeadPlayerAmmo(CBasePlayer* pPlayer);
 
 	// Monsters
-	virtual BOOL FAllowMonsters(void);
+	virtual bool FAllowMonsters(void);
 
 	// Teamplay stuff	
 	virtual const char* GetTeamID(CBaseEntity* pEntity) { return ""; };

@@ -90,7 +90,7 @@ public:
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	void	TurnOff( void );
 	void	TurnOn( void );
-	BOOL	IsOn( void );
+	bool	IsOn( void );
 };
 
 LINK_ENTITY_TO_CLASS( func_wall_toggle, CFuncWallToggle );
@@ -119,7 +119,7 @@ void CFuncWallToggle :: TurnOn( void )
 }
 
 
-BOOL CFuncWallToggle :: IsOn( void )
+bool CFuncWallToggle :: IsOn( void )
 {
 	if ( pev->solid == SOLID_NOT )
 		return false;

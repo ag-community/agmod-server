@@ -40,8 +40,8 @@ int main(int argc, void **argv)
 	char szBuf[1024];
 	HANDLE hFile, hScriptFile;
 	WIN32_FIND_DATA FindData;
-	BOOL fWrite;
-	BOOL fContinue = true;
+	bool fWrite;
+	bool fContinue = true;
 	DWORD dwWritten;
 
 	printf("makels Copyright (c) 1998 Valve L.L.C., %s\n", __DATE__ );

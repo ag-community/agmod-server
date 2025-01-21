@@ -339,7 +339,7 @@ int CSatchel::GetItemInfo(ItemInfo *p)
 
 //=========================================================
 //=========================================================
-BOOL CSatchel::IsUseable( void )
+bool CSatchel::IsUseable( void )
 {
 	if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] > 0 ) 
 	{
@@ -356,7 +356,7 @@ BOOL CSatchel::IsUseable( void )
 	return false;
 }
 
-BOOL CSatchel::CanDeploy( void )
+bool CSatchel::CanDeploy( void )
 {
 	if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] > 0 ) 
 	{
@@ -373,11 +373,11 @@ BOOL CSatchel::CanDeploy( void )
 	return false;
 }
 
-BOOL CSatchel::Deploy( )
+bool CSatchel::Deploy( )
 {
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 
-	BOOL result = false;
+	bool result = false;
 
 	if ( m_chargeReady )
 		result = DefaultDeploy( "models/v_satchel_radio.mdl", "models/p_satchel_radio.mdl", SATCHEL_RADIO_DRAW, "hive" );

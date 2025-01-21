@@ -75,9 +75,9 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 	ASSERT(!(m_nFlags & WF_MODALLOOP)); // window must not already be in modal state
 
 	// for tracking the idle time state
-	BOOL bIdle = true;
+	bool bIdle = true;
 	LONG lIdleCount = 0;
-	BOOL bShowIdle = (dwFlags & MLF_SHOWONIDLE) && !(GetStyle() & WS_VISIBLE);
+	bool bShowIdle = (dwFlags & MLF_SHOWONIDLE) && !(GetStyle() & WS_VISIBLE);
 	HWND hWndParent = ::GetParent(m_hWnd);
 	m_nFlags |= (WF_MODALLOOP|WF_CONTINUEMODAL);
 	MSG* pMsg = &AfxGetThread()->m_msgCur;
@@ -125,7 +125,7 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 		// phase2: pump messages while available
 		do
 		{
-			BOOL ShouldPump = true;
+			bool ShouldPump = true;
 
 			ASSERT(ContinueModal());
 
@@ -202,7 +202,7 @@ int CServerCtrlDlg::DoModal()
 	// disable parent (before creating dialog)
 	HWND hWndParent = PreModal();
 	AfxUnhookWindowCreate();
-	BOOL bEnableParent = false;
+	bool bEnableParent = false;
 	if (hWndParent != NULL && ::IsWindowEnabled(hWndParent))
 	{
 		::EnableWindow(hWndParent, false);
@@ -256,7 +256,7 @@ int CServerCtrlDlg::DoModal()
 	return m_nModalResult;
 }
 
-void CServerCtrlDlg::SetPumpIfQueued( BOOL bValue )
+void CServerCtrlDlg::SetPumpIfQueued( bool bValue )
 {
 	m_bOnlyPumpIfMessageInQueue = bValue;
 }
@@ -264,7 +264,7 @@ void CServerCtrlDlg::SetPumpIfQueued( BOOL bValue )
 /////////////////////////////////////////////////////////////////////////////
 // CServerCtrlDlg message handlers
 
-BOOL CServerCtrlDlg::OnInitDialog()
+bool CServerCtrlDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 

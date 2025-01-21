@@ -170,14 +170,14 @@ public:
 	virtual void	Killed( entvars_t *pevAttacker, int iGib );
 	virtual int		BloodColor( void ) { return DONT_BLEED; }
 	virtual void	TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
-	virtual BOOL    IsTriggered( CBaseEntity *pActivator ) {return true;}
+	virtual bool    IsTriggered( CBaseEntity *pActivator ) {return true;}
 	virtual CBaseMonster *MyMonsterPointer( void ) { return NULL;}
 	virtual CSquadMonster *MySquadMonsterPointer( void ) { return NULL;}
 	virtual	int		GetToggleState( void ) { return TS_AT_TOP; }
-	virtual void	AddPoints( int score, BOOL bAllowNegativeScore ) {}
-	virtual void	AddPointsToTeam( int score, BOOL bAllowNegativeScore ) {}
-	virtual BOOL	AddPlayerItem( CBasePlayerItem *pItem ) { return 0; }
-	virtual BOOL	RemovePlayerItem( CBasePlayerItem *pItem ) { return 0; }
+	virtual void	AddPoints( int score, bool bAllowNegativeScore ) {}
+	virtual void	AddPointsToTeam( int score, bool bAllowNegativeScore ) {}
+	virtual bool	AddPlayerItem( CBasePlayerItem *pItem ) { return 0; }
+	virtual bool	RemovePlayerItem( CBasePlayerItem *pItem ) { return 0; }
 	virtual int 	GiveAmmo( int iAmount, char *szName, int iMax ) { return -1; };
 	virtual float	GetDelay( void ) { return 0; }
 	virtual int		IsMoving( void ) { return pev->velocity != g_vecZero; }
@@ -187,15 +187,15 @@ public:
 	virtual void	SetToggleState( int state ) {}
 	virtual void    StartSneaking( void ) {}
 	virtual void    StopSneaking( void ) {}
-	virtual BOOL	OnControls( entvars_t *pev ) { return false; }
-	virtual BOOL    IsSneaking( void ) { return false; }
-	virtual BOOL	IsAlive( void ) { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
-	virtual BOOL	IsBSPModel( void ) { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
-	virtual BOOL	ReflectGauss( void ) { return ( IsBSPModel() && !pev->takedamage ); }
-	virtual BOOL	HasTarget( string_t targetname ) { return FStrEq(STRING(targetname), STRING(pev->targetname) ); }
-	virtual BOOL    IsInWorld( void );
-	virtual	BOOL	IsPlayer( void ) { return false; }
-	virtual BOOL	IsNetClient( void ) { return false; }
+	virtual bool	OnControls( entvars_t *pev ) { return false; }
+	virtual bool    IsSneaking( void ) { return false; }
+	virtual bool	IsAlive( void ) { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
+	virtual bool	IsBSPModel( void ) { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
+	virtual bool	ReflectGauss( void ) { return ( IsBSPModel() && !pev->takedamage ); }
+	virtual bool	HasTarget( string_t targetname ) { return FStrEq(STRING(targetname), STRING(pev->targetname) ); }
+	virtual bool    IsInWorld( void );
+	virtual	bool	IsPlayer( void ) { return false; }
+	virtual bool	IsNetClient( void ) { return false; }
 	virtual const char *TeamID( void ) { return ""; }
 
 
@@ -245,7 +245,7 @@ public:
 	void EXPORT SUB_StartFadeOut ( void );
 	void EXPORT SUB_FadeOut ( void );
 	void EXPORT SUB_CallUseToggle( void ) { this->Use( this, this, USE_TOGGLE, 0 ); }
-	int			ShouldToggle( USE_TYPE useType, BOOL currentState );
+	int			ShouldToggle( USE_TYPE useType, bool currentState );
 	void		FireBullets( unsigned int	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL  );
 	Vector		FireBulletsPlayer( unsigned int	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0 );
 
@@ -256,7 +256,7 @@ public:
 	int		Intersects( CBaseEntity *pOther );
 	void	MakeDormant( void );
 	int		IsDormant( void );
-	BOOL    IsLockedByMaster( void ) { return false; }
+	bool    IsLockedByMaster( void ) { return false; }
 
 	static CBaseEntity *Instance( edict_t *pent )
 	{ 
@@ -333,7 +333,7 @@ public:
 	//
 	static CBaseEntity *Create( char *szName, const Vector &vecOrigin, const Vector &vecAngles, edict_t *pentOwner = NULL );
 
-	virtual BOOL FBecomeProne( void ) {return false;};
+	virtual bool FBecomeProne( void ) {return false;};
 	edict_t *edict() { return ENT( pev ); };
 	EOFFSET eoffset( ) { return OFFSET( pev ); };
 	int	  entindex( ) { return ENTINDEX( edict() ); };
@@ -345,8 +345,8 @@ public:
 
 	virtual int Illumination( ) { return GETENTITYILLUM( ENT( pev ) ); };
 
-	virtual	BOOL FVisible ( CBaseEntity *pEntity );
-	virtual	BOOL FVisible ( const Vector &vecOrigin );
+	virtual	bool FVisible ( CBaseEntity *pEntity );
+	virtual	bool FVisible ( const Vector &vecOrigin );
 
 	float DistanceTo(CBaseEntity* pOther) { return (pev->origin - pOther->pev->origin).Length(); };
 
@@ -433,7 +433,7 @@ public:
 	void KeyValue( KeyValueData *pkvd );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	int	ObjectCaps( void ) { return (CPointEntity::ObjectCaps() | FCAP_MASTER); }
-	BOOL IsTriggered( CBaseEntity *pActivator );
+	bool IsTriggered( CBaseEntity *pActivator );
 	void EXPORT Register( void );
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
@@ -501,8 +501,8 @@ public:
 	float				m_flFrameRate;		// computed FPS for current sequence
 	float				m_flGroundSpeed;	// computed linear movement rate for current sequence
 	float				m_flLastEventCheck;	// last time the event list was checked
-	BOOL				m_fSequenceFinished;// flag set when StudioAdvanceFrame moves across a frame boundry
-	BOOL				m_fSequenceLoops;	// true if the sequence loops
+	bool				m_fSequenceFinished;// flag set when StudioAdvanceFrame moves across a frame boundry
+	bool				m_fSequenceLoops;	// true if the sequence loops
 };
 
 
@@ -551,7 +551,7 @@ public:
 	void EXPORT LinearMoveDone( void );
 	void AngularMove( Vector vecDestAngle, float flSpeed );
 	void EXPORT AngularMoveDone( void );
-	BOOL IsLockedByMaster( void );
+	bool IsLockedByMaster( void );
 
 	static float		AxisValue( int flags, const Vector &angles );
 	static void			AxisDir( entvars_t *pev );
@@ -716,8 +716,8 @@ public:
 	// Buttons that don't take damage can be IMPULSE used
 	virtual int	ObjectCaps( void ) { return (CBaseToggle:: ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | (pev->takedamage?0:FCAP_IMPULSE_USE); }
 
-	BOOL	m_fStayPushed;	// button stays pushed in until touched again?
-	BOOL	m_fRotating;		// a rotating button?  default is a sliding button.
+	bool	m_fStayPushed;	// button stays pushed in until touched again?
+	bool	m_fRotating;		// a rotating button?  default is a sliding button.
 
 	string_t m_strChangeTarget;	// if this field is not null, this is an index into the engine string array.
 							// when this button is touched, it's target entity's TARGET field will be set

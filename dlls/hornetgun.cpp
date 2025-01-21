@@ -48,7 +48,7 @@ enum firemode_e
 
 LINK_ENTITY_TO_CLASS( weapon_hornetgun, CHgun );
 
-BOOL CHgun::IsUseable( void )
+bool CHgun::IsUseable( void )
 {
 	return true;
 }
@@ -126,7 +126,7 @@ int CHgun::GetItemInfo(ItemInfo *p)
 }
 
 
-BOOL CHgun::Deploy( )
+bool CHgun::Deploy( )
 {
 	return DefaultDeploy( "models/v_hgun.mdl", "models/p_hgun.mdl", HGUN_UP, "hive" );
 }

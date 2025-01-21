@@ -254,7 +254,7 @@ void CGib :: SpawnRandomGibs( entvars_t *pevVictim, int cGibs, int human )
 }
 
 
-BOOL CBaseMonster :: HasHumanGibs( void )
+bool CBaseMonster :: HasHumanGibs( void )
 {
 	int myClass = Classify();
 
@@ -269,7 +269,7 @@ BOOL CBaseMonster :: HasHumanGibs( void )
 }
 
 
-BOOL CBaseMonster :: HasAlienGibs( void )
+bool CBaseMonster :: HasAlienGibs( void )
 {
 	int myClass = Classify();
 
@@ -304,7 +304,7 @@ void CBaseMonster::FadeMonster( void )
 void CBaseMonster :: GibMonster( void )
 {
 	TraceResult	tr;
-	BOOL		gibbed = false;
+	bool		gibbed = false;
 
 	EMIT_SOUND(ENT(pev), CHAN_WEAPON, "common/bodysplat.wav", 1, ATTN_NORM);		
 
@@ -349,7 +349,7 @@ void CBaseMonster :: GibMonster( void )
 Activity CBaseMonster :: GetDeathActivity ( void )
 {
 	Activity	deathActivity;
-	BOOL		fTriedDirection;
+	bool		fTriedDirection;
 	float		flDot;
 	TraceResult	tr;
 	Vector		vecSrc;
@@ -470,7 +470,7 @@ Activity CBaseMonster :: GetDeathActivity ( void )
 Activity CBaseMonster :: GetSmallFlinchActivity ( void )
 {
 	Activity	flinchActivity;
-	BOOL		fTriedDirection;
+	bool		fTriedDirection;
 	float		flDot;
 
 	fTriedDirection = false;
@@ -537,7 +537,7 @@ void CBaseMonster::BecomeDead( void )
 }
 
 
-BOOL CBaseMonster::ShouldGibMonster( int iGib )
+bool CBaseMonster::ShouldGibMonster( int iGib )
 {
 	// Commented out so they never gib, and thus they always drop items (if any) upon death
 	//if ( ( iGib == GIB_NORMAL && pev->health < GIB_HEALTH_VALUE ) || ( iGib == GIB_ALWAYS ) )
@@ -577,7 +577,7 @@ Killed
 void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 {
 	unsigned int	cCount = 0;
-	BOOL			fDone = false;
+	bool			fDone = false;
 
 	if ( HasMemory( bits_MEMORY_KILLED ) )
 	{
@@ -1212,7 +1212,7 @@ CBaseEntity* CBaseMonster :: CheckTraceHullAttack( float flDist, int iDamage, in
 // the caller's forward view cone. The dot product is performed
 // in 2d, making the view cone infinitely tall. 
 //=========================================================
-BOOL CBaseMonster :: FInViewCone ( CBaseEntity *pEntity )
+bool CBaseMonster :: FInViewCone ( CBaseEntity *pEntity )
 {
 	Vector2D	vec2LOS;
 	float	flDot;
@@ -1239,7 +1239,7 @@ BOOL CBaseMonster :: FInViewCone ( CBaseEntity *pEntity )
 // the caller's forward view cone. The dot product is performed
 // in 2d, making the view cone infinitely tall. 
 //=========================================================
-BOOL CBaseMonster :: FInViewCone ( Vector *pOrigin )
+bool CBaseMonster :: FInViewCone ( Vector *pOrigin )
 {
 	Vector2D	vec2LOS;
 	float		flDot;
@@ -1265,7 +1265,7 @@ BOOL CBaseMonster :: FInViewCone ( Vector *pOrigin )
 // FVisible - returns true if a line can be traced from
 // the caller's eyes to the target
 //=========================================================
-BOOL CBaseEntity :: FVisible ( CBaseEntity *pEntity )
+bool CBaseEntity :: FVisible ( CBaseEntity *pEntity )
 {
 	TraceResult tr;
 	Vector		vecLookerOrigin;
@@ -1298,7 +1298,7 @@ BOOL CBaseEntity :: FVisible ( CBaseEntity *pEntity )
 // FVisible - returns true if a line can be traced from
 // the caller's eyes to the target vector
 //=========================================================
-BOOL CBaseEntity :: FVisible ( const Vector &vecOrigin )
+bool CBaseEntity :: FVisible ( const Vector &vecOrigin )
 {
 	TraceResult tr;
 	Vector		vecLookerOrigin;

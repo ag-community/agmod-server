@@ -52,7 +52,7 @@ public:
 	void Killed( entvars_t *pevAttacker, int iGib );
 
 	void UpdateGoal( void );
-	BOOL HasDead( void );
+	bool HasDead( void );
 	void EXPORT FlyThink( void );
 	void EXPORT DeployThink( void );
 	void Flight( void );
@@ -263,7 +263,7 @@ void COsprey :: DeployThink( void )
 
 
 
-BOOL COsprey :: HasDead( )
+bool COsprey :: HasDead( )
 {
 	for (int i = 0; i < m_iUnits; i++)
 	{

@@ -133,7 +133,7 @@ bool AgGameRules::AgThink()
     return true;
 }
 
-BOOL AgGameRules::ClientCommand(CBasePlayer* pPlayer, const char* pcmd)
+bool AgGameRules::ClientCommand(CBasePlayer* pPlayer, const char* pcmd)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
@@ -190,7 +190,7 @@ int AgGameRules::DeadPlayerAmmo(CBasePlayer* pPlayer)
         return GR_PLR_DROP_AMMO_ACTIVE;
 }
 
-BOOL AgGameRules::FPlayerCanRespawn(CBasePlayer* pPlayer)
+bool AgGameRules::FPlayerCanRespawn(CBasePlayer* pPlayer)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
@@ -289,7 +289,7 @@ void AgGameRules::PlayerSpawn(CBasePlayer* pPlayer)
         return;
     }
 
-    BOOL		addDefault;
+    bool		addDefault;
     CBaseEntity* pWeaponEntity = NULL;
 
     pPlayer->pev->weapons |= (1 << WEAPON_SUIT);
@@ -454,7 +454,7 @@ void AgGameRules::PlayerSpawn(CBasePlayer* pPlayer)
     */
 }
 
-BOOL AgGameRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
+bool AgGameRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
@@ -493,7 +493,7 @@ BOOL AgGameRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWe
 }
 
 
-BOOL AgGameRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon)
+bool AgGameRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurrentWeapon)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
@@ -582,7 +582,7 @@ const char* AgGameRules::GetIPAddress(edict_t* pEntity)
 
 }
 
-BOOL AgGameRules::ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
+bool AgGameRules::ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128])
 {
     if (0 != strcmp("127.0.0.1", pszAddress))
     {
@@ -779,7 +779,7 @@ FILE_GLOBAL BANWEAPON s_Bans[] =
 };
 
 
-BOOL AgGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pItem)
+bool AgGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pItem)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
@@ -817,7 +817,7 @@ BOOL AgGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pItem
     return CGameRules::CanHavePlayerItem(pPlayer, pItem);
 }
 
-BOOL AgGameRules::CanHaveItem(CBasePlayer* pPlayer, CItem* pItem)
+bool AgGameRules::CanHaveItem(CBasePlayer* pPlayer, CItem* pItem)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
@@ -847,7 +847,7 @@ BOOL AgGameRules::CanHaveItem(CBasePlayer* pPlayer, CItem* pItem)
     return true;
 }
 
-BOOL AgGameRules::IsAllowedToSpawn(const char* pszClass)
+bool AgGameRules::IsAllowedToSpawn(const char* pszClass)
 {
     //Check if item is banned.
     if (0 == strncmp(pszClass, "weapon_", 7) ||
@@ -865,7 +865,7 @@ BOOL AgGameRules::IsAllowedToSpawn(const char* pszClass)
     return true;
 }
 
-BOOL AgGameRules::IsAllowedToSpawn(CBaseEntity* pEntity)
+bool AgGameRules::IsAllowedToSpawn(CBaseEntity* pEntity)
 {
     ASSERT(NULL != pEntity);
     if (!pEntity)
@@ -1001,7 +1001,7 @@ void AgGameRules::GoToIntermission()
     }
 }
 
-BOOL AgGameRules::FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker)
+bool AgGameRules::FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)

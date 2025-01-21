@@ -56,7 +56,7 @@ class CApache : public CBaseMonster
 	void ShowDamage( void );
 	void Flight( void );
 	void FireRocket( void );
-	BOOL FireGun( void );
+	bool FireGun( void );
 	
 	int  TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
@@ -784,7 +784,7 @@ void CApache :: FireRocket( void )
 
 
 
-BOOL CApache :: FireGun( )
+bool CApache :: FireGun( )
 {
 	UTIL_MakeAimVectors( pev->angles );
 		

@@ -44,16 +44,16 @@
 // #define DUCKFIX
 
 extern DLL_GLOBAL unsigned int		g_ulModelIndexPlayer;
-extern DLL_GLOBAL BOOL		g_fGameOver;
-extern DLL_GLOBAL	BOOL	g_fDrawLines;
+extern DLL_GLOBAL bool		g_fGameOver;
+extern DLL_GLOBAL	bool	g_fDrawLines;
 int gEvilImpulse101;
 extern DLL_GLOBAL int		g_iSkillLevel, gDisplayTitle;
 
 
-BOOL gInitHUD = true;
+bool gInitHUD = true;
 
 extern void CopyToBodyQue(entvars_t* pev);
-extern void respawn(entvars_t *pev, BOOL fCopyCorpse);
+extern void respawn(entvars_t *pev, bool fCopyCorpse);
 extern Vector VecBModelOrigin(entvars_t *pevBModel );
 extern edict_t *EntSelectSpawnPoint(CBasePlayer *pPlayer);
 extern void SetupVisibility(edict_t *pViewEntity, edict_t *pClient, unsigned char **pvs, unsigned char **pas);
@@ -990,7 +990,7 @@ void CBasePlayer::PackDeadPlayerItems( void )
 	RemoveAllItems( true );// now strip off everything that wasn't handled by the code above.
 }
 
-void CBasePlayer::RemoveAllItems( BOOL removeSuit )
+void CBasePlayer::RemoveAllItems( bool removeSuit )
 {
 	if (m_pActiveItem)
 	{
@@ -1453,7 +1453,7 @@ void CBasePlayer::WaterMove()
 
 
 // true if the player is attached to a ladder
-BOOL CBasePlayer::IsOnLadder( void )
+bool CBasePlayer::IsOnLadder( void )
 { 
 	return ( pev->movetype == MOVETYPE_FLY );
 }
@@ -1509,7 +1509,7 @@ void CBasePlayer::PlayerDeathThink(void)
     return;
   //-- Martin Webrant
 
-	BOOL fAnyButtonDown = (pev->button & ~IN_SCORE );
+	bool fAnyButtonDown = (pev->button & ~IN_SCORE );
 	
 	// wait for all buttons released
 	if (pev->deadflag == DEAD_DEAD)
@@ -1898,7 +1898,7 @@ int  CBasePlayer::Classify ( void )
 }
 
 
-void CBasePlayer::AddPoints( int score, BOOL bAllowNegativeScore )
+void CBasePlayer::AddPoints( int score, bool bAllowNegativeScore )
 {
 	// Positive score always adds
 	if ( score < 0 )
@@ -1929,7 +1929,7 @@ void CBasePlayer::AddPoints( int score, BOOL bAllowNegativeScore )
 }
 
 
-void CBasePlayer::AddPointsToTeam( int score, BOOL bAllowNegativeScore )
+void CBasePlayer::AddPointsToTeam( int score, bool bAllowNegativeScore )
 {
 	int index = entindex();
 
@@ -2001,7 +2001,7 @@ void CBasePlayer::UpdateStatusBar()
 		}
 	}
 
-	BOOL bForceResend = false;
+	bool bForceResend = false;
 
 	if ( strcmp( sbuf0, m_SbarString0 ) )
 	{
@@ -3601,7 +3601,7 @@ void CBasePlayer::SelectLastItem(void)
 //==============================================
 // HasWeapons - do I have any weapons at all?
 //==============================================
-BOOL CBasePlayer::HasWeapons( void )
+bool CBasePlayer::HasWeapons( void )
 {
 	int i;
 
@@ -3769,7 +3769,7 @@ CBaseEntity *FindEntityForward( CBaseEntity *pMe )
 }
 
 
-BOOL CBasePlayer :: FlashlightIsOn( void )
+bool CBasePlayer :: FlashlightIsOn( void )
 {
 	return FBitSet(pev->effects, EF_DIMLIGHT);
 }
@@ -4876,7 +4876,7 @@ void CBasePlayer :: UpdateClientData( void )
 // FBecomeProne - Overridden for the player to set the proper
 // physics flags when a barnacle grabs player.
 //=========================================================
-BOOL CBasePlayer :: FBecomeProne ( void )
+bool CBasePlayer :: FBecomeProne ( void )
 {
 	m_afPhysicsFlags |= PFLAG_ONBARNACLE;
 	return true;
@@ -4917,7 +4917,7 @@ int CBasePlayer :: Illumination( void )
 }
 
 
-void CBasePlayer :: EnableControl(BOOL fControl)
+void CBasePlayer :: EnableControl(bool fControl)
 {
 	if (!fControl)
 		pev->flags |= FL_FROZEN;
@@ -4964,7 +4964,7 @@ Vector CBasePlayer :: GetAutoaimVector( float flDelta )
 		// flDelta *= 0.5;
 	}
 
-	BOOL m_fOldTargeting = m_fOnTarget;
+	bool m_fOldTargeting = m_fOnTarget;
 	Vector angles = AutoaimDeflection(vecSrc, flDist, flDelta );
 
 	// update ontarget if changed
@@ -5298,7 +5298,7 @@ void CBasePlayer::DropPlayerItem ( char *pszItemName )
 //=========================================================
 // HasPlayerItem Does the player already have this item?
 //=========================================================
-BOOL CBasePlayer::HasPlayerItem( CBasePlayerItem *pCheckItem )
+bool CBasePlayer::HasPlayerItem( CBasePlayerItem *pCheckItem )
 {
 	CBasePlayerItem *pItem = m_rgpPlayerItems[pCheckItem->iItemSlot()];
 
@@ -5317,7 +5317,7 @@ BOOL CBasePlayer::HasPlayerItem( CBasePlayerItem *pCheckItem )
 //=========================================================
 // HasNamedPlayerItem Does the player already have this item?
 //=========================================================
-BOOL CBasePlayer::HasNamedPlayerItem( const char *pszItemName )
+bool CBasePlayer::HasNamedPlayerItem( const char *pszItemName )
 {
 	CBasePlayerItem *pItem;
 	int i;
@@ -5342,7 +5342,7 @@ BOOL CBasePlayer::HasNamedPlayerItem( const char *pszItemName )
 //=========================================================
 // 
 //=========================================================
-BOOL CBasePlayer :: SwitchWeapon( CBasePlayerItem *pWeapon ) 
+bool CBasePlayer :: SwitchWeapon( CBasePlayerItem *pWeapon ) 
 {
 	if ( !pWeapon->CanDeploy() )
 	{

@@ -84,12 +84,12 @@ void CBaseMonster :: MonsterInitDead( void )
 }
 
 
-BOOL	CBaseMonster :: ShouldFadeOnDeath( void ) 
+bool	CBaseMonster :: ShouldFadeOnDeath( void ) 
 { 
 	return false; 
 }
 
-BOOL	CBaseMonster :: FCheckAITrigger ( void ) 
+bool	CBaseMonster :: FCheckAITrigger ( void ) 
 { 
 	return false; 
 }

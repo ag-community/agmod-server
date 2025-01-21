@@ -38,7 +38,7 @@ extern "C" _declspec(dllexport) DLL_GLOBAL AgGameRules* g_pGameRules = NULL;
 extern AgGameRules* g_pGameRules = NULL;
 #endif
 
-extern DLL_GLOBAL BOOL	g_fGameOver;
+extern DLL_GLOBAL bool	g_fGameOver;
 extern int gmsgDeathMsg;	// client dll messages
 extern int gmsgMOTD;
 
@@ -46,7 +46,7 @@ int g_teamplay = 0;
 
 //=========================================================
 //=========================================================
-BOOL CGameRules::CanHaveAmmo( CBasePlayer *pPlayer, const char *pszAmmoName, int iMaxCarry )
+bool CGameRules::CanHaveAmmo( CBasePlayer *pPlayer, const char *pszAmmoName, int iMaxCarry )
 {
 	int iAmmoIndex;
 
@@ -85,7 +85,7 @@ edict_t *CGameRules :: GetPlayerSpawnSpot( CBasePlayer *pPlayer )
 
 //=========================================================
 //=========================================================
-BOOL CGameRules::CanHavePlayerItem( CBasePlayer *pPlayer, CBasePlayerItem *pWeapon )
+bool CGameRules::CanHavePlayerItem( CBasePlayer *pPlayer, CBasePlayerItem *pWeapon )
 {
 	// only living players can have items
 	if ( pPlayer->pev->deadflag != DEAD_NO )

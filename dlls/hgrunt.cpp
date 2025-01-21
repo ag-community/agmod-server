@@ -129,10 +129,10 @@ public:
 	int  Classify ( void );
 	int ISoundMask ( void );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
-	BOOL FCanCheckAttacks ( void );
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist );
-	BOOL CheckRangeAttack1 ( float flDot, float flDist );
-	BOOL CheckRangeAttack2 ( float flDot, float flDist );
+	bool FCanCheckAttacks ( void );
+	bool CheckMeleeAttack1 ( float flDot, float flDist );
+	bool CheckRangeAttack1 ( float flDot, float flDist );
+	bool CheckRangeAttack2 ( float flDot, float flDist );
 	void CheckAmmo ( void );
 	void SetActivity ( Activity NewActivity );
 	void StartTask ( Task_t *pTask );
@@ -158,7 +158,7 @@ public:
 
 	int IRelationship ( CBaseEntity *pTarget );
 
-	BOOL FOkToSpeak( void );
+	bool FOkToSpeak( void );
 	void JustSpoke( void );
 
 	CUSTOM_SCHEDULES;
@@ -172,9 +172,9 @@ public:
 
 	Vector	m_vecTossVelocity;
 
-	BOOL	m_fThrowGrenade;
-	BOOL	m_fStanding;
-	BOOL	m_fFirstEncounter;// only put on the handsign show in the squad's first encounter.
+	bool	m_fThrowGrenade;
+	bool	m_fStanding;
+	bool	m_fFirstEncounter;// only put on the handsign show in the squad's first encounter.
 	int		m_cClipSize;
 
 	int m_voicePitch;
@@ -328,7 +328,7 @@ int CHGrunt :: ISoundMask ( void )
 //=========================================================
 // someone else is talking - don't speak
 //=========================================================
-BOOL CHGrunt :: FOkToSpeak( void )
+bool CHGrunt :: FOkToSpeak( void )
 {
 // if someone else is talking, don't speak
 	if (gpGlobals->time <= CTalkMonster::g_talkWaitTime)
@@ -394,7 +394,7 @@ void CHGrunt :: PrescheduleThink ( void )
 // this is a bad bug. Friendly machine gun fire avoidance
 // will unecessarily prevent the throwing of a grenade as well.
 //=========================================================
-BOOL CHGrunt :: FCanCheckAttacks ( void )
+bool CHGrunt :: FCanCheckAttacks ( void )
 {
 	if ( !HasConditions( bits_COND_ENEMY_TOOFAR ) )
 	{
@@ -410,7 +410,7 @@ BOOL CHGrunt :: FCanCheckAttacks ( void )
 //=========================================================
 // CheckMeleeAttack1
 //=========================================================
-BOOL CHGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
+bool CHGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
 	CBaseMonster *pEnemy;
 
@@ -441,7 +441,7 @@ BOOL CHGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
 // occluded (throw grenade over wall, etc). We must 
 // disqualify the machine gun attack if the enemy is occluded.
 //=========================================================
-BOOL CHGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CHGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( !HasConditions( bits_COND_ENEMY_OCCLUDED ) && flDist <= 2048 && flDot >= 0.5 && NoFriendlyFire() )
 	{
@@ -471,7 +471,7 @@ BOOL CHGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
 // CheckRangeAttack2 - this checks the Grunt's grenade
 // attack. 
 //=========================================================
-BOOL CHGrunt :: CheckRangeAttack2 ( float flDot, float flDist )
+bool CHGrunt :: CheckRangeAttack2 ( float flDot, float flDist )
 {
 	if (! FBitSet(pev->weapons, (HGRUNT_HANDGRENADE | HGRUNT_GRENADELAUNCHER)))
 	{

@@ -39,7 +39,7 @@ globalvars_t  *gpGlobals;
 #ifdef _WIN32
 
 // Required DLL entry point
-BOOL WINAPI DllMain(
+bool WINAPI DllMain(
    HINSTANCE hinstDLL,
    DWORD fdwReason,
    LPVOID lpvReserved)

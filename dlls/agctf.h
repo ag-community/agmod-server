@@ -110,7 +110,7 @@ private:
     void Capture(CBasePlayer* pPlayer, const char* pTeamName);
     void Materialize(void);
     void FlagTouch(CBaseEntity* pOther);
-    BOOL MyTouch(CBasePlayer* pPlayer);
+    bool MyTouch(CBasePlayer* pPlayer);
     void Think(void);
 };
 

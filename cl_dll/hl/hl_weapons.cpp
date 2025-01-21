@@ -145,7 +145,7 @@ void CBaseEntity :: Killed( entvars_t *pevAttacker, int iGib )
 CBasePlayerWeapon :: DefaultReload
 =====================
 */
-BOOL CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay, int body )
+bool CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay, int body )
 {
 
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
@@ -172,9 +172,9 @@ BOOL CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay,
 CBasePlayerWeapon :: CanDeploy
 =====================
 */
-BOOL CBasePlayerWeapon :: CanDeploy( void ) 
+bool CBasePlayerWeapon :: CanDeploy( void ) 
 {
-	BOOL bHasAmmo = 0;
+	bool bHasAmmo = 0;
 
 	if ( !pszAmmo1() )
 	{
@@ -208,7 +208,7 @@ CBasePlayerWeapon :: DefaultDeploy
 
 =====================
 */
-BOOL CBasePlayerWeapon :: DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal, int	body )
+bool CBasePlayerWeapon :: DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal, int	body )
 {
 	if ( !CanDeploy() )
 		return false;
@@ -229,7 +229,7 @@ CBasePlayerWeapon :: PlayEmptySound
 
 =====================
 */
-BOOL CBasePlayerWeapon :: PlayEmptySound( void )
+bool CBasePlayerWeapon :: PlayEmptySound( void )
 {
 	if (m_iPlayEmptySound)
 	{

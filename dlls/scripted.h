@@ -64,17 +64,17 @@ public:
 	void Pain( void );
 	void Die( void );
 	void DelayStart( int state );
-	BOOL FindEntity( void );
+	bool FindEntity( void );
 	virtual void PossessEntity( void );
 
 	void ReleaseEntity( CBaseMonster *pEntity );
 	void CancelScript( void );
-	virtual BOOL StartSequence( CBaseMonster *pTarget, int iszSeq, BOOL completeOnEmpty );
-	virtual BOOL FCanOverrideState ( void );
+	virtual bool StartSequence( CBaseMonster *pTarget, int iszSeq, bool completeOnEmpty );
+	virtual bool FCanOverrideState ( void );
 	void SequenceDone ( CBaseMonster *pMonster );
 	virtual void FixScriptMonsterSchedule( CBaseMonster *pMonster );
-	BOOL	CanInterrupt( void );
-	void	AllowInterrupt( BOOL fAllow );
+	bool	CanInterrupt( void );
+	void	AllowInterrupt( bool fAllow );
 	int		IgnoreConditions( void );
 
 	int	m_iszIdle;		// string index for idle animation
@@ -92,14 +92,14 @@ public:
 	int	m_saved_solid;
 	int m_saved_effects;
 //	Vector m_vecOrigOrigin;
-	BOOL m_interruptable;
+	bool m_interruptable;
 };
 
 class CCineAI : public CCineMonster
 {
-	BOOL StartSequence( CBaseMonster *pTarget, int iszSeq, BOOL completeOnEmpty );
+	bool StartSequence( CBaseMonster *pTarget, int iszSeq, bool completeOnEmpty );
 	void PossessEntity( void );
-	BOOL FCanOverrideState ( void );
+	bool FCanOverrideState ( void );
 	virtual void FixScriptMonsterSchedule( CBaseMonster *pMonster );
 };
 

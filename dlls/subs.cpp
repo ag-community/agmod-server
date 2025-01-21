@@ -30,7 +30,7 @@
 
 extern CGraph WorldGraph;
 
-extern BOOL FEntIsVisible(entvars_t* pev, entvars_t* pevTarget);
+extern bool FEntIsVisible(entvars_t* pev, entvars_t* pevTarget);
 
 extern DLL_GLOBAL int g_iSkillLevel;
 
@@ -63,7 +63,7 @@ class CBaseDMStart : public CPointEntity
 {
 public:
 	void		KeyValue( KeyValueData *pkvd );
-	BOOL		IsTriggered( CBaseEntity *pEntity );
+	bool		IsTriggered( CBaseEntity *pEntity );
 	void		Spawn(void);
 
 private:
@@ -92,9 +92,9 @@ void CBaseDMStart::KeyValue( KeyValueData *pkvd )
 		CPointEntity::KeyValue( pkvd );
 }
 
-BOOL CBaseDMStart::IsTriggered( CBaseEntity *pEntity )
+bool CBaseDMStart::IsTriggered( CBaseEntity *pEntity )
 {
-	BOOL master = UTIL_IsMasterTriggered( pev->netname, pEntity );
+	bool master = UTIL_IsMasterTriggered( pev->netname, pEntity );
 
 	return master;
 }
@@ -453,7 +453,7 @@ void CBaseToggle :: LinearMoveDone( void )
 		(this->*m_pfnCallWhenMoveDone)();
 }
 
-BOOL CBaseToggle :: IsLockedByMaster( void )
+bool CBaseToggle :: IsLockedByMaster( void )
 {
 	if (m_sMaster && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
 		return true;
@@ -555,7 +555,7 @@ FEntIsVisible
 returns true if the passed entity is visible to caller, even if not infront ()
 =============
 */
-	BOOL
+	bool
 FEntIsVisible(
 	entvars_t*		pev,
 	entvars_t*		pevTarget)

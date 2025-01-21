@@ -208,9 +208,9 @@ public:
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 
-	BOOL CheckMeleeAttack1( float flDot, float flDist );		// Swipe
-	BOOL CheckMeleeAttack2( float flDot, float flDist );		// Flames
-	BOOL CheckRangeAttack1( float flDot, float flDist );		// Stomp attack
+	bool CheckMeleeAttack1( float flDot, float flDist );		// Swipe
+	bool CheckMeleeAttack2( float flDot, float flDist );		// Flames
+	bool CheckRangeAttack1( float flDot, float flDist );		// Stomp attack
 	void SetObjectCollisionBox( void )
 	{
 		pev->absmin = pev->origin + Vector( -80, -80, 0 );
@@ -235,7 +235,7 @@ public:
 	void FlameUpdate( void );
 	void FlameControls( float angleX, float angleY );
 	void FlameDestroy( void );
-	inline BOOL FlameIsOn( void ) { return m_pFlame[0] != NULL; }
+	inline bool FlameIsOn( void ) { return m_pFlame[0] != NULL; }
 
 	void FlameDamage( Vector vecStart, Vector vecEnd, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType );
 
@@ -555,7 +555,7 @@ void CGargantua :: FlameUpdate( void )
 	static float	offset[2] = { 60, -60 };
 	TraceResult		trace;
 	Vector			vecStart, angleGun;
-	BOOL			streaks = false;
+	bool			streaks = false;
 
 	for ( i = 0; i < 2; i++ )
 	{
@@ -917,7 +917,7 @@ void CGargantua::Killed( entvars_t *pevAttacker, int iGib )
 // Garg swipe attack
 // 
 //=========================================================
-BOOL CGargantua::CheckMeleeAttack1( float flDot, float flDist )
+bool CGargantua::CheckMeleeAttack1( float flDot, float flDist )
 {
 //	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
 
@@ -931,7 +931,7 @@ BOOL CGargantua::CheckMeleeAttack1( float flDot, float flDist )
 
 
 // Flame thrower madness!
-BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
+bool CGargantua::CheckMeleeAttack2( float flDot, float flDist )
 {
 //	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
 
@@ -956,7 +956,7 @@ BOOL CGargantua::CheckMeleeAttack2( float flDot, float flDist )
 // Stomp attack
 //
 //=========================================================
-BOOL CGargantua::CheckRangeAttack1( float flDot, float flDist )
+bool CGargantua::CheckRangeAttack1( float flDot, float flDist )
 {
 	if ( gpGlobals->time > m_seeTime )
 	{
@@ -1199,7 +1199,7 @@ void CGargantua::RunTask( Task_t *pTask )
 		}
 		else
 		{
-			BOOL cancel = false;
+			bool cancel = false;
 
 			Vector angles = g_vecZero;
 

@@ -33,7 +33,7 @@
 //extern DLL_GLOBAL CGameRules	*g_pGameRules;
 extern DLL_GLOBAL AgGameRules* g_pGameRules;
 //-- Martin Webrant
-extern DLL_GLOBAL BOOL	g_fGameOver;
+extern DLL_GLOBAL bool	g_fGameOver;
 extern int gmsgDeathMsg;	// client dll messages
 extern int gmsgScoreInfo;
 extern int gmsgMOTD;
@@ -53,21 +53,21 @@ void CHalfLifeRules::Think ( void )
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules::IsMultiplayer( void )
+bool CHalfLifeRules::IsMultiplayer( void )
 {
 	return false;
 }
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules::IsDeathmatch ( void )
+bool CHalfLifeRules::IsDeathmatch ( void )
 {
 	return false;
 }
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules::IsCoOp( void )
+bool CHalfLifeRules::IsCoOp( void )
 {
 	return false;
 }
@@ -75,7 +75,7 @@ BOOL CHalfLifeRules::IsCoOp( void )
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pWeapon )
+bool CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pWeapon )
 {
 	/*
 	if ( !pPlayer->m_pActiveItem )
@@ -96,7 +96,7 @@ BOOL CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem 
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules :: GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
+bool CHalfLifeRules :: GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
 {
 	return false;
 	//return AgGameRules::GetNextBestWeapon(pPlayer, pCurrentWeapon);
@@ -104,7 +104,7 @@ BOOL CHalfLifeRules :: GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem 
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules :: ClientConnected( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ] )
+bool CHalfLifeRules :: ClientConnected( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ] )
 {
 	return true;
 }
@@ -136,7 +136,7 @@ float CHalfLifeRules::FlPlayerFallDamage( CBasePlayer *pPlayer )
 //=========================================================
 void CHalfLifeRules :: PlayerSpawn( CBasePlayer *pPlayer )
 {
-	BOOL		addDefault;
+	bool		addDefault;
 	CBaseEntity* pWeaponEntity = NULL;
 
 	pPlayer->pev->weapons |= (1 << WEAPON_SUIT);
@@ -218,7 +218,7 @@ void CHalfLifeRules :: PlayerSpawn( CBasePlayer *pPlayer )
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules :: AllowAutoTargetCrosshair( void )
+bool CHalfLifeRules :: AllowAutoTargetCrosshair( void )
 {
 	return ( g_iSkillLevel == SKILL_EASY );
 }
@@ -232,7 +232,7 @@ void CHalfLifeRules :: PlayerThink( CBasePlayer *pPlayer )
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules :: FPlayerCanRespawn( CBasePlayer *pPlayer )
+bool CHalfLifeRules :: FPlayerCanRespawn( CBasePlayer *pPlayer )
 {
 	return true;
 }
@@ -321,7 +321,7 @@ int CHalfLifeRules :: WeaponShouldRespawn( CBasePlayerItem *pWeapon )
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules::CanHaveItem( CBasePlayer *pPlayer, CItem *pItem )
+bool CHalfLifeRules::CanHaveItem( CBasePlayer *pPlayer, CItem *pItem )
 {
 	return true;
 }
@@ -366,7 +366,7 @@ Vector CHalfLifeRules::VecItemRespawnSpot( CItem *pItem )
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules::IsAllowedToSpawn( CBaseEntity *pEntity )
+bool CHalfLifeRules::IsAllowedToSpawn( CBaseEntity *pEntity )
 {
 	return true;
 	//return AgGameRules::IsAllowedToSpawn(pEntity);
@@ -443,7 +443,7 @@ int CHalfLifeRules::PlayerRelationship( CBaseEntity *pPlayer, CBaseEntity *pTarg
 
 //=========================================================
 //=========================================================
-BOOL CHalfLifeRules :: FAllowMonsters( void )
+bool CHalfLifeRules :: FAllowMonsters( void )
 {
 	return true;
 }

@@ -28,8 +28,8 @@ extern DLL_GLOBAL	short	g_sModelIndexSmoke;
 
 
 //++ BulliT
-//extern void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, BOOL doDamage);
-extern void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, BOOL doDamage, CBaseEntity* pEnt = NULL );
+//extern void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, bool doDamage);
+extern void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, bool doDamage, CBaseEntity* pEnt = NULL );
 //-- Martin Webrant
 
 #endif			//EXPLODE_H

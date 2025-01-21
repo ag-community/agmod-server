@@ -79,7 +79,7 @@ public:
 	void SpreadFlock2( void );
 	void Killed( entvars_t *pevAttacker, int iGib );
 	void Poop ( void );
-	BOOL FPathBlocked( void );
+	bool FPathBlocked( void );
 	//void KeyValue( KeyValueData *pkvd );
 
 	virtual int		Save( CSave &save );
@@ -96,9 +96,9 @@ public:
 
 	CFlockingFlyer *m_pSquadLeader;
 	CFlockingFlyer *m_pSquadNext;
-	BOOL	m_fTurning;// is this boid turning?
-	BOOL	m_fCourseAdjust;// followers set this flag true to override flocking while they avoid something
-	BOOL	m_fPathBlocked;// true if there is an obstacle ahead
+	bool	m_fTurning;// is this boid turning?
+	bool	m_fCourseAdjust;// followers set this flag true to override flocking while they avoid something
+	bool	m_fPathBlocked;// true if there is an obstacle ahead
 	Vector	m_vecReferencePoint;// last place we saw leader
 	Vector	m_vecAdjustedVelocity;// adjusted velocity (used when fCourseAdjust is true)
 	float	m_flGoalSpeed;
@@ -499,12 +499,12 @@ void CFlockingFlyer :: SpreadFlock2 ( )
 //=========================================================
 // FBoidPathBlocked - returns true if there is an obstacle ahead
 //=========================================================
-BOOL CFlockingFlyer :: FPathBlocked( )
+bool CFlockingFlyer :: FPathBlocked( )
 {
 	TraceResult		tr;
 	Vector			vecDist;// used for general measurements
 	Vector			vecDir;// used for general measurements
-	BOOL			fBlocked;
+	bool			fBlocked;
 
 	if ( m_flFakeBlockedTime > gpGlobals->time )
 	{

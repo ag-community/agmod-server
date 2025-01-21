@@ -158,7 +158,7 @@ void CCineMonster :: Spawn( void )
 // FCanOverrideState - returns false, scripted sequences 
 // cannot possess entities regardless of state.
 //=========================================================
-BOOL CCineMonster :: FCanOverrideState( void )
+bool CCineMonster :: FCanOverrideState( void )
 {
 	if ( pev->spawnflags & SF_SCRIPT_OVERRIDESTATE )
 		return true;
@@ -169,7 +169,7 @@ BOOL CCineMonster :: FCanOverrideState( void )
 // FCanOverrideState - returns true because scripted AI can
 // possess entities regardless of their state.
 //=========================================================
-BOOL CCineAI :: FCanOverrideState( void )
+bool CCineAI :: FCanOverrideState( void )
 {
 	return true;
 }
@@ -490,7 +490,7 @@ void CCineMonster :: CineThink( void )
 
 
 // lookup a sequence name and setup the target monster to play it
-BOOL CCineMonster :: StartSequence( CBaseMonster *pTarget, int iszSeq, BOOL completeOnEmpty )
+bool CCineMonster :: StartSequence( CBaseMonster *pTarget, int iszSeq, bool completeOnEmpty )
 {
 	if ( !iszSeq && completeOnEmpty )
 	{
@@ -524,7 +524,7 @@ BOOL CCineMonster :: StartSequence( CBaseMonster *pTarget, int iszSeq, BOOL comp
 // lookup a sequence name and setup the target monster to play it
 // overridden for CCineAI because it's ok for them to not have an animation sequence
 // for the monster to play. For a regular Scripted Sequence, that situation is an error.
-BOOL CCineAI :: StartSequence( CBaseMonster *pTarget, int iszSeq, BOOL completeOnEmpty )
+bool CCineAI :: StartSequence( CBaseMonster *pTarget, int iszSeq, bool completeOnEmpty )
 {
 	if ( iszSeq == 0 && completeOnEmpty )
 	{
@@ -624,7 +624,7 @@ void CCineAI :: FixScriptMonsterSchedule( CBaseMonster *pMonster )
 	}
 }
 
-BOOL CBaseMonster :: ExitScriptedSequence( )
+bool CBaseMonster :: ExitScriptedSequence( )
 {
 	if ( pev->deadflag == DEAD_DYING )
 	{
@@ -643,7 +643,7 @@ BOOL CBaseMonster :: ExitScriptedSequence( )
 }
 
 
-void CCineMonster::AllowInterrupt( BOOL fAllow )
+void CCineMonster::AllowInterrupt( bool fAllow )
 {
 	if ( pev->spawnflags & SF_SCRIPT_NOINTERRUPT )
 		return;
@@ -651,7 +651,7 @@ void CCineMonster::AllowInterrupt( BOOL fAllow )
 }
 
 
-BOOL CCineMonster::CanInterrupt( void )
+bool CCineMonster::CanInterrupt( void )
 {
 	if ( !m_interruptable )
 		return false;
@@ -793,7 +793,7 @@ void CCineMonster :: Activate( void )
 }
 
 		
-BOOL CBaseMonster :: CineCleanup( )
+bool CBaseMonster :: CineCleanup( )
 {
 	CCineMonster *pOldCine = m_pCine;
 
@@ -940,8 +940,8 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	CBaseMonster *FindEntity( void );
-	BOOL AcceptableSpeaker( CBaseMonster *pMonster );
-	BOOL StartSentence( CBaseMonster *pTarget );
+	bool AcceptableSpeaker( CBaseMonster *pMonster );
+	bool StartSentence( CBaseMonster *pTarget );
 
 
 private:
@@ -952,7 +952,7 @@ private:
 	float	m_flRepeat;	// repeat rate
 	float	m_flAttenuation;
 	float	m_flVolume;
-	BOOL	m_active;
+	bool	m_active;
 	int		m_iszListener;	// name of entity to look at while talking
 };
 
@@ -1105,7 +1105,7 @@ void CScriptedSentence :: DelayThink( void )
 }
 
 
-BOOL CScriptedSentence :: AcceptableSpeaker( CBaseMonster *pMonster )
+bool CScriptedSentence :: AcceptableSpeaker( CBaseMonster *pMonster )
 {
 	if ( pMonster )
 	{
@@ -1114,7 +1114,7 @@ BOOL CScriptedSentence :: AcceptableSpeaker( CBaseMonster *pMonster )
 			if ( pMonster->m_hTargetEnt == NULL || !FClassnameIs(pMonster->m_hTargetEnt->pev, "player") )
 				return false;
 		}
-		BOOL override;
+		bool override;
 		if ( pev->spawnflags & SF_SENTENCE_INTERRUPT )
 			override = true;
 		else
@@ -1165,7 +1165,7 @@ CBaseMonster *CScriptedSentence :: FindEntity( void )
 }
 
 
-BOOL CScriptedSentence :: StartSentence( CBaseMonster *pTarget )
+bool CScriptedSentence :: StartSentence( CBaseMonster *pTarget )
 {
 	if ( !pTarget )
 	{
@@ -1173,7 +1173,7 @@ BOOL CScriptedSentence :: StartSentence( CBaseMonster *pTarget )
 		return NULL;
 	}
 
-	BOOL bConcurrent = false;
+	bool bConcurrent = false;
 	if ( !(pev->spawnflags & SF_SENTENCE_CONCURRENT) )
 		bConcurrent = true;
 

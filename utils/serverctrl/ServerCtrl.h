@@ -28,7 +28,7 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CServerCtrlApp)
 	public:
-	virtual BOOL InitInstance();
+	virtual bool InitInstance();
 	//}}AFX_VIRTUAL
 
 // Implementation

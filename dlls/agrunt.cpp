@@ -85,9 +85,9 @@ public:
 
 	Schedule_t* GetSchedule ( void );
 	Schedule_t* GetScheduleOfType ( int Type );
-	BOOL FCanCheckAttacks ( void );
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist );
-	BOOL CheckRangeAttack1 ( float flDot, float flDist );
+	bool FCanCheckAttacks ( void );
+	bool CheckMeleeAttack1 ( float flDot, float flDist );
+	bool CheckRangeAttack1 ( float flDot, float flDist );
 	void StartTask ( Task_t *pTask );
 	void AlertSound( void );
 	void DeathSound ( void );
@@ -97,7 +97,7 @@ public:
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	int IRelationship( CBaseEntity *pTarget );
 	void StopTalking ( void );
-	BOOL ShouldSpeak( void );
+	bool ShouldSpeak( void );
 	CUSTOM_SCHEDULES;
 
 	virtual int		Save( CSave &save );
@@ -112,7 +112,7 @@ public:
 	static const char *pIdleSounds[];
 	static const char *pAlertSounds[];
 
-	BOOL	m_fCanHornetAttack;
+	bool	m_fCanHornetAttack;
 	float	m_flNextHornetAttackCheck;
 
 	float m_flNextPainTime;
@@ -273,7 +273,7 @@ void CAGrunt::StopTalking( void )
 //=========================================================
 // ShouldSpeak - Should this agrunt be talking?
 //=========================================================
-BOOL CAGrunt::ShouldSpeak( void )
+bool CAGrunt::ShouldSpeak( void )
 {
 	if ( m_flNextSpeakTime > gpGlobals->time )
 	{
@@ -891,7 +891,7 @@ IMPLEMENT_CUSTOM_SCHEDULES( CAGrunt, CSquadMonster );
 // because they can use their smart weapons against unseen
 // enemies. Base class doesn't attack anyone it can't see.
 //=========================================================
-BOOL CAGrunt :: FCanCheckAttacks ( void )
+bool CAGrunt :: FCanCheckAttacks ( void )
 {
 	if ( !HasConditions( bits_COND_ENEMY_TOOFAR ) )
 	{
@@ -907,7 +907,7 @@ BOOL CAGrunt :: FCanCheckAttacks ( void )
 // CheckMeleeAttack1 - alien grunts zap the crap out of 
 // any enemy that gets too close. 
 //=========================================================
-BOOL CAGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
+bool CAGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
 	if ( HasConditions ( bits_COND_SEE_ENEMY ) && flDist <= AGRUNT_MELEE_DIST && flDot >= 0.6 && m_hEnemy != NULL )
 	{
@@ -923,7 +923,7 @@ BOOL CAGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
 // tracelines are done, so we may not want to do this every
 // server frame. Definitely not while firing. 
 //=========================================================
-BOOL CAGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CAGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( gpGlobals->time < m_flNextHornetAttackCheck )
 	{
@@ -990,7 +990,7 @@ void CAGrunt :: StartTask ( Task_t *pTask )
 		{
 			Vector		vecCenter;
 			TraceResult	tr;
-			BOOL		fSkip;
+			bool		fSkip;
 
 			fSkip = false;
 			vecCenter = Center();

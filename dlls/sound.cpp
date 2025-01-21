@@ -132,8 +132,8 @@ public:
 	float m_flAttenuation;		// attenuation value
 	dynpitchvol_t m_dpv;	
 
-	BOOL	m_fActive;	// only true when the entity is playing a looping sound
-	BOOL	m_fLooping;	// true when the sound played will loop
+	bool	m_fActive;	// only true when the entity is playing a looping sound
+	bool	m_fLooping;	// true when the sound played will loop
 };
 
 LINK_ENTITY_TO_CLASS( ambient_generic, CAmbientGeneric );
@@ -843,7 +843,7 @@ void CEnvSound :: KeyValue( KeyValueData *pkvd )
 // returns true if the given sound entity (pev) is in range 
 // and can see the given player entity (pevTarget)
 
-BOOL FEnvSoundInRange(entvars_t *pev, entvars_t *pevTarget, float *pflRange) 
+bool FEnvSoundInRange(entvars_t *pev, entvars_t *pevTarget, float *pflRange) 
 {
 	CEnvSound *pSound = GetClassPtr( (CEnvSound *)pev );
 	Vector vecSpot1 = pev->origin + pev->view_ofs;

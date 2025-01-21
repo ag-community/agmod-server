@@ -221,7 +221,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 
 // HACKHACK -- this is a hack to keep the node graph entity from "touching" things (like triggers)
 // while it builds the graph
-BOOL gTouchDisabled = false;
+bool gTouchDisabled = false;
 void DispatchTouch( edict_t *pentTouched, edict_t *pentOther )
 {
 	if ( gTouchDisabled )
@@ -722,7 +722,7 @@ int CBaseEntity :: IsDormant( void )
 	return FBitSet( pev->flags, FL_DORMANT );
 }
 
-BOOL CBaseEntity :: IsInWorld( void )
+bool CBaseEntity :: IsInWorld( void )
 {
 	// position 
 	if (pev->origin.x >= WORLD_BOUNDARY_DIST) return false;
@@ -742,7 +742,7 @@ BOOL CBaseEntity :: IsInWorld( void )
 	return true;
 }
 
-int CBaseEntity::ShouldToggle( USE_TYPE useType, BOOL currentState )
+int CBaseEntity::ShouldToggle( USE_TYPE useType, bool currentState )
 {
 	if ( useType != USE_TOGGLE && useType != USE_SET )
 	{

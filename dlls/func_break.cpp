@@ -757,7 +757,7 @@ void CBreakable::Die( void )
 
 
 
-BOOL CBreakable :: IsBreakable( void ) 
+bool CBreakable :: IsBreakable( void ) 
 { 
 	return m_Material != matUnbreakableGlass;
 }
