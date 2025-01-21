@@ -986,7 +986,7 @@ BOOL CNihilanth :: AbsorbSphere( void )
 			return TRUE;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 
@@ -1008,7 +1008,7 @@ BOOL CNihilanth :: EmitSphere( void )
 	}
 
 	if (m_iActiveSpheres >= N_SPHERES)
-		return FALSE;
+		return false;
 
 	Vector vecSrc = m_hRecharger->pev->origin;
 	CNihilanthHVR *pEntity = (CNihilanthHVR *)Create( "nihilanth_energy_ball", vecSrc, pev->angles, edict() );
@@ -1732,7 +1732,7 @@ void CNihilanthHVR :: DissipateThink( void  )
 
 BOOL CNihilanthHVR :: CircleTarget( Vector vecTarget )
 {
-	BOOL fClose = FALSE;
+	BOOL fClose = false;
 
 	Vector vecDest = vecTarget;
 	Vector vecEst = pev->origin + pev->velocity * 0.5;

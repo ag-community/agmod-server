@@ -164,9 +164,9 @@ int PROC_IsMMX(void)
             CPUID           // code bytes = 0fh,  0a2h
             mov RegEDX, edx // features returned in edx
 		}
-    } __except(EXCEPTION_EXECUTE_HANDLER) { retval = FALSE; }
+    } __except(EXCEPTION_EXECUTE_HANDLER) { retval = false; }
 
-    if (retval == FALSE)
+    if (retval == false)
             return 0;           // processor does not support CPUID
 
     if (RegEDX & 0x800000)          // bit 23 is set for MMX technology
@@ -174,7 +174,7 @@ int PROC_IsMMX(void)
        __try { 
 		   EMMS // _asm emms 
 	   }          // try executing the MMX instruction "emms"
-       __except(EXCEPTION_EXECUTE_HANDLER) { retval = FALSE; }
+       __except(EXCEPTION_EXECUTE_HANDLER) { retval = false; }
     }
 
     else

@@ -48,7 +48,7 @@ CServerCtrlDlg::CServerCtrlDlg(CWnd* pParent /*=NULL*/)
 	m_hSend				= (HANDLE)0;
 	m_hReceive			= (HANDLE)0;
 
-	m_bOnlyPumpIfMessageInQueue = FALSE;
+	m_bOnlyPumpIfMessageInQueue = false;
 }
 
 void CServerCtrlDlg::DoDataExchange(CDataExchange* pDX)
@@ -105,7 +105,7 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 			{
 				ShowWindow(SW_SHOWNORMAL);
 				UpdateWindow();
-				bShowIdle = FALSE;
+				bShowIdle = false;
 			}
 
 			// call OnIdle while in bIdle state
@@ -118,7 +118,7 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 				!SendMessage(WM_KICKIDLE, MSGF_DIALOGBOX, lIdleCount++))
 			{
 				// stop idle processing next time
-				bIdle = FALSE;
+				bIdle = false;
 			}
 		}
 
@@ -136,7 +136,7 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 				//  since it will block
 				if ( !::PeekMessage( pMsg, NULL, NULL, NULL, PM_NOREMOVE ) )
 				{
-					ShouldPump = FALSE;
+					ShouldPump = false;
 				}
 			}
 
@@ -155,7 +155,7 @@ int CServerCtrlDlg::RunModalLoop(DWORD dwFlags)
 				{
 					ShowWindow(SW_SHOWNORMAL);
 					UpdateWindow();
-					bShowIdle = FALSE;
+					bShowIdle = false;
 				}
 
 				if (!ContinueModal())
@@ -202,10 +202,10 @@ int CServerCtrlDlg::DoModal()
 	// disable parent (before creating dialog)
 	HWND hWndParent = PreModal();
 	AfxUnhookWindowCreate();
-	BOOL bEnableParent = FALSE;
+	BOOL bEnableParent = false;
 	if (hWndParent != NULL && ::IsWindowEnabled(hWndParent))
 	{
-		::EnableWindow(hWndParent, FALSE);
+		::EnableWindow(hWndParent, false);
 		bEnableParent = TRUE;
 	}
 
@@ -269,7 +269,7 @@ BOOL CServerCtrlDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
+	SetIcon(m_hIcon, false);		// Set small icon
 	
 	// TODO: Add extra initialization here
 	SetPumpIfQueued( TRUE );
@@ -461,8 +461,8 @@ void CServerCtrlDlg::OnBtnStart( void )
 	}
 
 	// Uses same security attributes to make handle inheritable
-	m_hSend		= CreateEvent( &SA, FALSE, FALSE, NULL );
-	m_hReceive	= CreateEvent( &SA, FALSE, FALSE, NULL );
+	m_hSend		= CreateEvent( &SA, false, false, NULL );
+	m_hReceive	= CreateEvent( &SA, false, false, NULL );
 
 	memset( &SI, 0, sizeof( SI ) );
 	SI.cb = sizeof( SI );

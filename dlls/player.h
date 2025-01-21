@@ -60,7 +60,7 @@ constexpr float GAMEMODE_VARS_REQUEST_COOLDOWN = 5.0f;
 #define CSUITPLAYLIST	4		// max of 4 suit sentences queued up at any time
 
 #define SUIT_GROUP			TRUE
-#define	SUIT_SENTENCE		FALSE
+#define	SUIT_SENTENCE		false
 
 #define	SUIT_REPEAT_OK		0
 #define SUIT_NEXT_IN_30SEC	30
@@ -186,7 +186,7 @@ public:
 	BOOL				m_fInitHUD;				// True when deferred HUD restart msg needs to be sent
 	BOOL				m_fGameHUDInitialized;
 	int					m_iTrain;				// Train control position
-	BOOL				m_fWeapon;				// Set this to FALSE to force a reset of the current weapon HUD info
+	BOOL				m_fWeapon;				// Set this to false to force a reset of the current weapon HUD info
 
 	EHANDLE				m_pTank;				// the tank which the player is currently controlling,  NULL if no tank
 	float				m_fDeadTime;			// the time at which the player died  (used in PlayerDeathThink())
@@ -240,12 +240,12 @@ public:
 	virtual void StopSneaking( void ) { m_tSneaking = gpGlobals->time + 30; }
 	virtual BOOL IsSneaking( void ) { return m_tSneaking <= gpGlobals->time; }
 	virtual BOOL IsAlive( void ) { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
-	virtual BOOL ShouldFadeOnDeath( void ) { return FALSE; }
+	virtual BOOL ShouldFadeOnDeath( void ) { return false; }
 //++ BulliT
-	virtual	BOOL IsPlayer( void ) { return !IsSpectator(); }			// Spectators should return FALSE for this, they aren't "players" as far as game logic is concerned
+	virtual	BOOL IsPlayer( void ) { return !IsSpectator(); }			// Spectators should return false for this, they aren't "players" as far as game logic is concerned
 //-- Martin Webrant
 
-	virtual BOOL IsNetClient( void ) { return TRUE; }		// Bots should return FALSE for this, they can't receive NET messages
+	virtual BOOL IsNetClient( void ) { return TRUE; }		// Bots should return false for this, they can't receive NET messages
 															// Spectators should return TRUE for this
 	virtual const char *TeamID( void );
 

@@ -194,7 +194,7 @@ public:
 
 	void Spawn( void );
 	void BotThink( void );
-	bool IsNetClient( void ) const			{ return FALSE; }
+	bool IsNetClient( void ) const			{ return false; }
 	int Save( CSave &save )	const			{ return 0; }
 	int Restore( CRestore &restore ) const	{ return 0; }
 	virtual void Think( void ) { }

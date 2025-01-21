@@ -111,7 +111,7 @@ extern "C" {
 {
 	if ( !pFunctionTable || interfaceVersion != INTERFACE_VERSION )
 	{
-		return FALSE;
+		return false;
 	}
 	
 	memcpy( pFunctionTable, &gFunctionTable, sizeof( DLL_FUNCTIONS ) );
@@ -124,7 +124,7 @@ int GetEntityAPI2( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion )
 	{
 		// Tell engine what version we had, so it can figure out who is out of date.
 		*interfaceVersion = INTERFACE_VERSION;
-		return FALSE;
+		return false;
 	}
 	
 	memcpy( pFunctionTable, &gFunctionTable, sizeof( DLL_FUNCTIONS ) );
@@ -221,7 +221,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 
 // HACKHACK -- this is a hack to keep the node graph entity from "touching" things (like triggers)
 // while it builds the graph
-BOOL gTouchDisabled = FALSE;
+BOOL gTouchDisabled = false;
 void DispatchTouch( edict_t *pentTouched, edict_t *pentOther )
 {
 	if ( gTouchDisabled )
@@ -725,19 +725,19 @@ int CBaseEntity :: IsDormant( void )
 BOOL CBaseEntity :: IsInWorld( void )
 {
 	// position 
-	if (pev->origin.x >= WORLD_BOUNDARY_DIST) return FALSE;
-	if (pev->origin.y >= WORLD_BOUNDARY_DIST) return FALSE;
-	if (pev->origin.z >= WORLD_BOUNDARY_DIST) return FALSE;
-	if (pev->origin.x <= -WORLD_BOUNDARY_DIST) return FALSE;
-	if (pev->origin.y <= -WORLD_BOUNDARY_DIST) return FALSE;
-	if (pev->origin.z <= -WORLD_BOUNDARY_DIST) return FALSE;
+	if (pev->origin.x >= WORLD_BOUNDARY_DIST) return false;
+	if (pev->origin.y >= WORLD_BOUNDARY_DIST) return false;
+	if (pev->origin.z >= WORLD_BOUNDARY_DIST) return false;
+	if (pev->origin.x <= -WORLD_BOUNDARY_DIST) return false;
+	if (pev->origin.y <= -WORLD_BOUNDARY_DIST) return false;
+	if (pev->origin.z <= -WORLD_BOUNDARY_DIST) return false;
 	// speed
-	if (pev->velocity.x >= 2000) return FALSE;
-	if (pev->velocity.y >= 2000) return FALSE;
-	if (pev->velocity.z >= 2000) return FALSE;
-	if (pev->velocity.x <= -2000) return FALSE;
-	if (pev->velocity.y <= -2000) return FALSE;
-	if (pev->velocity.z <= -2000) return FALSE;
+	if (pev->velocity.x >= 2000) return false;
+	if (pev->velocity.y >= 2000) return false;
+	if (pev->velocity.z >= 2000) return false;
+	if (pev->velocity.x <= -2000) return false;
+	if (pev->velocity.y <= -2000) return false;
+	if (pev->velocity.z <= -2000) return false;
 
 	return TRUE;
 }

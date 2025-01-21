@@ -137,10 +137,10 @@ BOOL AgGameRules::ClientCommand(CBasePlayer* pPlayer, const char* pcmd)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
-        return FALSE;
+        return false;
     ASSERT(NULL != pPlayer->pev);
     if (!pPlayer->pev)
-        return FALSE;
+        return false;
 
     //First check if its a client command. weaponswith,say etc.
     if (m_Client.HandleCommand(pPlayer))
@@ -164,7 +164,7 @@ BOOL AgGameRules::ClientCommand(CBasePlayer* pPlayer, const char* pcmd)
 #endif
 
     //We didn't handle it
-    return FALSE;
+    return false;
 }
 
 void AgGameRules::Start(const AgString& sSpawn)
@@ -194,13 +194,13 @@ BOOL AgGameRules::FPlayerCanRespawn(CBasePlayer* pPlayer)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
-        return FALSE;
+        return false;
     ASSERT(NULL != pPlayer->pev);
     if (!pPlayer->pev)
-        return FALSE;
+        return false;
 
     if (!pPlayer->IsIngame())
-        return FALSE;
+        return false;
 
     return !pPlayer->HasSpecEnforced();
 }
@@ -299,7 +299,7 @@ void AgGameRules::PlayerSpawn(CBasePlayer* pPlayer)
     while (pWeaponEntity = UTIL_FindEntityByClassname(pWeaponEntity, "game_player_equip"))
     {
         pWeaponEntity->Touch(pPlayer);
-        addDefault = FALSE;
+        addDefault = false;
     }
 
     pPlayer->m_bInSpawn = true;
@@ -458,19 +458,19 @@ BOOL AgGameRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWe
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
-        return FALSE;
+        return false;
     ASSERT(NULL != pPlayer->pev);
     if (!pPlayer->pev)
-        return FALSE;
+        return false;
 
     ASSERT(NULL != pWeapon);
     if (!pWeapon)
-        return FALSE;
+        return false;
 
     if (!pWeapon->CanDeploy())
     {
         // that weapon can't deploy anyway.
-        return FALSE;
+        return false;
     }
 
     if (!pPlayer->m_pActiveItem)
@@ -482,14 +482,14 @@ BOOL AgGameRules::FShouldSwitchWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWe
     if (!pPlayer->m_pActiveItem->CanHolster())
     {
         // can't put away the active item.
-        return FALSE;
+        return false;
     }
 
     if (pPlayer->ShouldWeaponSwitch() && (pPlayer->GetWeaponWeight(pWeapon) > pPlayer->GetWeaponWeight(pPlayer->m_pActiveItem)))
     {
         return TRUE;
     }
-    return FALSE;
+    return false;
 }
 
 
@@ -497,14 +497,14 @@ BOOL AgGameRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurr
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
-        return FALSE;
+        return false;
     ASSERT(NULL != pPlayer->pev);
     if (!pPlayer->pev)
-        return FALSE;
+        return false;
 
     ASSERT(NULL != pCurrentWeapon);
     if (!pCurrentWeapon)
-        return FALSE;
+        return false;
 
 
     CBasePlayerItem* pCheck;
@@ -518,7 +518,7 @@ BOOL AgGameRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurr
     if (!pCurrentWeapon->CanHolster())
     {
         // can't put this gun away right now, so can't switch.
-        return FALSE;
+        return false;
     }
 
     for (i = 0; i < MAX_ITEM_TYPES; i++)
@@ -563,7 +563,7 @@ BOOL AgGameRules::GetNextBestWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pCurr
     // at least get the crowbar, but ya never know.
     if (!pBest)
     {
-        return FALSE;
+        return false;
     }
 
     pPlayer->SwitchWeapon(pBest);
@@ -783,15 +783,15 @@ BOOL AgGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pItem
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
-        return FALSE;
+        return false;
     ASSERT(NULL != pPlayer->pev);
     if (!pPlayer->pev)
-        return FALSE;
+        return false;
     ASSERT(NULL != pItem);
     if (!pItem)
-        return FALSE;
+        return false;
     if (!pPlayer->IsAlive())
-        return FALSE;
+        return false;
 
     if (ARENA == AgGametype() && m_Arena.CanHaveItem())
         return TRUE;
@@ -809,7 +809,7 @@ BOOL AgGameRules::CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pItem
                 if (1 > s_Bans[i].pBan->value)
                     return CGameRules::CanHavePlayerItem(pPlayer, pItem);
                 else
-                    return FALSE;
+                    return false;
             }
         }
     }
@@ -821,15 +821,15 @@ BOOL AgGameRules::CanHaveItem(CBasePlayer* pPlayer, CItem* pItem)
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
-        return FALSE;
+        return false;
     ASSERT(NULL != pPlayer->pev);
     if (!pPlayer->pev)
-        return FALSE;
+        return false;
     ASSERT(NULL != pItem);
     if (!pItem)
-        return FALSE;
+        return false;
     if (!pPlayer->IsAlive())
-        return FALSE;
+        return false;
 
     if (ARENA == AgGametype() && m_Arena.CanHaveItem())
         return TRUE;
@@ -869,7 +869,7 @@ BOOL AgGameRules::IsAllowedToSpawn(CBaseEntity* pEntity)
 {
     ASSERT(NULL != pEntity);
     if (!pEntity)
-        return FALSE;
+        return false;
 
     if (ARENA == AgGametype() && m_Arena.CanHaveItem())
         return TRUE;
@@ -1005,26 +1005,26 @@ BOOL AgGameRules::FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttac
 {
     ASSERT(NULL != pPlayer);
     if (!pPlayer)
-        return FALSE;
+        return false;
     ASSERT(NULL != pPlayer->pev);
     if (!pPlayer->pev)
-        return FALSE;
+        return false;
 
     if (!g_bPaused && INSTAGIB == AgGametype())
     {
         ASSERT(NULL != pAttacker);
         if (!pAttacker)
-            return FALSE;
+            return false;
         ASSERT(NULL != pAttacker->pev);
         if (!pAttacker->pev)
-            return FALSE;
+            return false;
 
         if (CLASS_PLAYER == pAttacker->Classify())
         {
             //This dude is instant dead!
             pPlayer->pev->health = -200;
             pPlayer->Killed(pAttacker->pev, GIB_NEVER);
-            return FALSE;
+            return false;
         }
     }
 

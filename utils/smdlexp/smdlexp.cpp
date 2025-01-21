@@ -62,7 +62,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, ULONG fdwReason, LPVOID lpvReserved)
 	static int fFirstTimeHere = TRUE;
 	if (fFirstTimeHere)
 	{
-		fFirstTimeHere = FALSE;
+		fFirstTimeHere = false;
 		hInstance = hinstDLL;
 	}
 	return TRUE;
@@ -129,7 +129,7 @@ int SmdExportClass::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BO
 	}
 	else if ( hasStringPropertyValue( "referenceFrame", "NO", i ) )
 	{
-		m_fReferenceFrame	= FALSE ;
+		m_fReferenceFrame	= false ;
 		suppressPrompts		= TRUE ;
 	}
 
@@ -153,7 +153,7 @@ int SmdExportClass::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BO
 
 	FILE *pFile;
 	if ((pFile = fopen(szFile, "w")) == NULL)
-		return FALSE/*failure*/;
+		return false/*failure*/;
 
 	fprintf( pFile, "version %d\n", 1 );
 
@@ -280,7 +280,7 @@ BOOL SmdExportClass::DumpModel( FILE *pFile, ExpInterface *pexpiface)
 #define ASSERT_AND_ABORT(f, sz)							\
 	if (!(f))											\
 	{													\
-		ASSERT_MBOX(FALSE, sz);							\
+		ASSERT_MBOX(false, sz);							\
 		cleanup( );										\
 		return TREE_ABORT;								\
 	}
@@ -517,13 +517,13 @@ int DumpModelTEP::callback(INode *pnode)
 	if (pmtlNode == NULL)
 	{
 		return TREE_CONTINUE;
-		fHasMat = FALSE;
+		fHasMat = false;
 	}
 	else if (!(pmtlNode->ClassID() == Class_ID(MULTI_CLASS_ID, 0) && pmtlNode->IsMultiMtl()))
 	{
 		// sprintf(st_szDBG, "ERROR--Material on node %s isn't a Multi/Sub-Object", (char*)strNodeName);
-		// ASSERT_AND_ABORT(FALSE, st_szDBG);
-		fHasMat = FALSE;
+		// ASSERT_AND_ABORT(false, st_szDBG);
+		fHasMat = false;
 	}
 	
 	// Get Node's object, convert to a triangle-mesh object, so I can access the Faces
@@ -541,7 +541,7 @@ int DumpModelTEP::callback(INode *pnode)
 	if (pobj->SuperClassID() == HELPER_CLASS_ID)
 	{
 		sprintf(st_szDBG, "ERROR--Helper node %s has an attached mesh, and it shouldn't.", (char*)strNodeName);
-		ASSERT_AND_ABORT(FALSE, st_szDBG);
+		ASSERT_AND_ABORT(false, st_szDBG);
 	}
 
 	// Ensure that the vertex normals are up-to-date
@@ -631,7 +631,7 @@ int DumpModelTEP::callback(INode *pnode)
 			{
 				sprintf(st_szDBG, "ERROR--Bogus sub-material index %d in node %s; highest valid index is %d",
 					mtlidFace, (char*)strNodeName, pmtlNode->NumSubMtls()-1);
-				// ASSERT_AND_ABORT(FALSE, st_szDBG);
+				// ASSERT_AND_ABORT(false, st_szDBG);
 				mtlidFace = 0;
 			}
 			Mtl *pmtlFace = pmtlNode->GetSubMtl(mtlidFace);
@@ -650,7 +650,7 @@ int DumpModelTEP::callback(INode *pnode)
 				sprintf(st_szDBG,
 					"ERROR--Sub-material with index %d (used in node %s) isn't a 'default/standard' material [%x].",
 					mtlidFace, (char*)strNodeName, pmtlFace->ClassID());
-				ASSERT_AND_ABORT(FALSE, st_szDBG);
+				ASSERT_AND_ABORT(false, st_szDBG);
 			}
 			StdMat *pstdmtlFace = (StdMat*)pmtlFace;
 			Texmap *ptexmap = pstdmtlFace->GetSubTexmap(ID_DI);
@@ -662,7 +662,7 @@ int DumpModelTEP::callback(INode *pnode)
 					sprintf(st_szDBG,
 						"ERROR--Sub-material with index %d (used in node %s) doesn't have a bitmap as its diffuse texture.",
 						mtlidFace, (char*)strNodeName);
-					ASSERT_AND_ABORT(FALSE, st_szDBG);
+					ASSERT_AND_ABORT(false, st_szDBG);
 				}
 				BitmapTex *pbmptex = (BitmapTex*)ptexmap;
 				strcpy(szBitmapName, pbmptex->GetMapName());
@@ -854,9 +854,9 @@ static BOOL CALLBACK ExportOptionsDlgProc(
 	case WM_INITDIALOG:
 		pexp = (SmdExportClass*) lParam;
 		CheckRadioButton(hDlg, IDC_CHECK_SKELETAL, IDC_CHECK_REFFRAME, IDC_CHECK_SKELETAL);
-		return FALSE;
+		return false;
 	case WM_DESTROY:
-		return FALSE;
+		return false;
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
@@ -873,7 +873,7 @@ static BOOL CALLBACK ExportOptionsDlgProc(
 			break;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 
@@ -900,7 +900,7 @@ int GetIndexOfINode(INode *pnode, BOOL fAssertPropExists)
 		if (FStrEq(g_rgnm[inm].szNodeName, (char*)strNodeName))
 			return g_rgnm[inm].iNode;
 	if (fAssertPropExists)
-		ASSERT_MBOX(FALSE, "No NODEINDEXSTR property");
+		ASSERT_MBOX(false, "No NODEINDEXSTR property");
 	return -7777;
 }
 
@@ -939,12 +939,12 @@ BOOL FUndesirableNode(INode *pnode)
 	if (pobj->SuperClassID() == LIGHT_CLASS_ID)
 		return TRUE;
 
-	return FALSE;
+	return false;
 
 	// Actually, if it's not selected, pretend it doesn't exist!
 	//if (!pnode->Selected())
 	//	return TRUE;
-	//return FALSE;
+	//return false;
 }
 
 

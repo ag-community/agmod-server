@@ -55,21 +55,21 @@ void CHalfLifeRules::Think ( void )
 //=========================================================
 BOOL CHalfLifeRules::IsMultiplayer( void )
 {
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 //=========================================================
 BOOL CHalfLifeRules::IsDeathmatch ( void )
 {
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 //=========================================================
 BOOL CHalfLifeRules::IsCoOp( void )
 {
-	return FALSE;
+	return false;
 }
 
 
@@ -86,7 +86,7 @@ BOOL CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem 
 
 	if ( !pPlayer->m_pActiveItem->CanHolster() )
 	{
-		return FALSE;
+		return false;
 	}
 
 	return TRUE;
@@ -98,7 +98,7 @@ BOOL CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem 
 //=========================================================
 BOOL CHalfLifeRules :: GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
 {
-	return FALSE;
+	return false;
 	//return AgGameRules::GetNextBestWeapon(pPlayer, pCurrentWeapon);
 }
 
@@ -146,7 +146,7 @@ void CHalfLifeRules :: PlayerSpawn( CBasePlayer *pPlayer )
 	while (pWeaponEntity = UTIL_FindEntityByClassname(pWeaponEntity, "game_player_equip"))
 	{
 		pWeaponEntity->Touch(pPlayer);
-		addDefault = FALSE;
+		addDefault = false;
 	}
 
 	if (addDefault)

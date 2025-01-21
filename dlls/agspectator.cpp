@@ -111,7 +111,7 @@ void CBasePlayer::Spectate_Start(bool bResetScore)
     }
 
     // clear out the suit message cache so we don't keep chattering
-    SetSuitUpdate(NULL, FALSE, 0);
+    SetSuitUpdate(NULL, false, 0);
 
     RemoveAllItemsNoClientMessage();
 
@@ -232,7 +232,7 @@ void CBasePlayer::Spectate_Stop(bool bIntermediateSpawn)
     }
 
     //Force data to be resent.
-    m_fKnownItem = FALSE;   // Force weaponinit messages.
+    m_fKnownItem = false;   // Force weaponinit messages.
 
     //Tell client(s)
     UTIL_ClientPrintAll(HUD_PRINTNOTIFY, UTIL_VarArgs("%s left spectator mode\n", GetName()));

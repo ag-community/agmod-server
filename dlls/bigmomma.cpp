@@ -269,12 +269,12 @@ public:
 			for ( int i = 0; i < count; i++ )
 			{
 				if ( pList[i] != this )	// Don't hurt yourself!
-					return FALSE;
+					return false;
 			}
 			return TRUE;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	void LaunchMortar( void );
@@ -769,7 +769,7 @@ BOOL CBigMomma::CheckMeleeAttack1( float flDot, float flDist )
 		if ( flDist <= BIG_ATTACKDIST )
 			return TRUE;
 	}
-	return FALSE;
+	return false;
 }
 
 
@@ -796,7 +796,7 @@ BOOL CBigMomma::CheckRangeAttack1( float flDot, float flDist )
 				return TRUE;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 //=========================================================
@@ -902,7 +902,7 @@ BOOL CBigMomma::ShouldGoToNode( void )
 		if ( m_nodeTime < gpGlobals->time )
 			return TRUE;
 	}
-	return FALSE;
+	return false;
 }
 
 

@@ -28,9 +28,9 @@ extern "C"
 
 #define FONT_TAG	6  // Font's are the 6th tag after the TYP_LUMPY base ( 64 )...i.e., type == 70
 
-BOOL		bItalic = FALSE;
-BOOL		bBold   = FALSE;
-BOOL		bUnderline = FALSE;
+BOOL		bItalic = false;
+BOOL		bBold   = false;
+BOOL		bUnderline = false;
 
 char		fontname[ 256 ];
 int			pointsize[3] = { 9, 11, 15 };

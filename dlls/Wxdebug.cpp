@@ -46,7 +46,7 @@ const INT iDEBUGINFO = 512;                 // Used to format strings
 HINSTANCE m_hInst;                          // Module instance handle
 TCHAR m_ModuleName[iDEBUGINFO];             // Cut down module name
 //CRITICAL_SECTION m_CSDebug;                 // Controls access to list
-BOOL m_bInit = FALSE;                       // Have we been initialised
+BOOL m_bInit = false;                       // Have we been initialised
 HANDLE m_hOutput = INVALID_HANDLE_VALUE;    // Optional output written here
 DWORD m_dwTypes = 0;
 DWORD m_dwLevel = 0;
@@ -90,7 +90,7 @@ void WINAPI DbgTerminate()
             m_hOutput = INVALID_HANDLE_VALUE;
         }
         //DeleteCriticalSection(&m_CSDebug);
-        m_bInit = FALSE;
+        m_bInit = false;
     }
 }
 

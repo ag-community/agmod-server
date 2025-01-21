@@ -149,12 +149,12 @@ BOOL CBasePlayerWeapon :: DefaultReload( int iClipSize, int iAnim, float fDelay,
 {
 
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
-		return FALSE;
+		return false;
 
 	int j = V_min(iClipSize - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);	
 
 	if (j == 0)
-		return FALSE;
+		return false;
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + fDelay;
 
@@ -196,7 +196,7 @@ BOOL CBasePlayerWeapon :: CanDeploy( void )
 	}
 	if (!bHasAmmo)
 	{
-		return FALSE;
+		return false;
 	}
 
 	return TRUE;
@@ -211,7 +211,7 @@ CBasePlayerWeapon :: DefaultDeploy
 BOOL CBasePlayerWeapon :: DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal, int	body )
 {
 	if ( !CanDeploy() )
-		return FALSE;
+		return false;
 
 	gEngfuncs.CL_LoadModel( szViewModel, &m_pPlayer->pev->viewmodel );
 	
@@ -260,7 +260,7 @@ Put away weapon
 */
 void CBasePlayerWeapon::Holster( int skiplocal /* = 0 */ )
 { 
-	m_fInReload = FALSE; // cancel any reload in progress.
+	m_fInReload = false; // cancel any reload in progress.
 	g_irunninggausspred = false;
 	m_pPlayer->pev->viewmodel = 0; 
 }
@@ -336,7 +336,7 @@ void CBasePlayerWeapon::ItemPostFrame( void )
 #else	
 		m_iClip += 10;
 #endif
-		m_fInReload = FALSE;
+		m_fInReload = false;
 	}
 
 	if ((m_pPlayer->pev->button & IN_ATTACK2) && (m_flNextSecondaryAttack <= 0.0))
@@ -367,7 +367,7 @@ void CBasePlayerWeapon::ItemPostFrame( void )
 	{
 		// no fire buttons down
 
-		m_fFireOnEmpty = FALSE;
+		m_fFireOnEmpty = false;
 
 		// weapon is useable. Reload if empty and weapon has waited as long as it has to after firing
 		if ( m_iClip == 0 && !(iFlags() & ITEM_FLAG_NOAUTORELOAD) && m_flNextPrimaryAttack < 0.0 )

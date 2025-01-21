@@ -5,7 +5,7 @@
 // is split into two main sections. The first is assertion handling, there are
 // three types of assertions provided here. The most commonly used one is the
 // ASSERT(condition) macro which will pop up a message box including the file
-// and line number if the condition evaluates to FALSE. Then there is the
+// and line number if the condition evaluates to false. Then there is the
 // EXECUTE_ASSERT macro which is the same as ASSERT except the condition will
 // still be executed in NON debug builds. The final type of assertion is the
 // KASSERT macro which is more suitable for pure (perhaps kernel) filters as

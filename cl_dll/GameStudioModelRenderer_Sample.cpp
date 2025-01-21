@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2002, Valve LLC, All rights reserved. ============
 //
 // Purpose: 
 //
@@ -897,7 +897,7 @@ void CGameStudioModelRenderer::StudioFxTransform( cl_entity_t *ent, float transf
 			if ( iRenderStateChanged )
 			{
 				g_flStartScaleTime = m_clTime;
-				iRenderStateChanged = FALSE;
+				iRenderStateChanged = false;
 			}
 
 			// Make the Model continue to shrink

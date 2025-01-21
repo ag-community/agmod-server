@@ -388,7 +388,7 @@ void MakePatchForFace (int fn, winding_t *w)
 
 		patch->area = area;
 		patch->chop = maxchop / (int)((patch->scale[0]+patch->scale[1])/2);
-		patch->sky = FALSE;
+		patch->sky = false;
 
 		patch->winding = w;
 
@@ -1261,7 +1261,7 @@ int main (int argc, char **argv)
 	printf( "qrad.exe v 1.5 (%s)\n", __DATE__ );
 	printf ("----- Radiosity ----\n");
 
-	verbose = true;  // Originally FALSE
+	verbose = true;  // Originally false
 	smoothing_threshold = cos(45.0*(Q_PI/180)); // Originally zero.
 
 	for (i=1 ; i<argc ; i++)

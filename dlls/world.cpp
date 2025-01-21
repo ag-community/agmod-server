@@ -470,7 +470,7 @@ extern DLL_GLOBAL BOOL		g_fGameOver;
 
 void CWorld :: Spawn( void )
 {
-	g_fGameOver = FALSE;
+	g_fGameOver = false;
 	Precache( );
 }
 
@@ -662,7 +662,7 @@ void CWorld :: Precache( void )
 	if ( pev->spawnflags & SF_WORLD_TITLE )
 		gDisplayTitle = TRUE;		// display the game title if this key is set
 	else
-		gDisplayTitle = FALSE;
+		gDisplayTitle = false;
 
 	// TODO: move this to before InstallGameRules()?
 	if ( pev->spawnflags & SF_WORLD_FORCETEAM )

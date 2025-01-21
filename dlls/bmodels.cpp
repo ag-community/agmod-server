@@ -122,7 +122,7 @@ void CFuncWallToggle :: TurnOn( void )
 BOOL CFuncWallToggle :: IsOn( void )
 {
 	if ( pev->solid == SOLID_NOT )
-		return FALSE;
+		return false;
 	return TRUE;
 }
 
@@ -646,7 +646,7 @@ void CFuncRotating :: SpinDown( void )
 	} 
 	else
 	{
-		RampPitchVol(FALSE);
+		RampPitchVol(false);
 	}
 }
 

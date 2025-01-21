@@ -862,7 +862,7 @@ BOOL CApache :: FireGun( )
 			m_pBeam = NULL;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 

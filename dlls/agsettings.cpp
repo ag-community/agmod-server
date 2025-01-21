@@ -658,14 +658,14 @@ void AgSettings::CalcNextMap()
 		if (!AgReloadMapCycleFile(mapcfile, &mapcycle) || (!mapcycle.items))
 		{
 			ALERT(at_console, "Unable to load map cycle file %s\n", mapcfile);
-			do_cycle = FALSE;
+			do_cycle = false;
 		}
 	}
 
 	if (do_cycle && mapcycle.items)
 	{
-		BOOL keeplooking = FALSE;
-		BOOL found = FALSE;
+		BOOL keeplooking = false;
+		BOOL found = false;
 		mapcycle_item_s* item;
 
 		// Assume current map
@@ -675,7 +675,7 @@ void AgSettings::CalcNextMap()
 		// Traverse list
 		for (item = mapcycle.next_item; item->next != mapcycle.next_item; item = item->next)
 		{
-			keeplooking = FALSE;
+			keeplooking = false;
 
 			ASSERT(item != NULL);
 

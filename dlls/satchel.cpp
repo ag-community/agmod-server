@@ -273,7 +273,7 @@ int CSatchel::AddDuplicate( CBasePlayerItem *pOriginal )
 		if ( pSatchel->m_chargeReady != 0 )
 		{
 			// player has some satchels deployed. Refuse to add more.
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -293,7 +293,7 @@ int CSatchel::AddToPlayer( CBasePlayer *pPlayer )
 	{
 		return AddWeapon( );
 	}
-	return FALSE;
+	return false;
 }
 
 void CSatchel::Spawn( )
@@ -353,7 +353,7 @@ BOOL CSatchel::IsUseable( void )
 		return TRUE;
 	}
 
-	return FALSE;
+	return false;
 }
 
 BOOL CSatchel::CanDeploy( void )
@@ -370,14 +370,14 @@ BOOL CSatchel::CanDeploy( void )
 		return TRUE;
 	}
 
-	return FALSE;
+	return false;
 }
 
 BOOL CSatchel::Deploy( )
 {
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 
-	BOOL result = FALSE;
+	BOOL result = false;
 
 	if ( m_chargeReady )
 		result = DefaultDeploy( "models/v_satchel_radio.mdl", "models/p_satchel_radio.mdl", SATCHEL_RADIO_DRAW, "hive" );

@@ -225,7 +225,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	virtual int AddToPlayer( CBasePlayer *pPlayer );	// return TRUE if the item you want the item added to the player inventory
-	virtual int AddDuplicate( CBasePlayerItem *pItem ) { return FALSE; }	// return TRUE if you want your duplicate removed from world
+	virtual int AddDuplicate( CBasePlayerItem *pItem ) { return false; }	// return TRUE if you want your duplicate removed from world
 	void EXPORT DestroyItem( void );
 	void EXPORT DefaultTouch( CBaseEntity *pOther );	// default weapon touch
 	void EXPORT FallThink ( void );// when an item is first spawned, this think is run to determine when the object has hit the ground.
@@ -326,9 +326,9 @@ public:
 	virtual void WeaponIdle( void ) { return; }					// called when no buttons pressed
 	virtual int UpdateClientData( CBasePlayer *pPlayer );		// sends hud info to client dll, if things have changed
 	virtual void RetireWeapon( void );
-	virtual BOOL ShouldWeaponIdle( void ) {return FALSE; };
+	virtual BOOL ShouldWeaponIdle( void ) {return false; };
 	virtual void Holster( int skiplocal = 0 );
-	virtual BOOL UseDecrement( void ) { return FALSE; };
+	virtual BOOL UseDecrement( void ) { return false; };
 	
 	int	PrimaryAmmoIndex(); 
 	int	SecondaryAmmoIndex(); 
@@ -487,7 +487,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -522,7 +522,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 private:
@@ -552,7 +552,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -583,7 +583,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -617,7 +617,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -657,7 +657,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -718,7 +718,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -785,7 +785,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -844,7 +844,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -886,7 +886,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 private:
@@ -914,7 +914,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 };
@@ -950,7 +950,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 };
@@ -980,7 +980,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 
@@ -1009,7 +1009,7 @@ public:
 #if defined( CLIENT_WEAPONS )
 		return TRUE;
 #else
-		return FALSE;
+		return false;
 #endif
 	}
 

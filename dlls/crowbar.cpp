@@ -181,7 +181,7 @@ int CCrowbar::Swing( int fFirst )
 #endif
 //-- Martin Webrant
 
-	int fDidHit = FALSE;
+	int fDidHit = false;
 
 	TraceResult tr;
 
@@ -294,7 +294,7 @@ int CCrowbar::Swing( int fFirst )
 				else
 					  flVol = 0.1;
 
-				fHitWorld = FALSE;
+				fHitWorld = false;
 			}
 		}
 

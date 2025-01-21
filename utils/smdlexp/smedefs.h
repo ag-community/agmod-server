@@ -42,7 +42,7 @@ public:
 	virtual unsigned int	Version			(void)		{ return 201;					}
 	virtual void			ShowAbout		(HWND hWnd)	{ return;						}
 	// virtual int				DoExport		(const TCHAR *name, ExpInterface *ei, Interface *i);
-	virtual int		DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BOOL suppressPrompts=FALSE, DWORD options=0); // Export	file
+	virtual int		DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BOOL suppressPrompts=false, DWORD options=0); // Export	file
 
 	// Integer constants for this class
 	enum
@@ -87,7 +87,7 @@ private:
 
 	// Is this MAX file just the reference frame, or an animation?
 	// If TRUE, the "bones" and "mesh" files will be created.
-	// If FALSE, the "rots" file will be created.
+	// If false, the "rots" file will be created.
 	BOOL		m_fReferenceFrame;
 };
 
@@ -99,7 +99,7 @@ class SmdExportClassDesc : public ClassDesc
 {
 public:
 	int				IsPublic		(void)					{ return TRUE;								}
-	void *			Create			(BOOL loading=FALSE)	{ return new SmdExportClass;				}
+	void *			Create			(BOOL loading=false)	{ return new SmdExportClass;				}
 	const TCHAR *	ClassName		(void)					{ return _T("SmdExport");					}
 	SClass_ID 		SuperClassID	(void)					{ return SCENE_EXPORT_CLASS_ID;				}
 	Class_ID 		ClassID			(void)					{ return Class_ID(0x774a43fd, 0x794d2210);	}

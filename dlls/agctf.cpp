@@ -702,11 +702,11 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
 
             UTIL_SendDirectorMessage(pPlayer->edict(), this->edict(), 10 | DRC_FLAG_DRAMATIC);
             Capture(pPlayer, CTF_TEAM2_NAME);
-            return FALSE;
+            return false;
         }
         else if (pPlayer->m_bFlagTeam1)
         {
-            return FALSE;
+            return false;
         }
         else if (FStrEq(pPlayer->m_szTeamName, CTF_TEAM1_NAME))
         {
@@ -726,7 +726,7 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
                 MESSAGE_END();
             }
             //but don't pick it up!
-            return FALSE;
+            return false;
         }
     }
     else if (FStrEq(CTF_TEAM2_NAME, m_szTeamName))
@@ -739,11 +739,11 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
             UTIL_SendDirectorMessage(pPlayer->edict(), this->edict(), 10 | DRC_FLAG_DRAMATIC);
             Capture(pPlayer, CTF_TEAM1_NAME);
 
-            return FALSE;
+            return false;
         }
         else if (pPlayer->m_bFlagTeam2)
         {
-            return FALSE;
+            return false;
         }
         else if (FStrEq(pPlayer->m_szTeamName, CTF_TEAM2_NAME))
         {
@@ -763,7 +763,7 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
                 pPlayer->AddPoints(ag_ctf_returnpoints.value, TRUE);
             }
             //but don't pick it up!
-            return FALSE;
+            return false;
         }
     }
 
@@ -903,7 +903,7 @@ BOOL AgCTFFlag::MyTouch(CBasePlayer* pPlayer)
 
         return TRUE;
     }
-    return FALSE;
+    return false;
 }
 
 void AgCTFFlag::Think(void)
@@ -1154,7 +1154,7 @@ class AgCTFDetect : public CBaseEntity
     }
     void KeyValue(KeyValueData* pkvd)
     {
-        pkvd->fHandled = FALSE;
+        pkvd->fHandled = false;
     }
 };
 #ifndef AG_NO_CLIENT_DLL
