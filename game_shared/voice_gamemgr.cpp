@@ -1,13 +1,11 @@
-//========= Copyright © 1996-2001, Valve LLC, All rights reserved. ============
+//========= Copyright ï¿½ 1996-2001, Valve LLC, All rights reserved. ============
 //
 // Purpose: 
 //
 // $NoKeywords: $
 //=============================================================================
 
-#include "archtypes.h"     // DAL
 #include "voice_gamemgr.h"
-#include <string.h>
 #include <assert.h>
 #include "extdll.h"
 #include "util.h"

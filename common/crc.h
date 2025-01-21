@@ -19,7 +19,7 @@
 #pragma once
 #endif
 
-#include "archtypes.h"     // DAL
+#include "steam/steamtypes.h"     // DAL
 
 // MD5 Hash
 typedef struct

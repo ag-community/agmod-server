@@ -12,7 +12,7 @@
 *   without written permission from Valve LLC.
 *
 ****/
-#include "archtypes.h"     // DAL
+#include "Platform.h"
 
 //
 // Misc utility code

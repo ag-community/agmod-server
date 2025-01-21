@@ -15,7 +15,7 @@
 #ifndef EIFACE_H
 #define EIFACE_H
 
-#include "archtypes.h"     // DAL
+#include "Platform.h"
 
 #ifdef HLDEMO_BUILD
 #define INTERFACE_VERSION       001
