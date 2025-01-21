@@ -269,7 +269,7 @@ void CCineMonster :: Pain( void )
 //
 
 // find a viable entity
-int CCineMonster :: FindEntity( void )
+bool CCineMonster :: FindEntity( void )
 {
 	edict_t *pentTarget;
 
