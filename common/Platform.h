@@ -67,7 +67,6 @@
 #define DLLEXPORT __declspec( dllexport )
 #define DLLHIDDEN
 #else // _WIN32
-typedef uint32 ULONG;
 typedef unsigned char BYTE;
 typedef int BOOL;
 #define MAX_PATH PATH_MAX
