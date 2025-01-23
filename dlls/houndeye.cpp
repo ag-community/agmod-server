@@ -99,8 +99,8 @@ public:
 	Schedule_t *GetScheduleOfType ( int Type );
 	Schedule_t *GetSchedule( void );
 
-	int	Save( CSave &save ); 
-	int Restore( CRestore &restore );
+	bool Save( CSave &save ); 
+	bool Restore( CRestore &restore );
 
 	CUSTOM_SCHEDULES;
 	static TYPEDESCRIPTION m_SaveData[];

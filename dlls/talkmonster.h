@@ -105,14 +105,14 @@ public:
 	
 	// Base Monster functions
 	void			Precache( void );
-	int				TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
+	bool			TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
 	void			Touch(	CBaseEntity *pOther );
 	void			Killed( entvars_t *pevAttacker, int iGib );
 	int				IRelationship ( CBaseEntity *pTarget );
-	virtual int		CanPlaySentence( bool fDisregardState );
+	virtual bool	CanPlaySentence( bool fDisregardState );
 	virtual void	PlaySentence( const char *pszSentence, float duration, float volume, float attenuation );
 	void			PlayScriptedSentence( const char *pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity *pListener );
-	void			KeyValue( KeyValueData *pkvd );
+	bool			KeyValue( KeyValueData *pkvd );
 
 	// AI functions
 	void			SetActivity ( Activity newActivity );
@@ -126,11 +126,11 @@ public:
 	// Conversations / communication
 	int				GetVoicePitch( void );
 	void			IdleRespond( void );
-	int				FIdleSpeak( void );
-	int				FIdleStare( void );
-	int				FIdleHello( void );
+	bool			FIdleSpeak( void );
+	bool			FIdleStare( void );
+	bool			FIdleHello( void );
 	void			IdleHeadTurn( Vector &vecFriend );
-	int				FOkToSpeak( void );
+	bool			FOkToSpeak( void );
 	void			TrySmellTalk( void );
 	CBaseEntity		*EnumFriends( CBaseEntity *pentPrevious, int listNumber, bool bTrace );
 	void			AlertFriends( void );
@@ -150,8 +150,8 @@ public:
 	virtual void	SetAnswerQuestion( CTalkMonster *pSpeaker );
 	virtual int		FriendNumber( int arrayNumber )	{ return arrayNumber; }
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	

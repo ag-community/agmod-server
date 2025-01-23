@@ -65,8 +65,8 @@ public:
 	void Touch( CBaseEntity *pOther );
 	void EXPORT Animate( void );
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int  m_maxFrame;
@@ -103,7 +103,7 @@ void CSquidSpit::Animate( void )
 {
 	pev->nextthink = gpGlobals->time + 0.1;
 
-	if ( pev->frame++ )
+	if ( 0 != pev->frame++ )
 	{
 		if ( pev->frame > m_maxFrame )
 		{
@@ -145,7 +145,7 @@ void CSquidSpit :: Touch ( CBaseEntity *pOther )
 		break;
 	}
 
-	if ( !pOther->pev->takedamage )
+	if ( 0 == pOther->pev->takedamage )
 	{
 
 		// make a splat on the wall
@@ -209,13 +209,13 @@ public:
 	bool FValidateHintType ( short sHint );
 	Schedule_t *GetSchedule( void );
 	Schedule_t *GetScheduleOfType ( int Type );
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 	int IRelationship ( CBaseEntity *pTarget );
 	int IgnoreConditions ( void );
 	MONSTERSTATE GetIdealState ( void );
 
-	int	Save( CSave &save ); 
-	int Restore( CRestore &restore );
+	bool Save( CSave &save ); 
+	bool Restore( CRestore &restore );
 
 	CUSTOM_SCHEDULES;
 	static TYPEDESCRIPTION m_SaveData[];
@@ -282,7 +282,7 @@ int CBullsquid::IRelationship ( CBaseEntity *pTarget )
 // TakeDamage - overridden for bullsquid so we can keep track
 // of how much time has passed since it was last injured
 //=========================================================
-int CBullsquid :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CBullsquid :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	float flDist;
 	Vector vecApex;

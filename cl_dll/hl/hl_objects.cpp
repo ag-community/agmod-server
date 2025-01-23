@@ -50,7 +50,7 @@ void UpdateBeams ( void )
 	
 	VectorMA( vecSrc, 2048, forward, vecEnd );
 
-	gEngfuncs.pEventAPI->EV_SetUpPlayerPrediction( false, true );	
+	gEngfuncs.pEventAPI->EV_SetUpPlayerPrediction( 0, 1 );	
 						
 	// Store off the old count
 	gEngfuncs.pEventAPI->EV_PushPMStates();

@@ -57,7 +57,7 @@ void _VectorSubtract (vec3_t veca, vec3_t vecb, vec3_t out);
 void _VectorAdd (vec3_t veca, vec3_t vecb, vec3_t out);
 void _VectorCopy (vec3_t in, vec3_t out);
 
-int VectorCompare (const float* v1, const float* v2);
+bool VectorCompare (const float* v1, const float* v2);
 float Length (const float* v);
 void CrossProduct (const float* v1, const float* v2, float* cross);
 float VectorNormalize (float* v);		// returns vector length

@@ -33,13 +33,13 @@ class CFuncMortarField : public CBaseToggle
 public:
 	void Spawn( void );
 	void Precache( void );
-	void KeyValue( KeyValueData *pkvd );
+	bool KeyValue( KeyValueData *pkvd );
 
 	// Bmodels don't go across transitions
 	virtual int	ObjectCaps( void ) { return CBaseToggle :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	virtual int	Save( CSave &save );
-	virtual int	Restore( CRestore &restore );
+	virtual bool Save( CSave &save );
+	virtual bool Restore( CRestore &restore );
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -68,33 +68,35 @@ TYPEDESCRIPTION	CFuncMortarField::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CFuncMortarField, CBaseToggle );
 
 
-void CFuncMortarField :: KeyValue( KeyValueData *pkvd )
+bool CFuncMortarField :: KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "m_iszXController"))
 	{
 		m_iszXController = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszYController"))
 	{
 		m_iszYController = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_flSpread"))
 	{
 		m_flSpread = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_fControl"))
 	{
 		m_fControl = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iCount"))
 	{
 		m_iCount = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
+
+	return false;
 }
 
 

@@ -26,13 +26,13 @@ public:
 	// basic functions
 	void Spawn( void );
 	void Precache( void );
-	void KeyValue( KeyValueData* pkvd);
+	bool KeyValue( KeyValueData* pkvd);
 	void EXPORT BreakTouch( CBaseEntity *pOther );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	void DamageSound( void );
 
 	// breakables use an overridden takedamage
-	virtual int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	virtual bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
 	// To spark when hit
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
 
@@ -43,8 +43,8 @@ public:
 
 	void EXPORT		Die( void );
 	virtual int		ObjectCaps( void ) { return (CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 
 	inline bool		Explodable( void ) { return ExplosionMagnitude() > 0; }
 	inline int		ExplosionMagnitude( void ) { return pev->impulse; }

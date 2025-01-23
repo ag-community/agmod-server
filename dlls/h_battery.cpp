@@ -34,11 +34,11 @@ public:
 	void Precache( void );
 	void EXPORT Off(void);
 	void EXPORT Recharge(void);
-	void KeyValue( KeyValueData *pkvd );
+	bool KeyValue( KeyValueData *pkvd );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	virtual int	ObjectCaps( void ) { return (CBaseToggle :: ObjectCaps() | FCAP_CONTINUOUS_USE) & ~FCAP_ACROSS_TRANSITION; }
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -66,7 +66,7 @@ IMPLEMENT_SAVERESTORE( CRecharge, CBaseEntity );
 LINK_ENTITY_TO_CLASS(func_recharge, CRecharge);
 
 
-void CRecharge::KeyValue( KeyValueData *pkvd )
+bool CRecharge::KeyValue( KeyValueData *pkvd )
 {
 	if (	FStrEq(pkvd->szKeyName, "style") ||
 				FStrEq(pkvd->szKeyName, "height") ||
@@ -74,15 +74,15 @@ void CRecharge::KeyValue( KeyValueData *pkvd )
 				FStrEq(pkvd->szKeyName, "value2") ||
 				FStrEq(pkvd->szKeyName, "value3"))
 	{
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "dmdelay"))
 	{
 		m_iReactivate = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
-	else
-		CBaseToggle::KeyValue( pkvd );
+	
+	return CBaseToggle::KeyValue( pkvd );
 }
 
 void CRecharge::Spawn()
@@ -123,7 +123,7 @@ void CRecharge::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 	// if the player doesn't have the suit, or there is no juice left, make the deny noise
 //++ BulliT
 	//if ((m_iJuice <= 0) || (!(pActivator->pev->weapons & (1<<WEAPON_SUIT))))
-	if ((m_iJuice <= 0) || (!(pActivator->pev->weapons & (1<<WEAPON_SUIT))) || 0 < ag_ban_recharg.value)
+	if ((m_iJuice <= 0) || ((pActivator->pev->weapons & (1<<WEAPON_SUIT))) == 0 || 0 < ag_ban_recharg.value)
 //-- Martin Webrant
 	{
 		if (m_flSoundTime <= gpGlobals->time)
@@ -154,7 +154,7 @@ void CRecharge::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 		return;
 	
 	// Play the on sound or the looping charging sound
-	if (!m_iOn)
+	if (0 == m_iOn)
 	{
 		m_iOn++;
 		EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/suitchargeok1.wav", 0.85, ATTN_NORM );
@@ -196,7 +196,7 @@ void CRecharge::Off(void)
 
 	m_iOn = 0;
 
-	if ((!m_iJuice) &&  ( ( m_iReactivate = g_pGameRules->FlHEVChargerRechargeTime() ) > 0) )
+	if ((0 == m_iJuice) &&  ( ( m_iReactivate = g_pGameRules->FlHEVChargerRechargeTime() ) > 0) )
 	{
 		pev->nextthink = pev->ltime + m_iReactivate;
 		SetThink(&CRecharge::Recharge);

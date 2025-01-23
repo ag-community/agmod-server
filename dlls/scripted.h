@@ -47,15 +47,15 @@ class CCineMonster : public CBaseMonster
 {
 public:
 	void Spawn( void );
-	virtual void KeyValue( KeyValueData *pkvd );
+	virtual bool KeyValue( KeyValueData *pkvd );
 	virtual void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	virtual void Blocked( CBaseEntity *pOther );
 	virtual void Touch( CBaseEntity *pOther );
 	virtual int	 ObjectCaps( void ) { return (CBaseMonster :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 	virtual void Activate( void );
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -63,7 +63,7 @@ public:
 	void EXPORT CineThink( void );
 	void Pain( void );
 	void Die( void );
-	void DelayStart( int state );
+	void DelayStart( bool state );
 	bool FindEntity( void );
 	virtual void PossessEntity( void );
 

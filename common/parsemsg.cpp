@@ -20,14 +20,13 @@
 #include <port.h>
 
 typedef unsigned char byte;
-#define true 1
 
 static byte *gpBuf;
 static int giSize;
 static int giRead;
-static int giBadRead;
+static bool giBadRead;
 
-int READ_OK( void )
+bool READ_OK( void )
 {
 	return !giBadRead;
 }
@@ -35,7 +34,7 @@ int READ_OK( void )
 void BEGIN_READ( void *buf, int size )
 {
 	giRead = 0;
-	giBadRead = 0;
+	giBadRead = false;
 	giSize = size;
 	gpBuf = (byte*)buf;
 }
@@ -197,7 +196,7 @@ void BufferWriter::Init( unsigned char *buffer, int bufferLen )
 //--------------------------------------------------------------------------------------------------------------
 void BufferWriter::WriteByte( unsigned char data )
 {
-	if (!m_buffer || !m_remaining)
+	if (!m_buffer || 0 == m_remaining)
 	{
 		m_overflow = true;
 		return;
@@ -228,7 +227,7 @@ void BufferWriter::WriteLong( int data )
 //--------------------------------------------------------------------------------------------------------------
 void BufferWriter::WriteString( const char *str )
 {
-	if (!m_buffer || !m_remaining)
+	if (!m_buffer || 0 == m_remaining)
 	{
 		m_overflow = true;
 		return;

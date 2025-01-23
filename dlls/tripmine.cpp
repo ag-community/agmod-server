@@ -46,12 +46,12 @@ class CTripmineGrenade : public CGrenade
 	void Spawn( void );
 	void Precache( void );
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 	
 	void EXPORT WarningThink( void );
 	void EXPORT PowerupThink( void );
@@ -109,7 +109,8 @@ void CTripmineGrenade :: Spawn( void )
 	UTIL_SetSize(pev, Vector( -8, -8, -8), Vector(8, 8, 8));
 	UTIL_SetOrigin( pev, pev->origin );
 
-	if (pev->spawnflags & 1)
+	//TODO: define constant
+	if ((pev->spawnflags & 1) != 0)
 	{
 		// power up quickly
 		m_flPowerUp = gpGlobals->time + 1.0;
@@ -173,7 +174,7 @@ void CTripmineGrenade :: PowerupThink( void  )
 		edict_t *oldowner = pev->owner;
 		pev->owner = NULL;
 		UTIL_TraceLine( pev->origin + m_vecDir * 8, pev->origin - m_vecDir * 32, dont_ignore_monsters, ENT( pev ), &tr );
-		if (tr.fStartSolid || (oldowner && tr.pHit == oldowner))
+		if (0 != tr.fStartSolid || (oldowner && tr.pHit == oldowner))
 		{
 			pev->owner = oldowner;
 			m_flPowerUp += 0.1;
@@ -266,7 +267,7 @@ void CTripmineGrenade :: MakeBeam( void )
 
 void CTripmineGrenade :: BeamBreakThink( void  )
 {
-	bool bBlowup = 0;
+	bool bBlowup = false;
 
 	TraceResult tr;
 
@@ -286,16 +287,16 @@ void CTripmineGrenade :: BeamBreakThink( void  )
 
 	if (fabs( m_flBeamLength - tr.flFraction ) > 0.001)
 	{
-		bBlowup = 1;
+		bBlowup = true;
 	}
 	else
 	{
 		if (m_hOwner == NULL)
-			bBlowup = 1;
+			bBlowup = true;
 		else if (m_posOwner != m_hOwner->pev->origin)
-			bBlowup = 1;
+			bBlowup = true;
 		else if (m_angleOwner != m_hOwner->pev->angles)
-			bBlowup = 1;
+			bBlowup = true;
 	}
 
 	if (bBlowup)
@@ -313,7 +314,7 @@ void CTripmineGrenade :: BeamBreakThink( void  )
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
-int CTripmineGrenade :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CTripmineGrenade :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (gpGlobals->time < m_flPowerUp && flDamage < pev->health)
 	{
@@ -331,7 +332,7 @@ void CTripmineGrenade::Killed( entvars_t *pevAttacker, int iGib )
 {
 	pev->takedamage = DAMAGE_NO;
 	
-	if ( pevAttacker && ( pevAttacker->flags & FL_CLIENT ) )
+	if ( pevAttacker && ( pevAttacker->flags & FL_CLIENT ) != 0)
 	{
 		// some client has destroyed this mine, he'll get credit for any kills
 		pev->owner = ENT( pevAttacker );
@@ -391,7 +392,7 @@ void CTripmine::Precache( void )
 	m_usTripFire = PRECACHE_EVENT( 1, "events/tripfire.sc" );
 }
 
-int CTripmine::GetItemInfo(ItemInfo *p)
+bool CTripmine::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "Trip Mine";
@@ -405,7 +406,7 @@ int CTripmine::GetItemInfo(ItemInfo *p)
 	p->iWeight = TRIPMINE_WEIGHT;
 	p->iFlags = ITEM_FLAG_LIMITINWORLD | ITEM_FLAG_EXHAUSTIBLE;
 
-	return 1;
+	return true;
 }
 
 bool CTripmine::Deploy( )
@@ -419,7 +420,7 @@ void CTripmine::Holster( int skiplocal /* = 0 */ )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
-	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	if (0 == m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		// out of mines
 		m_pPlayer->pev->weapons &= ~(1<<WEAPON_TRIPMINE);
@@ -458,7 +459,7 @@ void CTripmine::PrimaryAttack( void )
 	if (tr.flFraction < 1.0)
 	{
 		CBaseEntity *pEntity = CBaseEntity::Instance( tr.pHit );
-		if ( pEntity && !(pEntity->pev->flags & FL_CONVEYOR) )
+		if ( pEntity && (pEntity->pev->flags & FL_CONVEYOR) == 0)
 		{
 			Vector angles = UTIL_VecToAngles( tr.vecPlaneNormal );
 

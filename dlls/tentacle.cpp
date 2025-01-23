@@ -40,10 +40,10 @@ public:
 
 	void Spawn( );
 	void Precache( );
-	void KeyValue( KeyValueData *pkvd );
+	bool KeyValue( KeyValueData *pkvd );
 
-	int		Save( CSave &save );
-	int		Restore( CRestore &restore );
+	bool	Save( CSave &save );
+	bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// Don't allow the tentacle to go across transitions!!!
@@ -66,12 +66,12 @@ public:
 
 	float HearingSensitivity( void ) { return 2.0; };
 
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 	void Killed( entvars_t *pevAttacker, int iGib );
 
 	MONSTERSTATE GetIdealState ( void ) { return MONSTERSTATE_IDLE; };
-	int CanPlaySequence( bool fDisregardState ) { return true; };
+	bool CanPlaySequence( bool fDisregardState ) { return true; };
 
 	int Classify( void );
 
@@ -94,8 +94,8 @@ public:
 	float m_flTapRadius;
 
 	float m_flNextSong;
-	static int g_fFlySound;
-	static int g_fSquirmSound;
+	static bool g_fFlySound;
+	static bool g_fSquirmSound;
 
 	float m_flMaxYaw;
 	int m_iTapSound;
@@ -110,8 +110,8 @@ public:
 
 
 
-int CTentacle :: g_fFlySound;
-int CTentacle :: g_fSquirmSound;
+bool CTentacle :: g_fFlySound;
+bool CTentacle :: g_fSquirmSound;
 
 LINK_ENTITY_TO_CLASS( monster_tentacle, CTentacle );
 
@@ -328,21 +328,21 @@ CTentacle::CTentacle( )
 	m_iTapSound = 0;
 }
 
-void CTentacle::KeyValue( KeyValueData *pkvd )
+bool CTentacle::KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "sweeparc"))
 	{
 		m_flMaxYaw = atof(pkvd->szValue) / 2.0;
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "sound"))
 	{
 		m_iTapSound = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 
 	}
-	else
-		CBaseMonster::KeyValue( pkvd );
+	
+	return CBaseMonster::KeyValue( pkvd );
 }
 
 
@@ -983,7 +983,7 @@ void CTentacle :: HitTouch( CBaseEntity *pOther )
 }
 
 
-int CTentacle::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+bool CTentacle::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (flDamage > pev->health)
 	{
@@ -993,7 +993,7 @@ int CTentacle::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 	{
 		pev->health -= flDamage;
 	}
-	return 1;
+	return true;
 }
 
 

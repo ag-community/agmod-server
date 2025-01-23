@@ -87,8 +87,8 @@ public:
 
 	void EXPORT AnimateUntilDead( void );
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 	static CSprite *SpriteCreate( const char *pSpriteName, const Vector &origin, bool animate );
 
@@ -187,18 +187,18 @@ class CLaser : public CBeam
 public:
 	void	Spawn( void );
 	void	Precache( void );
-	void	KeyValue( KeyValueData *pkvd );
+	bool	KeyValue( KeyValueData *pkvd );
 
 	void	TurnOn( void );
 	void	TurnOff( void );
-	int		IsOn( void );
+	bool	IsOn( void );
 
 	void	FireAtPoint( TraceResult &point );
 
 	void	EXPORT StrikeThink( void );
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	CSprite	*m_pSprite;

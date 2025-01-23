@@ -66,7 +66,7 @@ public:
 	// squad member info
 	int		m_iMySlot;// this is the behaviour slot that the monster currently holds in the squad. 
 
-	int  CheckEnemy ( CBaseEntity *pEnemy );
+	bool CheckEnemy ( CBaseEntity *pEnemy );
 	void StartMonster ( void );
 	void VacateSlot( void );
 	void ScheduleChange( void );
@@ -89,8 +89,8 @@ public:
 		else
 			return (CSquadMonster *)((CBaseEntity *)m_hSquadMember[i]); 
 	}
-	int	InSquad ( void ) { return m_hSquadLeader != NULL; }
-	int IsLeader ( void ) { return m_hSquadLeader == this; }
+	bool InSquad ( void ) { return m_hSquadLeader != NULL; }
+	bool IsLeader ( void ) { return m_hSquadLeader == this; }
 	int SquadJoin ( int searchRadius );
 	int SquadRecruit ( int searchRadius, int maxMembers );
 	int	SquadCount( void );
@@ -109,8 +109,8 @@ public:
 
 	static TYPEDESCRIPTION m_SaveData[];
 
-	int	Save( CSave &save ); 
-	int Restore( CRestore &restore );
+	bool Save( CSave &save ); 
+	bool Restore( CRestore &restore );
 
 	bool FValidateCover ( const Vector &vecCoverLocation );
 

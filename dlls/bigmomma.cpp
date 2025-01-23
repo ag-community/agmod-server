@@ -34,7 +34,7 @@ class CInfoBM : public CPointEntity
 {
 public:
 	void Spawn( void );
-	void KeyValue( KeyValueData* pkvd );
+	bool KeyValue( KeyValueData* pkvd );
 
 	// name in pev->targetname
 	// next in pev->target
@@ -44,8 +44,8 @@ public:
 	// Reach delay in pev->speed
 	// Reach sequence in pev->netname
 	
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int		m_preSequence;
@@ -65,35 +65,35 @@ void CInfoBM::Spawn( void )
 }
 
 
-void CInfoBM::KeyValue( KeyValueData* pkvd )
+bool CInfoBM::KeyValue( KeyValueData* pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "radius"))
 	{
 		pev->scale = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "reachdelay"))
 	{
 		pev->speed = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "reachtarget"))
 	{
 		pev->message = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "reachsequence"))
 	{
 		pev->netname = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "presequence"))
 	{
 		m_preSequence = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
-	else
-		CPointEntity::KeyValue( pkvd );
+	
+	return CPointEntity::KeyValue( pkvd );
 }
 
 //=========================================================
@@ -108,8 +108,8 @@ public:
 	void Touch( CBaseEntity *pOther );
 	void EXPORT Animate( void );
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int  m_maxFrame;
@@ -177,9 +177,9 @@ class CBigMomma : public CBaseMonster
 public:
 	void Spawn( void );
 	void Precache( void );
-	void KeyValue( KeyValueData *pkvd );
+	bool KeyValue( KeyValueData *pkvd );
 	void Activate( void );
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 
 	void		RunTask( Task_t *pTask );
 	void		StartTask( Task_t *pTask );
@@ -289,8 +289,8 @@ public:
 	bool CheckMeleeAttack2( float flDot, float flDist );	// Lay a crab
 	bool CheckRangeAttack1( float flDot, float flDist );	// Mortar launch
 
-	virtual int	Save( CSave &save );
-	virtual int	Restore( CRestore &restore );
+	virtual bool Save( CSave &save );
+	virtual bool Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	static const char *pChildDieSounds[];
@@ -387,17 +387,18 @@ const char *CBigMomma::pFootSounds[] =
 
 
 
-void CBigMomma :: KeyValue( KeyValueData *pkvd )
+bool CBigMomma :: KeyValue( KeyValueData *pkvd )
 {
 #if 0
 	if (FStrEq(pkvd->szKeyName, "volume"))
 	{
 		m_volume = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
-	else
+
 #endif
-		CBaseMonster::KeyValue( pkvd );
+
+	return CBaseMonster::KeyValue( pkvd );
 }
 
 //=========================================================
@@ -543,7 +544,7 @@ void CBigMomma :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		case BIG_AE_EARLY_TARGET:
 			{
 				CBaseEntity *pTarget = m_hTargetEnt;
-				if ( pTarget && pTarget->pev->message )
+				if ( pTarget && !FStringNull(pTarget->pev->message) )
 					FireTargets( STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0 );
 				Remember( bits_MEMORY_FIRED_NODE );
 			}
@@ -580,10 +581,10 @@ void CBigMomma :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector ve
 }
 
 
-int CBigMomma :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CBigMomma :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// Don't take any acid damage -- BigMomma's mortar is acid
-	if ( bitsDamageType & DMG_ACID )
+	if ( (bitsDamageType & DMG_ACID) != 0 )
 		flDamage = 0;
 
 	if ( !HasMemory(bits_MEMORY_PATH_FINISHED) )
@@ -716,7 +717,7 @@ void CBigMomma::NodeStart( int iszNextNode )
 
 	CBaseEntity *pTarget = NULL;
 
-	if ( pev->netname )
+	if ( !FStringNull(pev->netname) )
 	{
 		edict_t *pentTarget = FIND_ENTITY_BY_TARGETNAME ( NULL, STRING(pev->netname) );
 
@@ -745,12 +746,12 @@ void CBigMomma::NodeReach( void )
 	if ( !pTarget )
 		return;
 
-	if ( pTarget->pev->health )
+	if ( 0 != pTarget->pev->health )
 		pev->max_health = pev->health = pTarget->pev->health * gSkillData.bigmommaHealthFactor;
 
 	if ( !HasMemory( bits_MEMORY_FIRED_NODE ) )
 	{
-		if ( pTarget->pev->message )
+		if ( !FStringNull(pTarget->pev->message) )
 			FireTargets( STRING(pTarget->pev->message), this, this, USE_TOGGLE, 0 );
 	}
 	Forget( bits_MEMORY_FIRED_NODE );
@@ -958,7 +959,7 @@ void CBigMomma::StartTask( Task_t *pTask )
 				sequence = GetNodePresequence();
 
 			ALERT( at_aiconsole, "BM: Playing node sequence %s\n", STRING(sequence) );
-			if ( sequence )
+			if ( !FStringNull(sequence) )
 			{
 				sequence = LookupSequence( STRING( sequence ) );
 				if ( sequence != -1 )
@@ -981,7 +982,7 @@ void CBigMomma::StartTask( Task_t *pTask )
 
 	case TASK_WAIT_NODE:
 		m_flWait = gpGlobals->time + GetNodeDelay();
-		if ( m_hTargetEnt->pev->spawnflags & SF_INFOBM_WAIT )
+		if ( (m_hTargetEnt->pev->spawnflags & SF_INFOBM_WAIT) != 0 )
 			ALERT( at_aiconsole, "BM: Wait at node %s forever\n", STRING(pev->netname) );
 		else
 			ALERT( at_aiconsole, "BM: Wait at node %s for %.2f\n", STRING(pev->netname), GetNodeDelay() );
@@ -1000,7 +1001,7 @@ void CBigMomma::StartTask( Task_t *pTask )
 				else
 				{
 					Activity act = ACT_WALK;
-					if ( pTarget->pev->spawnflags & SF_INFOBM_RUN )
+					if ( (pTarget->pev->spawnflags & SF_INFOBM_RUN) != 0 )
 						act = ACT_RUN;
 
 					m_vecMoveGoal = pTarget->pev->origin;
@@ -1057,7 +1058,7 @@ void CBigMomma::RunTask( Task_t *pTask )
 		break;
 
 	case TASK_WAIT_NODE:
-		if ( m_hTargetEnt != NULL && (m_hTargetEnt->pev->spawnflags & SF_INFOBM_WAIT) )
+		if ( m_hTargetEnt != NULL && (m_hTargetEnt->pev->spawnflags & SF_INFOBM_WAIT) != 0 )
 			return;
 
 		if ( gpGlobals->time > m_flWaitFinished )
@@ -1180,7 +1181,7 @@ void CBMortar::Animate( void )
 		pev->dmgtime = gpGlobals->time + 0.2;
 		MortarSpray( pev->origin, -pev->velocity.Normalize(), gSpitSprite, 3 );
 	}
-	if ( pev->frame++ )
+	if ( 0 != pev->frame++ )
 	{
 		if ( pev->frame > m_maxFrame )
 		{

@@ -109,12 +109,12 @@ public:
 	int	BloodColor( void ) { return DONT_BLEED; }
 	void Killed( entvars_t *pevAttacker, int iGib );
 	void Activate( void );
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 	int	Classify( void ) { return CLASS_INSECT; }
 	int IRelationship( CBaseEntity *pTarget );
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	static const char *pAttackSounds[];
@@ -304,7 +304,7 @@ void CLeech::Precache( void )
 }
 
 
-int CLeech::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+bool CLeech::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	pev->velocity = g_vecZero;
 
@@ -380,7 +380,7 @@ float CLeech::ObstacleDistance( CBaseEntity *pTarget )
 	vecTest = pev->origin + gpGlobals->v_forward * LEECH_CHECK_DIST;
 	UTIL_TraceLine(pev->origin, vecTest, missile, edict(), &tr);
 
-	if ( tr.fStartSolid )
+	if ( 0 != tr.fStartSolid )
 	{
 		pev->speed = -LEECH_SWIM_SPEED * 0.5;
 //		ALERT( at_console, "Stuck from (%f %f %f) to (%f %f %f)\n", pev->oldorigin.x, pev->oldorigin.y, pev->oldorigin.z, pev->origin.x, pev->origin.y, pev->origin.z );
@@ -430,7 +430,7 @@ void CLeech::DeadThink( void )
 			StopAnimation();
 			return;
 		}
-		else if ( pev->flags & FL_ONGROUND )
+		else if ( (pev->flags & FL_ONGROUND ) != 0 )
 		{
 			pev->solid = SOLID_NOT;
 			SetActivity(ACT_DIEFORWARD);
@@ -503,7 +503,7 @@ void CLeech::UpdateMotion( void )
 		m_IdealActivity = ACT_MELEE_ATTACK1;
 
 	// Out of water check
-	if ( !pev->waterlevel )
+	if ( 0 == pev->waterlevel )
 	{
 		pev->movetype = MOVETYPE_TOSS;
 		m_IdealActivity = ACT_TWITCH;
@@ -699,7 +699,7 @@ void CLeech::Killed(entvars_t *pevAttacker, int iGib)
 		pOwner->DeathNotice(pev);
 
 	// When we hit the ground, play the "death_end" activity
-	if ( pev->waterlevel )
+	if ( 0 != pev->waterlevel )
 	{
 		pev->angles.z = 0;
 		pev->angles.x = 0;

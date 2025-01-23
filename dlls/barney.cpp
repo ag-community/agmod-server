@@ -57,7 +57,7 @@ public:
 	void RunTask( Task_t *pTask );
 	void StartTask( Task_t *pTask );
 	virtual int	ObjectCaps( void ) { return CTalkMonster :: ObjectCaps() | FCAP_IMPULSE_USE; }
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
 	bool CheckRangeAttack1 ( float flDot, float flDist );
 	
 	void DeclineFollowing( void );
@@ -75,8 +75,8 @@ public:
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	void Killed( entvars_t *pevAttacker, int iGib );
 	
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	bool	m_fGunDrawn;
@@ -508,14 +508,14 @@ static bool IsFacing( entvars_t *pevTest, const Vector &reference )
 }
 
 
-int CBarney :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+bool CBarney :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	// make sure friends talk about it if player hurts talkmonsters...
-	int ret = CTalkMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	bool ret = CTalkMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 	if ( !IsAlive() || pev->deadflag == DEAD_DYING )
 		return ret;
 
-	if ( m_MonsterState != MONSTERSTATE_PRONE && (pevAttacker->flags & FL_CLIENT) )
+	if ( m_MonsterState != MONSTERSTATE_PRONE && (pevAttacker->flags & FL_CLIENT) != 0 )
 	{
 		m_flPlayerDamage += flDamage;
 
@@ -524,7 +524,7 @@ int CBarney :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 		if ( m_hEnemy == NULL )
 		{
 			// If the player was facing directly at me, or I'm already suspicious, get mad
-			if ( (m_afMemory & bits_MEMORY_SUSPICIOUS) || IsFacing( pevAttacker, pev->origin ) )
+			if ( (m_afMemory & bits_MEMORY_SUSPICIOUS) != 0 || IsFacing( pevAttacker, pev->origin ) )
 			{
 				// Alright, now I'm pissed!
 				PlaySentence( "BA_MAD", 4, VOL_NORM, ATTN_NORM );
@@ -587,13 +587,13 @@ void CBarney::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir
 	{
 	case HITGROUP_CHEST:
 	case HITGROUP_STOMACH:
-		if (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_BLAST))
+		if ((bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_BLAST)) != 0)
 		{
 			flDamage = flDamage / 2;
 		}
 		break;
 	case 10:
-		if (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_CLUB))
+		if ((bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_CLUB)) != 0)
 		{
 			flDamage -= 20;
 			if (flDamage <= 0)
@@ -692,7 +692,7 @@ Schedule_t *CBarney :: GetSchedule ( void )
 		pSound = PBestSound();
 
 		ASSERT( pSound != NULL );
-		if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) )
+		if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) != 0 )
 			return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
 	}
 	if ( HasConditions( bits_COND_ENEMY_DEAD ) && FOkToSpeak() )
@@ -795,7 +795,7 @@ public:
 	void Spawn( void );
 	int	Classify ( void ) { return	CLASS_PLAYER_ALLY; }
 
-	void KeyValue( KeyValueData *pkvd );
+	bool KeyValue( KeyValueData *pkvd );
 
 	int	m_iPose;// which sequence to display	-- temporary, don't need to save
 	static char *m_szPoses[3];
@@ -803,15 +803,15 @@ public:
 
 char *CDeadBarney::m_szPoses[] = { "lying_on_back", "lying_on_side", "lying_on_stomach" };
 
-void CDeadBarney::KeyValue( KeyValueData *pkvd )
+bool CDeadBarney::KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
-	else 
-		CBaseMonster::KeyValue( pkvd );
+	
+	return CBaseMonster::KeyValue( pkvd );
 }
 
 LINK_ENTITY_TO_CLASS( monster_barney_dead, CDeadBarney );

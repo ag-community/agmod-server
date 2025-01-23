@@ -36,8 +36,8 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 	int ISoundMask ( void );
 
-	int	Save( CSave &save ); 
-	int Restore( CRestore &restore );
+	bool	Save( CSave &save ); 
+	bool Restore( CRestore &restore );
 	static TYPEDESCRIPTION m_SaveData[];
 
 	void StartTask( Task_t *pTask );

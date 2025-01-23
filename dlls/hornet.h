@@ -37,8 +37,8 @@ public:
 	void Precache( void );
 	int	 Classify ( void );
 	int  IRelationship ( CBaseEntity *pTarget );
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void IgniteTrail( void );
@@ -49,7 +49,7 @@ public:
 	void EXPORT DartTouch( CBaseEntity *pOther );
 	void EXPORT DieTouch ( CBaseEntity *pOther );
 	
-	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 
 	float			m_flStopAttack;
 	int				m_iHornetType;

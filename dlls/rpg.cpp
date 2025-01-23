@@ -267,7 +267,7 @@ void CRpgRocket :: FollowThink( void  )
 	}
 	else
 	{
-		if (pev->effects & EF_LIGHT)
+		if ((pev->effects & EF_LIGHT) != 0)
 		{
 			pev->effects = 0;
 			STOP_SOUND( ENT(pev), CHAN_VOICE, "weapons/rocket1.wav" );
@@ -319,7 +319,7 @@ void CRpg::Reload( void )
 	
 	m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 
-	if ( m_cActiveRockets && m_fSpotActive )
+	if ( 0 != m_cActiveRockets && m_fSpotActive )
 	{
 		// no reloading when there are active missiles tracking the designator.
 		// ward off future autoreload attempts by setting next attack time into the future for a bit. 
@@ -335,7 +335,7 @@ void CRpg::Reload( void )
 #endif
 
 	if ( m_iClip == 0 )
-		iResult = DefaultReload( RPG_MAX_CLIP, RPG_RELOAD, 2 );
+		const bool iResult = DefaultReload( RPG_MAX_CLIP, RPG_RELOAD, 2 );
 	
 	if ( iResult )
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
@@ -358,7 +358,7 @@ void CRpg::Spawn( )
 	m_iId = WEAPON_RPG;
 
 	SET_MODEL(ENT(pev), "models/w_rpg.mdl");
-	m_fSpotActive = 1;
+	m_fSpotActive = true;
 	m_iDefaultAmmo = RPG_DEFAULT_GIVE * 2;
 
 	FallInit();// get ready to fall down.
@@ -383,7 +383,7 @@ void CRpg::Precache( void )
 }
 
 
-int CRpg::GetItemInfo(ItemInfo *p)
+bool CRpg::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "rockets";
@@ -397,10 +397,10 @@ int CRpg::GetItemInfo(ItemInfo *p)
 	p->iFlags = 0;
 	p->iWeight = RPG_WEIGHT;
 
-	return 1;
+	return true;
 }
 
-int CRpg::AddToPlayer( CBasePlayer *pPlayer )
+bool CRpg::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
@@ -425,7 +425,7 @@ bool CRpg::Deploy( )
 
 bool CRpg::CanHolster( void )
 {
-	if ( m_fSpotActive && m_cActiveRockets )
+	if ( m_fSpotActive && 0 != m_cActiveRockets )
 	{
 		// can't put away while guiding a missile.
 		return false;
@@ -456,7 +456,7 @@ void CRpg::Holster( int skiplocal /* = 0 */ )
 
 void CRpg::PrimaryAttack()
 {
-	if ( m_iClip )
+	if ( 0 != m_iClip )
 	{
 		m_pPlayer->m_iWeaponVolume = LOUD_GUN_VOLUME;
 		m_pPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
@@ -557,7 +557,7 @@ void CRpg::WeaponIdle( void )
 	if ( m_flTimeWeaponIdle > UTIL_WeaponTimeBase() )
 		return;
 
-	if ( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	if ( 0 != m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		int iAnim;
 		float flRand = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 0, 1 );

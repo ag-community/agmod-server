@@ -75,7 +75,7 @@ public:
 	void RunTask( Task_t *pTask );
 	void StartTask( Task_t *pTask );
 	int	ObjectCaps( void ) { return CTalkMonster :: ObjectCaps() | FCAP_IMPULSE_USE; }
-	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
+	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
 	virtual int FriendNumber( int arrayNumber );
 	void SetActivity ( Activity newActivity );
 	Activity GetStoppedActivity( void );
@@ -101,8 +101,8 @@ public:
 
 	void			Killed( entvars_t *pevAttacker, int iGib );
 	
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	CUSTOM_SCHEDULES;
@@ -755,10 +755,10 @@ void CScientist :: TalkInit()
 	}
 }
 
-int CScientist :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType)
+bool CScientist :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType)
 {
 
-	if ( pevInflictor && pevInflictor->flags & FL_CLIENT )
+	if ( pevInflictor && (pevInflictor->flags & FL_CLIENT) != 0 )
 	{
 		Remember( bits_MEMORY_PROVOKED );
 		//StopFollowing( true );
@@ -897,7 +897,7 @@ Schedule_t *CScientist :: GetSchedule ( void )
 		pSound = PBestSound();
 
 		ASSERT( pSound != NULL );
-		if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) )
+		if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) != 0 )
 			return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
 	}
 
@@ -931,7 +931,7 @@ Schedule_t *CScientist :: GetSchedule ( void )
 			ASSERT( pSound != NULL );
 			if ( pSound )
 			{
-				if ( pSound->m_iType & (bits_SOUND_DANGER | bits_SOUND_COMBAT) )
+				if ( (pSound->m_iType & (bits_SOUND_DANGER | bits_SOUND_COMBAT)) != 0 )
 				{
 					if ( gpGlobals->time - m_fearTime > 3 )	// Only cower every 3 seconds or so
 					{
@@ -1104,21 +1104,21 @@ public:
 	void Spawn( void );
 	int	Classify ( void ) { return	CLASS_HUMAN_PASSIVE; }
 
-	void KeyValue( KeyValueData *pkvd );
+	bool KeyValue( KeyValueData *pkvd );
 	int	m_iPose;// which sequence to display
 	static char *m_szPoses[7];
 };
 char *CDeadScientist::m_szPoses[] = { "lying_on_back", "lying_on_stomach", "dead_sitting", "dead_hang", "dead_table1", "dead_table2", "dead_table3" };
 
-void CDeadScientist::KeyValue( KeyValueData *pkvd )
+bool CDeadScientist::KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		return true;
 	}
-	else
-		CBaseMonster::KeyValue( pkvd );
+	
+	return CBaseMonster::KeyValue( pkvd );
 }
 LINK_ENTITY_TO_CLASS( monster_scientist_dead, CDeadScientist );
 
@@ -1170,14 +1170,14 @@ public:
 
 	void EXPORT SittingThink( void );
 	int	Classify ( void );
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual bool	Save( CSave &save );
+	virtual bool	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	virtual void SetAnswerQuestion( CTalkMonster *pSpeaker );
 	int FriendNumber( int arrayNumber );
 
-	int FIdleSpeak ( void );
+	bool FIdleSpeak ( void );
 	int		m_baseSequence;	
 	int		m_headTurn;
 	float	m_flResponseDelay;
@@ -1306,7 +1306,7 @@ void CSittingScientist :: SittingThink( void )
 		int i = RANDOM_LONG(0,99);
 		m_headTurn = 0;
 		
-		if (m_flResponseDelay && gpGlobals->time > m_flResponseDelay)
+		if (0 != m_flResponseDelay && gpGlobals->time > m_flResponseDelay)
 		{
 			// respond to question
 			IdleRespond();
@@ -1383,7 +1383,7 @@ void CSittingScientist :: SetAnswerQuestion( CTalkMonster *pSpeaker )
 // FIdleSpeak
 // ask question of nearby friend, or make statement
 //=========================================================
-int CSittingScientist :: FIdleSpeak ( void )
+bool CSittingScientist :: FIdleSpeak ( void )
 { 
 	// try to start a conversation, or make statement
 	int pitch;
