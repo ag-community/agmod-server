@@ -17,7 +17,6 @@
 #include "cvar.h"
 #include <time.h>
 #include <map>
-#include <regex>
 #ifndef _WIN32
 #include <sys/types.h>
 #include <dirent.h>
@@ -472,8 +471,6 @@ DLL_GLOBAL cvar_t	ag_say_on_changelevel_delay = CVar::Create("sv_ag_say_on_chang
 DLL_GLOBAL bool g_bLangame = false;
 DLL_GLOBAL bool g_bUseTeamColors = false;
 
-std::regex colorRegexp("\\^[0-9]");
-
 std::vector<CBaseEntity*> g_spawnPoints;
 std::vector<CBaseEntity*> g_spawnHistory;
 
@@ -855,8 +852,8 @@ CBasePlayer* AgPlayerByName(const AgString& sNameOrPlayerNumber, CBasePlayer* pP
                 }
 
                 // Try without colors codes now
-                targetName = std::regex_replace(targetName, colorRegexp, "");
-                playerName = std::regex_replace(playerName, colorRegexp, "");
+                RemoveColorCodes(targetName);
+                RemoveColorCodes(playerName);
 
                 matched = strstr(playerName.c_str(), targetName.c_str());
                 if (matched)
@@ -904,6 +901,17 @@ CBasePlayer* AgPlayerByAuthID(const AgString& authID)
         }
     }
     return NULL;
+}
+
+void RemoveColorCodes(AgString& sInput) {
+    size_t i = 0;
+    while (i < sInput.size()) {
+        if (sInput[i] == '^' && i + 1 < sInput.size() && isdigit(sInput[i + 1])) {
+            sInput.erase(i, 2);
+        } else {
+            i++;
+        }
+    }
 }
 
 void AgChangelevel(const AgString& sLevelname)

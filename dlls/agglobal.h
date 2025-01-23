@@ -257,6 +257,8 @@ CBasePlayer* AgPlayerByIndex(int iPlayerIndex);
 CBasePlayer* AgPlayerByName(const AgString& sNameOrPlayerNumber, CBasePlayer* pPlayer);
 CBasePlayer* AgPlayerByAuthID(const AgString& authID);
 
+void RemoveColorCodes(AgString& input);
+
 void AgChangelevel(const AgString& sLevelname);
 
 void AgSay(CBasePlayer* pPlayer, const AgString& sText, float* pfFloodProtected = NULL, float fHoldTime = 3.5, float x = -1, float y = -1, int iChannel = 5);
