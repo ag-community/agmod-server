@@ -11,8 +11,6 @@
 #include "agglobal.h"
 #include "agarena.h"
 
-#include "algo.h"
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -248,7 +246,7 @@ void AgArena::Add(CBasePlayer* pPlayer)
     }
     else
     {
-        AgWaitList::iterator itrWaitlist = ALGO_H::find(m_lstWaitList.begin(), m_lstWaitList.end(), pPlayer->entindex());
+        AgWaitList::iterator itrWaitlist = find(m_lstWaitList.begin(), m_lstWaitList.end(), pPlayer->entindex());
         if (itrWaitlist == m_lstWaitList.end())
             m_lstWaitList.push_back(pPlayer->entindex());
     }
@@ -266,7 +264,7 @@ void AgArena::Remove(CBasePlayer* pPlayer)
     }
     else if (0 != m_lstWaitList.size())
     {
-        AgWaitList::iterator itrWaitlist = ALGO_H::find(m_lstWaitList.begin(), m_lstWaitList.end(), pPlayer->entindex());
+        AgWaitList::iterator itrWaitlist = find(m_lstWaitList.begin(), m_lstWaitList.end(), pPlayer->entindex());
         if (itrWaitlist == m_lstWaitList.end())
             m_lstWaitList.erase(itrWaitlist);
         //m_lstWaitList.remove(pPlayer->entindex());

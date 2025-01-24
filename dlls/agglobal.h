@@ -15,6 +15,7 @@
 #include <list>
 #include <set>
 #include <vector>
+#include <algorithm>
 
 typedef std::string AgString;
 typedef std::list<AgString> AgStringList;

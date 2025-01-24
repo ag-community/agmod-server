@@ -40,12 +40,6 @@
     <Filter Include="Source Files\common">
       <UniqueIdentifier>{477fba75-85bf-4341-ae1d-5840f1a0a44e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\ministl">
-      <UniqueIdentifier>{458795e5-1ae4-4700-aaa0-c42aaee2f57c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ministl">
-      <UniqueIdentifier>{7ece64b8-1634-4c0a-9d5c-5ec81e9aaef0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\dlls\aflock.cpp">
@@ -429,9 +423,6 @@
     <ClCompile Include="..\..\dlls\agspectator.cpp">
       <Filter>Source Files\dlls</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ministl\algo.cpp">
-      <Filter>Source Files\ministl</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\dlls\spawnchooser.cpp">
       <Filter>Source Files\dlls</Filter>
     </ClCompile>
@@ -661,9 +652,6 @@
     </ClInclude>
     <ClInclude Include="..\..\dlls\multiplay_gamerules.h">
       <Filter>Header Files\dlls</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ministl\algo.h">
-      <Filter>Header Files\ministl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\dlls\singleplay_gamerules.h">
       <Filter>Header Files\dlls</Filter>
