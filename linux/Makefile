@@ -1,4 +1,3 @@
-
 #
 # Half-life Makefile for x86 Linux
 #
@@ -8,7 +7,7 @@ OS:=$(shell uname)
 HOSTNAME:=$(shell hostname)
 
 ifeq "$(CFG)" ""
-CFG=release
+	CFG=release
 endif
 
 SOURCE_DIR=..
@@ -18,101 +17,48 @@ ENGINE_SRC_DIR=$(SOURCE_DIR)/engine
 COMMON_SRC_DIR=$(SOURCE_DIR)/common
 PM_SRC_DIR=$(SOURCE_DIR)/pm_shared
 GAME_SHARED_SRC_DIR=$(SOURCE_DIR)/game_shared
-GAMEDB_SRC_DIR=$(COMMON_SRC_DIR)/gamedb
 PUBLIC_SRC_DIR=$(SOURCE_DIR)/public
-DBG_SRC_DIR=$(SOURCE_DIR)/dbg
-
 
 BUILD_OBJ_DIR=$(BUILD_DIR)/obj
 
 ARCH=i386
 ELF-GC-DYNSTR=./elf-gc-dynstr
 
-ifeq ($(OS),Linux)
-	CC="gcc -m32"
-	CPLUS="g++ -m32"
-	CPP_LIB:=-L$(shell g++ -m32 -print-file-name=libstdc++.so | xargs dirname) -lstdc++ -ldl -lpthread -static-libstdc++ -static-libgcc
+ifeq "$(COMPILER)" ""
+	COMPILER=g++
 endif
 
-ifeq ($(OS),Darwin)
-    OSXVER := $(shell sw_vers -productVersion)
-	DEVELOPER_DIR := $(shell /usr/bin/xcode-select -print-path)
-	ifeq (,$(findstring 10.7, $(OSXVER))) 
-		BUILDING_ON_LION := 0
-		COMPILER_BIN_DIR := $(DEVELOPER_DIR)/usr/bin
-		SDK_DIR := $(DEVELOPER_DIR)/SDKs
-	else
-		BUILDING_ON_LION := 1
-		COMPILER_BIN_DIR := $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/bin
-		SDK_DIR := $(DEVELOPER_DIR)/Platforms/MacOSX.platform/Developer/SDKs
-	endif
-
-	SDKROOT ?= $(SDK_DIR)/MacOSX10.8.sdk
-
-	ARCH_FLAGS ?= -arch i386 -m32 -march=prescott -gdwarf-2 -g2  -Wno-typedef-redefinition -momit-leaf-frame-pointer -mtune=core2
-	CPP_LIB=-lstdc++ -lpthread
-
-	ifeq ($(origin AR), default)
-		AR = libtool -static -o
-	endif
-	ifeq ($(origin CC), default)
-		CC ="$(COMPILER_BIN_DIR)/clang -Qunused-arguments -isysroot $(SDKROOT) -mmacosx-version-min=10.5 -fasm-blocks -I$(SDKROOT)/usr/include/malloc $(ARCH_FLAGS)"
-	endif
-	ifeq ($(origin CXX), default)
-		CPLUS ="$(COMPILER_BIN_DIR)/clang++ -Qunused-arguments -isysroot $(SDKROOT) -mmacosx-version-min=10.5 -fasm-blocks -I$(SDKROOT)/usr/include/malloc $(ARCH_FLAGS)"
-	endif
-	LINK ?= $(CXX)
-endif
-
-CLINK=$(CC)
+CPLUS="$(COMPILER) -m32"
+CPP_LIB:=-L$(shell g++ -m32 -print-file-name=libstdc++.so | xargs dirname) -lstdc++ -ldl -lpthread -static-libstdc++ -static-libgcc
+ARCH_CFLAGS=-march=pentium-m -mfpmath=387 -mno-sse
 
 ifeq "$(CFG)" "release"
-ARCH_CFLAGS_I486=-O3 -gdwarf-2 -g2 
-ARCH_CFLAGS_I686=-O3 -gdwarf-2 -g2 
-ARCH_CFLAGS_AMD=-O3 -gdwarf-2 -g2 
-ARCH_CFLAGS_AMD64=-m64 -O3 -gdwarf-2 -g2 
+	ARCH_CFLAGS+=-O3 
 else
-ARCH_CFLAGS_I486=-gdwarf-2 -g2 
-ARCH_CFLAGS_I686=-gdwarf-2 -g2 
-ARCH_CFLAGS_AMD=-gdwarf-2 -g2 
-ARCH_CFLAGS_AMD64=-m64 -gdwarf-2 -g2 
-endif
-
-ifeq ($(OS),Linux)
-ARCH_CFLAGS_I486+=-march=pentium-m -mfpmath=387
-ARCH_CFLAGS_I686+=-march=pentium-m -mfpmath=387
-ARCH_CFLAGS_AMD+=-march=k6 -mfpmath=387
-endif
-
-ifeq ($(OS),Darwin)
-# force 387 for FP math so the precision between win32 and linux and osx match
-ARCH_CFLAGS_I486+=-march=pentium-m -mfpmath=387
-ARCH_CFLAGS_I686+=-march=pentium-m -mfpmath=387
-ARCH_CFLAGS_AMD+=-mfpmath=387
+	ARCH_CFLAGS+=-gdwarf-2 -g2 
 endif
 
 
-ARCH_CFLAGS="$(ARCH_CFLAGS_I486)"
+BASE_CFLAGS=-std=c++17 -fpermissive -fno-strict-aliasing -fno-exceptions -fexpensive-optimizations -Werror=return-type -w
+BASE_CFLAGS+=-DNDEBUG -DPOSIX -D_POSIX -DLINUX -D_LINUX -DGNUC -DHL1 -DQUIVER -DQUAKE2 -DVALVE_DLL -DNO_MALLOC_OVERRIDE -DCLIENT_WEAPONS
 
-BASE_CFLAGS=-fpermissive -fno-strict-aliasing -std=gnu++11 -fms-extensions -DNDEBUG -DPOSIX -D_POSIX -DLINUX -D_LINUX -DGNUC -DHL1 -DQUIVER -DQUAKE2 -DVALVE_DLL -fno-exceptions -fexpensive-optimizations -DNO_MALLOC_OVERRIDE -Werror=return-type
-BASE_CFLAGS+=-w
-
-ifeq ($(OS),Darwin)
-	BASE_CFLAGS += -DOSX -D_OSX -fvisibility=hidden
-else
-	BASE_CFLAGS+= -DLINUX -D_LINUX
+# flifetime-dse=1 is needed to disable a compiler optimization that optimizes out std::memset calls in CBaseEntity::operator new
+# See https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#index-flifetime-dse for more information about this flag
+# fno-gnu-unique is needed to disable a compiler optimization that prevents dlclose from unloading mod dlls,
+# causing them to retain state and crash when the engine tries to access memory in an invalid way
+# See https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html#index-fno-gnu-unique for more information about this flag
+ifeq "$(COMPILER)" "g++"
+	BASE_CFLAGS+=-flifetime-dse=1 -fno-gnu-unique
 endif
 
-DEDICATED_CFLAGS="-DDEDICATED -DSWDS"
-ifeq ($(OS),Darwin)
-SHLIBEXT=dylib
-SHLIBCFLAGS=
-SHLIBLDFLAGS="-shared -gdwarf-2 -g2"
-else
 SHLIBEXT=so
 SHLIBCFLAGS=
-SHLIBLDFLAGS="-shared -gdwarf-2 -g2 -Wl,-Map,$@_map.txt"
+ifeq "$(CFG)" "release"
+	SHLIBLDFLAGS="-shared -Wl,-Map,$@_map.txt -Wl,--no-undefined"
+else
+	SHLIBLDFLAGS="-shared -gdwarf-2 -g2 -Wl,-Map,$@_map.txt -Wl,--no-undefined"
 endif
+
 AR=ar
 LIBEXT=a
 MAKE+= -j8
@@ -131,13 +77,13 @@ TARGETS+= \
  	ag \
 
 build_dir:
-	-mkdir $(BUILD_DIR);
+	-mkdir -p $(BUILD_DIR);
 	cd $(BUILD_DIR)
 
 targets: $(TARGETS)
 
 ag: build_dir
-	$(MAKE_AG_LIB) CC=$(CC) ARCH=$(ARCH) CPP_LIB="$(CPP_LIB)" BUILD_DIR=$(BUILD_DIR) BUILD_OBJ_DIR=$(BUILD_OBJ_DIR) SOURCE_DIR=$(SOURCE_DIR) ENGINE_SRC_DIR=$(ENGINE_SRC_DIR) COMMON_SRC_DIR=$(COMMON_SRC_DIR) PM_SRC_DIR=$(PM_SRC_DIR) GAME_SHARED_SRC_DIR=$(GAME_SHARED_SRC_DIR) GAMEDB_SRC_DIR=$(GAMEDB_SRC_DIR) BASE_CFLAGS="$(BASE_CFLAGS)" SHLIBEXT=$(SHLIBEXT) SHLIBCFLAGS=$(SHLIBCFLAGS) SHLIBLDFLAGS=$(SHLIBLDFLAGS) PUBLIC_SRC_DIR=$(PUBLIC_SRC_DIR) CFG=$(CFG) OS=$(OS) ARCH_CFLAGS="$(ARCH_CFLAGS_I686)" 
+	$(MAKE_AG_LIB) CPLUS=$(CPLUS) ARCH=$(ARCH) ARCH_CFLAGS="$(ARCH_CFLAGS)" SHLIBEXT=$(SHLIBEXT) SHLIBCFLAGS=$(SHLIBCFLAGS) SHLIBLDFLAGS=$(SHLIBLDFLAGS) CPP_LIB="$(CPP_LIB)" CFG=$(CFG) OS=$(OS) BASE_CFLAGS="$(BASE_CFLAGS)" BUILD_DIR=$(BUILD_DIR) BUILD_OBJ_DIR=$(BUILD_OBJ_DIR) SOURCE_DIR=$(SOURCE_DIR) ENGINE_SRC_DIR=$(ENGINE_SRC_DIR) COMMON_SRC_DIR=$(COMMON_SRC_DIR) PUBLIC_SRC_DIR=$(PUBLIC_SRC_DIR) GAME_SHARED_SRC_DIR=$(GAME_SHARED_SRC_DIR) PM_SRC_DIR=$(PM_SRC_DIR)
 
 clean:
 	-rm -rf $(BUILD_OBJ_DIR)
