@@ -839,6 +839,8 @@ bool CEnvSound :: KeyValue( KeyValueData *pkvd )
 		m_flRoomtype = atof(pkvd->szValue);
 		return true;
 	}
+
+	return false;
 }
 
 // returns true if the given sound entity (pev) is in range 

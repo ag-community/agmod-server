@@ -668,5 +668,6 @@ inline bool CBasePlayer::IsAgBot()
 
 extern int	gmsgHudText;
 extern bool gInitHUD;
+extern bool giPrecacheGrunt;
 
 #endif // PLAYER_H

@@ -14,7 +14,6 @@ extern int gmsgSetFOV;
 extern int gmsgSplash;
 
 extern int gmsgGamemode;
-extern int g_teamplay;
 
 void CBasePlayer::Spectate_Init()
 {

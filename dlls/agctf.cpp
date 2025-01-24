@@ -1287,16 +1287,16 @@ bool AgCTFSpawn::KeyValue(KeyValueData* pkvd)
     if (FStrEq(pkvd->szKeyName, "master"))
     {
         pev->netname = ALLOC_STRING(pkvd->szValue);
-        pkvd->fHandled = true;
+        return true;
     }
     //OP4 map compatibility
     else if (FStrEq(pkvd->szKeyName, "team_no"))
     {
         m_iTeam = atoi(pkvd->szValue);
-        pkvd->fHandled = true;
+        return true;
     }
-    else
-        CPointEntity::KeyValue(pkvd);
+    
+    return CPointEntity::KeyValue(pkvd);
 }
 
 bool AgCTFSpawn::IsTriggered(CBaseEntity* pEntity)

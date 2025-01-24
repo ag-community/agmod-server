@@ -44,8 +44,6 @@ extern int gmsgScoreInfo;
 extern int gmsgMOTD;
 extern int gmsgServerName;
 
-extern bool g_teamplay;
-
 float g_flIntermissionStartTime = 0;
 
 CVoiceGameMgr	g_VoiceGameMgr;

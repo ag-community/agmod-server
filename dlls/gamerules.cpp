@@ -336,7 +336,7 @@ AgGameRules* InstallGameRules(void)
 		CVar::StopRecordingGamemodeChanges();
 
 		// generic half-life
-		g_teamplay = 0;
+		g_teamplay = false;
 		return new CHalfLifeRules;
 	}
 	CVar::StartRecordingChanges();

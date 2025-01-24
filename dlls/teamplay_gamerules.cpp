@@ -25,7 +25,6 @@
 //++ BulliT
 #include	"multiplay_gamerules.h"
 #include	"aggamerules.h"
-extern int g_teamplay;
 //-- Martin Webrant
 #include	"game.h"
 

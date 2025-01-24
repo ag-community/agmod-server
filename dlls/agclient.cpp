@@ -31,7 +31,6 @@ extern int gmsgAuthID;
 //////////////////////////////////////////////////////////////////////
 extern int gmsgPlaySound;
 extern int gmsgTeamInfo;
-extern int g_teamplay;
 
 extern bool g_bPostponeChangelevel;
 extern CChangeLevel* g_pLastChangelevel;

@@ -29,7 +29,6 @@ extern int gmsgAllowSpec;
 extern int gmsgServerName;
 extern int gmsgSpikeCheck;
 extern int gmsgGametype;
-extern int g_teamplay;
 extern int gmsgGameMode;
 extern int gmsgAuthID;
 extern int gmsgMapList;

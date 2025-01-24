@@ -236,7 +236,6 @@ int gmsgMapList = 0;
 int gmsgCTFFlag = 0;
 int gmsgCRC32 = 0;
 
-extern int g_teamplay;
 extern std::vector<CBaseEntity*> g_spawnPoints;
 #ifdef AGSTATS
 #include "agstats.h"

@@ -180,4 +180,6 @@ extern "C" _declspec(dllexport) DLL_GLOBAL AgGameRules* g_pGameRules;
 extern AgGameRules* g_pGameRules;
 #endif
 
+extern bool g_teamplay;
+
 #endif //_GAMERULES_H_

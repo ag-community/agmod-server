@@ -52,10 +52,7 @@ extern DLL_GLOBAL int		g_iSkillLevel;
 extern DLL_GLOBAL unsigned int		g_ulFrameCount;
 
 extern void CopyToBodyQue(entvars_t* pev);
-extern int giPrecacheGrunt;
 extern int gmsgSayText;
-
-extern int g_teamplay;
 
 void LinkUserMessages( void );
 
