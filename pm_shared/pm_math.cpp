@@ -14,9 +14,9 @@
 ****/
 // pm_math.c -- math primitives
 
+#include "Platform.h"
 #include "mathlib.h"
 #include "const.h"
-#include <cmath>
 
 // up / down
 #define	PITCH	0
