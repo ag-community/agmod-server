@@ -166,7 +166,8 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 };	
 
 
-int giPrecacheGrunt = 0;
+bool giPrecacheGrunt = false;
+
 int gmsgShake = 0;
 int gmsgFade = 0;
 int gmsgSelAmmo = 0;

@@ -42,7 +42,7 @@ extern DLL_GLOBAL bool	g_fGameOver;
 extern int gmsgDeathMsg;	// client dll messages
 extern int gmsgMOTD;
 
-int g_teamplay = 0;
+bool g_teamplay = false;
 
 //=========================================================
 //=========================================================
