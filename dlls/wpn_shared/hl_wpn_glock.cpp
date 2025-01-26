@@ -75,7 +75,7 @@ void CGlock::Precache( void )
 	m_usFireGlock2 = PRECACHE_EVENT( 1, "events/glock2.sc" );
 }
 
-bool CGlock::GetItemInfo(ItemInfo *p)
+int CGlock::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "9mm";
@@ -89,7 +89,7 @@ bool CGlock::GetItemInfo(ItemInfo *p)
 	p->iId = m_iId = WEAPON_GLOCK;
 	p->iWeight = GLOCK_WEIGHT;
 
-	return true;
+	return 1;
 }
 
 bool CGlock::Deploy( )
@@ -171,7 +171,7 @@ void CGlock::GlockFire( float flSpread , float flCycleTime, bool fUseAutoAim )
 
 	m_flNextPrimaryAttack = m_flNextSecondaryAttack = GetNextAttackDelay(flCycleTime);
 
-	if (0 == m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", false, 0);
 
@@ -184,7 +184,7 @@ void CGlock::Reload( void )
 	if ( m_pPlayer->ammo_9mm <= 0 )
 		 return;
 
-	bool iResult;
+	int iResult;
 
 	if (m_iClip == 0)
 		iResult = DefaultReload( 17, GLOCK_RELOAD, 1.5 );

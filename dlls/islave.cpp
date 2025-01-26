@@ -53,7 +53,7 @@ public:
 	bool CheckRangeAttack2 ( float flDot, float flDist );
 	void CallForHelp( char *szClassname, float flDist, EHANDLE hEnemy, Vector &vecLocation );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
-	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
+	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
 
 	void DeathSound( void );
 	void PainSound( void );
@@ -67,8 +67,8 @@ public:
 	Schedule_t *GetScheduleOfType ( int Type );
 	CUSTOM_SCHEDULES;
 
-	bool Save( CSave &save ); 
-	bool Restore( CRestore &restore );
+	int	Save( CSave &save ); 
+	int Restore( CRestore &restore );
 	static TYPEDESCRIPTION m_SaveData[];
 
 	void ClearBeams( );
@@ -154,7 +154,7 @@ int	CISlave :: Classify ( void )
 int CISlave::IRelationship( CBaseEntity *pTarget )
 {
 	if ( (pTarget->IsPlayer()) )
-		if ( (pev->spawnflags & SF_MONSTER_WAIT_UNTIL_PROVOKED ) != 0 && (m_afMemory & bits_MEMORY_PROVOKED ) == 0)
+		if ( (pev->spawnflags & SF_MONSTER_WAIT_UNTIL_PROVOKED ) && ! (m_afMemory & bits_MEMORY_PROVOKED ))
 			return R_NO;
 	return CBaseMonster::IRelationship( pTarget );
 }
@@ -318,7 +318,7 @@ void CISlave :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.slaveDmgClaw, DMG_SLASH );
 			if ( pHurt )
 			{
-				if ( ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) ) != 0 )
+				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
 				{
 					pHurt->pev->punchangle.z = -18;
 					pHurt->pev->punchangle.x = 5;
@@ -339,7 +339,7 @@ void CISlave :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.slaveDmgClawrake, DMG_SLASH );
 			if ( pHurt )
 			{
-				if ( (pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) ) != 0 )
+				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
 				{
 					pHurt->pev->punchangle.z = -18;
 					pHurt->pev->punchangle.x = 5;
@@ -405,7 +405,7 @@ void CISlave :: HandleAnimEvent( MonsterEvent_t *pEvent )
 				TraceResult trace;
 				UTIL_TraceHull( vecDest, vecDest, dont_ignore_monsters, human_hull, m_hDead->edict(), &trace );
 
-				if ( 0 == trace.fStartSolid )
+				if ( !trace.fStartSolid )
 				{
 					CBaseEntity *pNew = Create( "monster_alien_slave", m_hDead->pev->origin, m_hDead->pev->angles );
 					CBaseMonster *pNewMonster = pNew->MyMonsterPointer( );
@@ -581,11 +581,11 @@ void CISlave :: Precache()
 // TakeDamage - get provoked when injured
 //=========================================================
 
-bool CISlave :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+int CISlave :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	// don't slash one of your own
 	if ((bitsDamageType & DMG_SLASH) && pevAttacker && IRelationship( Instance(pevAttacker) ) < R_DL)
-		return false;
+		return 0;
 
 	m_afMemory |= bits_MEMORY_PROVOKED;
 	return CSquadMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
@@ -594,7 +594,7 @@ bool CISlave :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 
 void CISlave::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType)
 {
-	if ((bitsDamageType & DMG_SHOCK) != 0)
+	if (bitsDamageType & DMG_SHOCK)
 		return;
 
 	CSquadMonster::TraceAttack( pevAttacker, flDamage, vecDir, ptr, bitsDamageType );
@@ -659,9 +659,9 @@ Schedule_t *CISlave :: GetSchedule( void )
 
 		ASSERT( pSound != NULL );
 
-		if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) != 0 )
+		if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) )
 			return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
-		if ( (pSound->m_iType & bits_SOUND_COMBAT ) != 0 )
+		if ( pSound->m_iType & bits_SOUND_COMBAT )
 			m_afMemory |= bits_MEMORY_PROVOKED;
 	}
 
@@ -838,7 +838,7 @@ void CISlave :: ZapBeam( int side )
 	m_iBeams++;
 
 	pEntity = CBaseEntity::Instance(tr.pHit);
-	if (pEntity != NULL && 0 != pEntity->pev->takedamage)
+	if (pEntity != NULL && pEntity->pev->takedamage)
 	{
 		pEntity->TraceAttack( pev, gSkillData.slaveDmgZap, vecAim, &tr, DMG_SHOCK );
 	}

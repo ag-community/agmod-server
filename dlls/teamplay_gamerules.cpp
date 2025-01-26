@@ -53,7 +53,7 @@ CHalfLifeTeamplay :: CHalfLifeTeamplay()
 	strncpy( m_szTeamList, teamlist.string, TEAMPLAY_TEAMLISTLENGTH );
 
 	edict_t *pWorld = INDEXENT(0);
-	if ( pWorld && !FStringNull(pWorld->v.team) )
+	if ( pWorld && pWorld->v.team )
 	{
 		//++ BulliT
 		if (CTF == AgGametype())
@@ -61,17 +61,17 @@ CHalfLifeTeamplay :: CHalfLifeTeamplay()
 			sprintf(m_szTeamList, "%s;%s", CTF_TEAM1_NAME, CTF_TEAM2_NAME);
 		}
 		//-- Martin Webrant
-		else if ( 0 != teamoverride.value )
+		else if ( teamoverride.value )
 		{
 			const char *pTeamList = STRING(pWorld->v.team);
-			if ( pTeamList && 0 != strlen(pTeamList) )
+			if ( pTeamList && strlen(pTeamList) )
 			{
 				strncpy( m_szTeamList, pTeamList, TEAMPLAY_TEAMLISTLENGTH );
 			}
 		}
 	}
 	// Has the server set teams
-	if ( 0 != strlen( m_szTeamList ) )
+	if ( strlen( m_szTeamList ) )
 		m_teamLimit = true;
 	else
 		m_teamLimit = false;
@@ -151,7 +151,7 @@ void CHalfLifeTeamplay :: Think ( void )
 //-- Martin Webrant
 
 	float flFragLimit = fraglimit.value;
-	if ( 0 != flFragLimit )
+	if ( flFragLimit )
 	{
 		int bestfrags = 9999;
 		int remain;
@@ -266,11 +266,11 @@ const char *CHalfLifeTeamplay::SetDefaultPlayerTeam( CBasePlayer *pPlayer )
 	RecountTeams();
 
 	// update the current player of the team he is joining
-	if ( pPlayer->m_szTeamName[0] == '\0' || !IsValidTeam( pPlayer->m_szTeamName ) || 0 != defaultteam.value )
+	if ( pPlayer->m_szTeamName[0] == '\0' || !IsValidTeam( pPlayer->m_szTeamName ) || defaultteam.value )
 	{
 		const char *pTeamName = NULL;
 		
-		if ( 0 != defaultteam.value )
+		if ( defaultteam.value )
 		{
 			pTeamName = team_names[0];
 		}
@@ -312,7 +312,7 @@ void CHalfLifeTeamplay::InitHUD( CBasePlayer *pPlayer )
 	char *mdls = g_engfuncs.pfnInfoKeyValue( g_engfuncs.pfnGetInfoKeyBuffer( pPlayer->edict() ), "model" );
 	// update the current player of the team he is joining
 	char text[1024];
-	if ( 0 == strcmp( mdls, pPlayer->m_szTeamName ) )
+	if ( !strcmp( mdls, pPlayer->m_szTeamName ) )
 	{
 		sprintf( text, "* you are on team \'%s\'\n", pPlayer->m_szTeamName );
 	}
@@ -446,7 +446,7 @@ void CHalfLifeTeamplay::ClientUserInfoChanged( CBasePlayer *pPlayer, char *infob
 
 	int clientIndex = pPlayer->entindex();
 
-	if ( 0 != defaultteam.value )
+	if ( defaultteam.value )
 	{
 		g_engfuncs.pfnSetClientKeyValue( clientIndex, g_engfuncs.pfnGetInfoKeyBuffer( pPlayer->edict() ), "model", pPlayer->m_szTeamName );
 		g_engfuncs.pfnSetClientKeyValue( clientIndex, g_engfuncs.pfnGetInfoKeyBuffer( pPlayer->edict() ), "team", pPlayer->m_szTeamName );
@@ -458,7 +458,7 @@ void CHalfLifeTeamplay::ClientUserInfoChanged( CBasePlayer *pPlayer, char *infob
 		return;
 	}
 
-	if ( 0 != defaultteam.value || !IsValidTeam( mdls ) )
+	if ( defaultteam.value || !IsValidTeam( mdls ) )
 	{
 		g_engfuncs.pfnSetClientKeyValue( clientIndex, g_engfuncs.pfnGetInfoKeyBuffer( pPlayer->edict() ), "model", pPlayer->m_szTeamName );
 		if (!pPlayer->IsBot())
@@ -526,7 +526,7 @@ void CHalfLifeTeamplay::DeathNotice( CBasePlayer *pVictim, entvars_t *pKiller, e
 	if ( m_DisableDeathMessages )
 		return;
 	
-	if ( pVictim && pKiller && (pKiller->flags & FL_CLIENT) != 0 )
+	if ( pVictim && pKiller && pKiller->flags & FL_CLIENT )
 	{
 		CBasePlayer *pk = (CBasePlayer*) CBaseEntity::Instance( pKiller );
 
@@ -747,7 +747,7 @@ void CHalfLifeTeamplay::RecountTeams()
 	strcpy( teamlist, m_szTeamList );
 	pName = teamlist;
 	pName = strtok( pName, ";" );
-	while ( pName != NULL && '\0' != *pName )
+	while ( pName != NULL && *pName )
 	{
 		if ( GetTeamIndex( pName ) < 0 )
 		{

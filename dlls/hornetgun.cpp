@@ -87,7 +87,7 @@ void CHgun::Precache( void )
 	UTIL_PrecacheOther("hornet");
 }
 
-bool CHgun::AddToPlayer( CBasePlayer *pPlayer )
+int CHgun::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
@@ -108,7 +108,7 @@ bool CHgun::AddToPlayer( CBasePlayer *pPlayer )
 	return false;
 }
 
-bool CHgun::GetItemInfo(ItemInfo *p)
+int CHgun::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "Hornets";
@@ -122,7 +122,7 @@ bool CHgun::GetItemInfo(ItemInfo *p)
 	p->iFlags = ITEM_FLAG_NOAUTOSWITCHEMPTY | ITEM_FLAG_NOAUTORELOAD;
 	p->iWeight = HORNETGUN_WEIGHT;
 
-	return true;
+	return 1;
 }
 
 
@@ -137,7 +137,7 @@ void CHgun::Holster( int skiplocal /* = 0 */ )
 	SendWeaponAnim( HGUN_DOWN );
 
 	//!!!HACKHACK - can't select hornetgun if it's empty! no way to get ammo for it, either.
-	if ( 0 == m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] )
+	if ( !m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] )
 	{
 		m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] = 1;
 	}

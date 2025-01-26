@@ -147,9 +147,9 @@ public:
 	// initialization functions
 	virtual void	Spawn( void ) { return; }
 	virtual void	Precache( void ) { return; }
-	virtual bool	KeyValue( KeyValueData* pkvd) { return false; }
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual void	KeyValue( KeyValueData* pkvd) { pkvd->fHandled = false; }
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	virtual int		ObjectCaps( void ) { return FCAP_ACROSS_TRANSITION; }
 	virtual void	Activate( void ) {}
 	
@@ -165,8 +165,8 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	virtual void	TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
-	virtual bool	TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
-	virtual bool	TakeHealth( float flHealth, int bitsDamageType );
+	virtual int		TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	virtual int		TakeHealth( float flHealth, int bitsDamageType );
 	virtual void	Killed( entvars_t *pevAttacker, int iGib );
 	virtual int		BloodColor( void ) { return DONT_BLEED; }
 	virtual void	TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
@@ -180,7 +180,7 @@ public:
 	virtual bool	RemovePlayerItem( CBasePlayerItem *pItem ) { return 0; }
 	virtual int 	GiveAmmo( int iAmount, char *szName, int iMax ) { return -1; };
 	virtual float	GetDelay( void ) { return 0; }
-	virtual bool	IsMoving( void ) { return pev->velocity != g_vecZero; }
+	virtual int		IsMoving( void ) { return pev->velocity != g_vecZero; }
 	virtual void	OverrideReset( void ) {}
 	virtual int		DamageDecal( int bitsDamageType );
 	// This is ONLY used by the node graph to test movement through a door
@@ -245,7 +245,7 @@ public:
 	void EXPORT SUB_StartFadeOut ( void );
 	void EXPORT SUB_FadeOut ( void );
 	void EXPORT SUB_CallUseToggle( void ) { this->Use( this, this, USE_TOGGLE, 0 ); }
-	bool		ShouldToggle( USE_TYPE useType, bool currentState );
+	int			ShouldToggle( USE_TYPE useType, bool currentState );
 	void		FireBullets( unsigned int	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL  );
 	Vector		FireBulletsPlayer( unsigned int	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0 );
 
@@ -253,9 +253,9 @@ public:
 
 	void SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, float value );
 	// Do the bounding boxes of these two intersect?
-	bool	Intersects( CBaseEntity *pOther );
+	int		Intersects( CBaseEntity *pOther );
 	void	MakeDormant( void );
-	bool	IsDormant( void );
+	int		IsDormant( void );
 	bool    IsLockedByMaster( void ) { return false; }
 
 	static CBaseEntity *Instance( edict_t *pent )
@@ -417,7 +417,7 @@ typedef struct locksounds			// sounds that doors and buttons make when locked/un
 	byte	bEOFUnlocked;			// true if hit end of list of unlocked sentences
 } locksound_t;
 
-void PlayLockSounds(entvars_t *pev, locksound_t *pls, bool flocked, bool fbutton);
+void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton);
 
 //
 // MultiSouce
@@ -430,13 +430,13 @@ class CMultiSource : public CPointEntity
 {
 public:
 	void Spawn( );
-	bool KeyValue( KeyValueData *pkvd );
+	void KeyValue( KeyValueData *pkvd );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	int	ObjectCaps( void ) { return (CPointEntity::ObjectCaps() | FCAP_MASTER); }
 	bool IsTriggered( CBaseEntity *pActivator );
 	void EXPORT Register( void );
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -457,9 +457,9 @@ public:
 	float		m_flDelay;
 	int			m_iszKillTarget;
 
-	virtual bool	KeyValue( KeyValueData* pkvd);
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual void	KeyValue( KeyValueData* pkvd);
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 	// common member functions
@@ -471,8 +471,8 @@ public:
 class CBaseAnimating : public CBaseDelay
 {
 public:
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -494,7 +494,7 @@ public:
 	void GetAttachment ( int iAttachment, Vector &origin, Vector &angles );
 	void SetBodygroup( int iGroup, int iValue );
 	int GetBodygroup( int iGroup );
-	bool ExtractBbox( int sequence, float *mins, float *maxs );
+	int ExtractBbox( int sequence, float *mins, float *maxs );
 	void SetSequenceBox( void );
 
 	// animation needs
@@ -514,7 +514,7 @@ public:
 class CBaseToggle : public CBaseAnimating
 {
 public:
-	bool				KeyValue( KeyValueData *pkvd );
+	void				KeyValue( KeyValueData *pkvd );
 
 	TOGGLE_STATE		m_toggle_state;
 	float				m_flActivateFinished;//like attack_finished, but for doors
@@ -538,8 +538,8 @@ public:
 
 	int					m_bitsDamageInflict;	// DMG_ damage type that the door or tigger does
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -693,7 +693,7 @@ public:
 	void Spawn( void );
 	virtual void Precache( void );
 	void RotSpawn( void );
-	virtual bool KeyValue( KeyValueData* pkvd);
+	virtual void KeyValue( KeyValueData* pkvd);
 
 	void ButtonActivate( );
 	void SparkSoundCache( void );
@@ -705,9 +705,9 @@ public:
 	void EXPORT ButtonReturn( void );
 	void EXPORT ButtonBackHome( void );
 	void EXPORT ButtonUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	virtual bool	TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	
 	enum BUTTON_CODE { BUTTON_NOTHING, BUTTON_ACTIVATE, BUTTON_RETURN };
 	BUTTON_CODE	ButtonResponseToTouch( void );
@@ -808,14 +808,14 @@ class CWorld : public CBaseEntity
 public:
 	void Spawn( void );
 	void Precache( void );
-	bool KeyValue( KeyValueData *pkvd );
+	void KeyValue( KeyValueData *pkvd );
 };
 
 class CBaseTrigger : public CBaseToggle
 {
 public:
 	void EXPORT TeleportTouch ( CBaseEntity *pOther );
-	bool KeyValue( KeyValueData *pkvd );
+	void KeyValue( KeyValueData *pkvd );
 	void EXPORT MultiTouch( CBaseEntity *pOther );
 	void EXPORT HurtTouch ( CBaseEntity *pOther );
 	void EXPORT CDAudioTouch ( CBaseEntity *pOther );
@@ -832,7 +832,7 @@ class CChangeLevel : public CBaseTrigger
 {
 public:
 	void Spawn( void );
-	bool KeyValue( KeyValueData *pkvd );
+	void KeyValue( KeyValueData *pkvd );
 	void EXPORT UseChangeLevel ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	void EXPORT TriggerChangeLevel( void );
 	void EXPORT ExecuteChangeLevel( void );
@@ -841,11 +841,11 @@ public:
 
 	static edict_t *FindLandmark( const char *pLandmarkName );
 	static int ChangeList( LEVELLIST *pLevelList, int maxList );
-	static bool AddTransitionToList( LEVELLIST *pLevelList, int listCount, const char *pMapName, const char *pLandmarkName, edict_t *pentLandmark );
-	static bool InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName );
+	static int AddTransitionToList( LEVELLIST *pLevelList, int listCount, const char *pMapName, const char *pLandmarkName, edict_t *pentLandmark );
+	static int InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName );
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 
 	void DoChangeLevel();
 

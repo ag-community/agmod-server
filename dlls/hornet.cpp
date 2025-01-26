@@ -46,7 +46,7 @@ IMPLEMENT_SAVERESTORE( CHornet, CBaseMonster );
 //=========================================================
 // don't let hornets gib, ever.
 //=========================================================
-bool CHornet :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+int CHornet :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// filter these bits a little.
 	bitsDamageType &= ~ ( DMG_ALWAYSGIB );
@@ -109,7 +109,7 @@ void CHornet :: Spawn( void )
 	}
 #endif
 
-	if ( !FNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT) != 0 )
+	if ( !FNullEnt(pev->owner) && (pev->owner->v.flags & FL_CLIENT) )
 	{
 		pev->dmg = gSkillData.plrDmgHornet;
 	}
@@ -163,7 +163,7 @@ int CHornet::IRelationship ( CBaseEntity *pTarget )
 int CHornet::Classify ( void )
 {
 
-	if ( pev->owner && (pev->owner->v.flags & FL_CLIENT) != 0)
+	if ( pev->owner && pev->owner->v.flags & FL_CLIENT)
 	{
 		return CLASS_PLAYER_BIOWEAPON;
 	}
@@ -314,7 +314,7 @@ void CHornet :: TrackTarget ( void )
 
 	pev->velocity = ( vecFlightDir + vecDirToEnemy).Normalize();
 
-	if ( pev->owner && (pev->owner->v.flags & FL_MONSTER) != 0 )
+	if ( pev->owner && (pev->owner->v.flags & FL_MONSTER) )
 	{
 		// random pattern only applies to hornets fired by monsters, not players. 
 
@@ -407,7 +407,7 @@ void CHornet::DartTouch( CBaseEntity *pOther )
 void CHornet::DieTouch ( CBaseEntity *pOther )
 {
 	// Fix by treetoon (https://github.com/ValveSoftware/halflife/pull/1598/files):
-	if ( pOther && 0 != pOther->pev->takedamage && pev->owner )
+	if ( pOther && pOther->pev->takedamage && pev->owner )
 	{// do the damage
 
 		switch (RANDOM_LONG(0,2))

@@ -980,12 +980,12 @@ LINK_ENTITY_TO_CLASS(ctf_redflag, AgCTFFlagTeam2); //CCTF map compatibility hack
 class AgCTFFlagTeamOP4 : public AgCTFFlag
 {
     int m_iTeam;
-    bool KeyValue(KeyValueData* pkvd)
+    void KeyValue(KeyValueData* pkvd)
     {
         if (FStrEq(pkvd->szKeyName, "goal_no"))
         {
             m_iTeam = atoi(pkvd->szValue);
-            return true;
+            pkvd->fHandled = true;
         }
         else if (FStrEq(pkvd->szKeyName, "ctf_flag")) //HLE map compatibility hack
         {
@@ -994,10 +994,10 @@ class AgCTFFlagTeamOP4 : public AgCTFFlag
             else if (2 == atoi(pkvd->szValue))
                 m_iTeam = 1;
 
-            return true;
+            pkvd->fHandled = true;
         }
-        
-        return AgCTFFlag::KeyValue(pkvd);
+        else
+            AgCTFFlag::KeyValue(pkvd);
     }
 
     void Spawn(void)
@@ -1152,9 +1152,9 @@ class AgCTFDetect : public CBaseEntity
                 CVAR_SET_STRING("sv_ag_gamemode", "ctf");
         }
     }
-    bool KeyValue(KeyValueData* pkvd)
+    void KeyValue(KeyValueData* pkvd)
     {
-        return false;
+        pkvd->fHandled = false;
     }
 };
 #ifndef AG_NO_CLIENT_DLL
@@ -1275,14 +1275,14 @@ class AgCTFSpawn : public CPointEntity
 {
     int m_iTeam;
 public:
-    bool		KeyValue(KeyValueData* pkvd);
+    void		KeyValue(KeyValueData* pkvd);
     bool		IsTriggered(CBaseEntity* pEntity);
     void    Spawn(void);
 
 private:
 };
 
-bool AgCTFSpawn::KeyValue(KeyValueData* pkvd)
+void AgCTFSpawn::KeyValue(KeyValueData* pkvd)
 {
     if (FStrEq(pkvd->szKeyName, "master"))
     {

@@ -119,7 +119,7 @@ public:
 	float	m_flNextObserverInput;
 	int		m_iObserverWeapon;	// weapon of current tracked target
 	int		m_iObserverLastMode;// last used observer mode
-	bool	IsObserver() { return 0 != pev->iuser1; };
+	int		IsObserver() { return pev->iuser1; };
 
 	int					random_seed;    // See that is shared between client & server for shared weapons code
 
@@ -149,7 +149,7 @@ public:
 	float				m_flFallVelocity;
 	
 	int					m_rgItems[MAX_ITEMS];
-	bool				m_fKnownItem;		// True when a new item needs to be added
+	int					m_fKnownItem;		// True when a new item needs to be added
 	int					m_fNewAmmo;			// True when a new item has been added
 
 	unsigned int		m_afPhysicsFlags;	// physics flags - set when 'normal' physics should be revisited or overriden
@@ -231,9 +231,9 @@ public:
 	virtual void PreThink( void );
 	virtual void PostThink( void );
 	virtual Vector GetGunPosition( void );
-	virtual bool TakeHealth( float flHealth, int bitsDamageType );
+	virtual int TakeHealth( float flHealth, int bitsDamageType );
 	virtual void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
-	virtual bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
+	virtual int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
 	virtual void	Killed( entvars_t *pevAttacker, int iGib );
 	virtual Vector BodyTarget( const Vector &posSrc ) { return Center( ) + pev->view_ofs * RANDOM_FLOAT( 0.5, 1.1 ); };		// position to shoot at
 	virtual void StartSneaking( void ) { m_tSneaking = gpGlobals->time - 1; }
@@ -249,8 +249,8 @@ public:
 															// Spectators should return true for this
 	virtual const char *TeamID( void );
 
-	virtual bool		Save( CSave &save );
-	virtual bool		Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	void RenewItems(void);
 	void PackDeadPlayerItems( void );
 	void RemoveAllItems( bool removeSuit );
@@ -309,7 +309,7 @@ public:
 	void PlayerUse( void );
 
 	void CheckSuitUpdate();
-	void SetSuitUpdate(char *name, bool fgroup, int iNoRepeat);
+	void SetSuitUpdate(char *name, int fgroup, int iNoRepeat);
 	void UpdateGeigerCounter( void );
 	void CheckTimeBasedDamage( void );
 

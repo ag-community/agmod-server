@@ -61,7 +61,7 @@ public:
 	// No range attacks
 	bool CheckRangeAttack1 ( float flDot, float flDist ) { return false; }
 	bool CheckRangeAttack2 ( float flDot, float flDist ) { return false; }
-	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 };
 
 LINK_ENTITY_TO_CLASS( monster_zombie, CZombie );
@@ -134,7 +134,7 @@ void CZombie :: SetYawSpeed ( void )
 	pev->yaw_speed = ys;
 }
 
-bool CZombie :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+int CZombie :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// Take 30% damage from bullets
 	if ( bitsDamageType == DMG_BULLET )
@@ -199,7 +199,7 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.zombieDmgOneSlash, DMG_SLASH );
 			if ( pHurt )
 			{
-				if ( (pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) ) != 0)
+				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
 				{
 					pHurt->pev->punchangle.z = -18;
 					pHurt->pev->punchangle.x = 5;
@@ -223,7 +223,7 @@ void CZombie :: HandleAnimEvent( MonsterEvent_t *pEvent )
 			CBaseEntity *pHurt = CheckTraceHullAttack( 70, gSkillData.zombieDmgOneSlash, DMG_SLASH );
 			if ( pHurt )
 			{
-				if ( (pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) ) != 0)
+				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
 				{
 					pHurt->pev->punchangle.z = 18;
 					pHurt->pev->punchangle.x = 5;

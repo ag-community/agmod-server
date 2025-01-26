@@ -62,7 +62,7 @@ LINK_ENTITY_TO_CLASS(info_null,CNullEntity);
 class CBaseDMStart : public CPointEntity
 {
 public:
-	bool		KeyValue( KeyValueData *pkvd );
+	void		KeyValue( KeyValueData *pkvd );
 	bool		IsTriggered( CBaseEntity *pEntity );
 	void		Spawn(void);
 
@@ -81,15 +81,15 @@ void CBaseDMStart::Spawn(void)
 	g_spawnPoints.push_back(this);
 }
 
-bool CBaseDMStart::KeyValue( KeyValueData *pkvd )
+void CBaseDMStart::KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "master"))
 	{
 		pev->netname = ALLOC_STRING(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CPointEntity::KeyValue( pkvd );
+	else
+		CPointEntity::KeyValue( pkvd );
 }
 
 bool CBaseDMStart::IsTriggered( CBaseEntity *pEntity )
@@ -117,7 +117,7 @@ void CBaseEntity::UpdateOnRemove( void )
 			}
 		}
 	}
-	if ( !FStringNull(pev->globalname) )
+	if ( pev->globalname )
 		gGlobalState.EntitySetState( pev->globalname, GLOBAL_DEAD );
 }
 
@@ -151,20 +151,22 @@ TYPEDESCRIPTION	CBaseDelay::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE( CBaseDelay, CBaseEntity );
 
-bool CBaseDelay :: KeyValue( KeyValueData *pkvd )
+void CBaseDelay :: KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "delay"))
 	{
 		m_flDelay = atof( pkvd->szValue );
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "killtarget"))
 	{
 		m_iszKillTarget = ALLOC_STRING(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CBaseEntity::KeyValue( pkvd );
+	else
+	{
+		CBaseEntity::KeyValue( pkvd );
+	}
 }
 
 
@@ -210,7 +212,7 @@ void FireTargets( const char *targetName, CBaseEntity *pActivator, CBaseEntity *
 			break;
 
 		CBaseEntity *pTarget = CBaseEntity::Instance( pentTarget );
-		if ( pTarget && !(pTarget->pev->flags & FL_KILLME) == 0)	// Don't use dying ents
+		if ( pTarget && !(pTarget->pev->flags & FL_KILLME) )	// Don't use dying ents
 		{
 			ALERT( at_aiconsole, "Found: %s, firing (%s)\n", STRING(pTarget->pev->classname), targetName );
 			pTarget->Use( pActivator, pCaller, useType, value );
@@ -226,7 +228,7 @@ void CBaseDelay :: SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, fl
 	//
 	// exit immediatly if we don't have a target or kill target
 	//
-	if (FStringNull(pev->target) && FStringNull(m_iszKillTarget))
+	if (FStringNull(pev->target) && !m_iszKillTarget)
 		return;
 
 	//
@@ -268,7 +270,7 @@ void CBaseDelay :: SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, fl
 	// kill the killtargets
 	//
 
-	if ( !FStringNull(m_iszKillTarget) )
+	if ( m_iszKillTarget )
 	{
 		edict_t *pentKillTarget = NULL;
 
@@ -366,30 +368,30 @@ TYPEDESCRIPTION	CBaseToggle::m_SaveData[] =
 IMPLEMENT_SAVERESTORE( CBaseToggle, CBaseAnimating );
 
 
-bool CBaseToggle::KeyValue( KeyValueData *pkvd )
+void CBaseToggle::KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "lip"))
 	{
 		m_flLip = atof(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "master"))
 	{
 		m_sMaster = ALLOC_STRING(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "distance"))
 	{
 		m_flMoveDistance = atof(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CBaseDelay::KeyValue( pkvd );
+	else
+		CBaseDelay::KeyValue( pkvd );
 }
 
 /*
@@ -453,7 +455,10 @@ void CBaseToggle :: LinearMoveDone( void )
 
 bool CBaseToggle :: IsLockedByMaster( void )
 {
-	return !FStringNull(m_sMaster) && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator);
+	if (m_sMaster && !UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
+		return true;
+	else
+		return false;
 }
 
 /*
@@ -561,7 +566,7 @@ FEntIsVisible(
 
 	UTIL_TraceLine(vecSpot1, vecSpot2, ignore_monsters, ENT(pev), &tr);
 	
-	if (0 != tr.fInOpen && 0 != tr.fInWater)
+	if (tr.fInOpen && tr.fInWater)
 		return false;                   // sight line crossed contents
 
 	if (tr.flFraction == 1)

@@ -57,7 +57,7 @@ float CGauss::GetFullChargeTime( void )
 }
 
 #ifdef CLIENT_DLL
-extern bool g_irunninggausspred;
+extern int g_irunninggausspred;
 #endif
 
 void CGauss::Spawn( )
@@ -94,7 +94,7 @@ void CGauss::Precache( void )
 	m_usGaussSpin = PRECACHE_EVENT( 1, "events/gaussspin.sc" );
 }
 
-bool CGauss::AddToPlayer( CBasePlayer *pPlayer )
+int CGauss::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
@@ -106,7 +106,7 @@ bool CGauss::AddToPlayer( CBasePlayer *pPlayer )
 	return false;
 }
 
-bool CGauss::GetItemInfo(ItemInfo *p)
+int CGauss::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "uranium";
@@ -120,7 +120,7 @@ bool CGauss::GetItemInfo(ItemInfo *p)
 	p->iFlags = 0;
 	p->iWeight = GAUSS_WEIGHT;
 
-	return true;
+	return 1;
 }
 
 bool CGauss::Deploy( )
@@ -422,8 +422,8 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 	TraceResult tr, beam_tr;
 	float flMaxFrac = 1.0;
 	int	nTotal = 0;
-	bool fHasPunched = false;
-	bool fFirstBeam = true;
+	int fHasPunched = 0;
+	int fFirstBeam = 1;
 	int	nMaxHits = 10;
 
 	pentIgnore = ENT( m_pPlayer->pev );
@@ -476,7 +476,7 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 		// ALERT( at_console, "." );
 		UTIL_TraceLine(vecSrc, vecDest, dont_ignore_monsters, pentIgnore, &tr);
 
-		if (0 != tr.fAllSolid)
+		if (tr.fAllSolid)
 			break;
 
 		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
@@ -487,12 +487,12 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 		if ( fFirstBeam )
 		{
 			m_pPlayer->pev->effects |= EF_MUZZLEFLASH;
-			fFirstBeam = false;
+			fFirstBeam = 0;
 	
 			nTotal += 26;
 		}
 		
-		if (0 != pEntity->pev->takedamage)
+		if (pEntity->pev->takedamage)
 		{
 			ClearMultiDamage();
 			//++ BulliT
@@ -549,7 +549,7 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 				// limit it to one hole punch
 				if (fHasPunched)
 					break;
-				fHasPunched = true;
+				fHasPunched = 1;
 
 				// try punching through wall if secondary attack (primary is incapable of breaking through)
 //++ BulliT
@@ -564,7 +564,7 @@ void CGauss::Fire( Vector vecOrigSrc, Vector vecDir, float flDamage )
 						startPoint = tr.vecEndPos + vecDir;
 
 					UTIL_TraceLine(startPoint, vecDest, dont_ignore_monsters, pentIgnore, &beam_tr);
-					if (0 == beam_tr.fAllSolid)
+					if (!beam_tr.fAllSolid)
 					{
 						// trace backwards to find exit point
 						UTIL_TraceLine(beam_tr.vecEndPos, tr.vecEndPos, dont_ignore_monsters, pentIgnore, &beam_tr);
@@ -647,7 +647,7 @@ void CGauss::WeaponIdle( void )
 	ResetEmptySound( );
 
 	// play aftershock static discharge
-	if ( 0 != m_pPlayer->m_flPlayAftershock && m_pPlayer->m_flPlayAftershock < gpGlobals->time )
+	if ( m_pPlayer->m_flPlayAftershock && m_pPlayer->m_flPlayAftershock < gpGlobals->time )
 	{
 		switch (RANDOM_LONG(0,3))
 		{

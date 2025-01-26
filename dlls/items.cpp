@@ -34,22 +34,22 @@ extern int gmsgItemPickup;
 class CWorldItem : public CBaseEntity
 {
 public:
-	bool	KeyValue(KeyValueData *pkvd ); 
+	void	KeyValue(KeyValueData *pkvd ); 
 	void	Spawn( void );
 	int		m_iType;
 };
 
 LINK_ENTITY_TO_CLASS(world_items, CWorldItem);
 
-bool CWorldItem::KeyValue(KeyValueData *pkvd)
+void CWorldItem::KeyValue(KeyValueData *pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "type"))
 	{
 		m_iType = atoi(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CBaseEntity::KeyValue( pkvd );
+	else
+		CBaseEntity::KeyValue( pkvd );
 }
 
 void CWorldItem::Spawn( void )
@@ -103,7 +103,7 @@ void CItem::Spawn( void )
 	}
 }
 
-extern bool gEvilImpulse101;
+extern int gEvilImpulse101;
 
 void CItem::ItemTouch( CBaseEntity *pOther )
 {
@@ -158,7 +158,7 @@ CBaseEntity* CItem::Respawn( void )
 
 void CItem::Materialize( void )
 {
-	if ( (pev->effects & EF_NODRAW) != 0 )
+	if ( pev->effects & EF_NODRAW )
 	{
 		// changing from invisible state to visible.
 		EMIT_SOUND_DYN( ENT(pev), CHAN_WEAPON, "items/suitchargeok1.wav", 1, ATTN_NORM, 0, 150 );
@@ -185,10 +185,10 @@ class CItemSuit : public CItem
 	}
 	bool MyTouch( CBasePlayer *pPlayer )
 	{
-		if ( (pPlayer->pev->weapons & (1<<WEAPON_SUIT) ) != 0 )
+		if ( pPlayer->pev->weapons & (1<<WEAPON_SUIT) )
 			return false;
 
-		if ( (pev->spawnflags & SF_SUIT_SHORTLOGON ) != 0 )
+		if ( pev->spawnflags & SF_SUIT_SHORTLOGON )
 			EMIT_SOUND_SUIT(pPlayer->edict(), "!HEV_A0");		// short version of suit logon,
 		else
 			EMIT_SOUND_SUIT(pPlayer->edict(), "!HEV_AAx");	// long version of suit logon
@@ -223,7 +223,7 @@ class CItemBattery : public CItem
 		}
 
 		if ((pPlayer->pev->armorvalue < MAX_NORMAL_BATTERY) &&
-			(pPlayer->pev->weapons & (1<<WEAPON_SUIT)) != 0)
+			(pPlayer->pev->weapons & (1<<WEAPON_SUIT)))
 		{
 			int pct;
 			char szcharge[64];
@@ -322,7 +322,7 @@ class CItemLongJump : public CItem
 			return false;
 		}
 
-		if ( ( pPlayer->pev->weapons & (1<<WEAPON_SUIT) ) != 0 )
+		if ( ( pPlayer->pev->weapons & (1<<WEAPON_SUIT) ) )
 		{
 			pPlayer->m_fLongJump = true;// player now has longjump module
 

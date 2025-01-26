@@ -37,7 +37,7 @@ class CCycler : public CBaseMonster
 public:
 	void GenericCyclerSpawn(char *szModel, Vector vecMin, Vector vecMax);
 	virtual int	ObjectCaps( void ) { return (CBaseEntity :: ObjectCaps() | FCAP_IMPULSE_USE); }
-	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
 	void Spawn( void );
 	void Think( void );
 	//void Pain( float flDamage );
@@ -46,16 +46,16 @@ public:
 	// Don't treat as a live target
 	virtual bool IsAlive( void ) { return false; }
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	bool m_animate;
+	int			m_animate;
 };
 
 TYPEDESCRIPTION	CCycler::m_SaveData[] = 
 {
-	DEFINE_FIELD( CCycler, m_animate, FIELD_BOOLEAN ),
+	DEFINE_FIELD( CCycler, m_animate, FIELD_INTEGER ),
 };
 
 IMPLEMENT_SAVERESTORE( CCycler, CBaseMonster );
@@ -95,7 +95,7 @@ void CCyclerProbe :: Spawn( void )
 
 void CCycler :: GenericCyclerSpawn(char *szModel, Vector vecMin, Vector vecMax)
 {
-	if (!szModel || '\0' == *szModel)
+	if (!szModel || !*szModel)
 	{
 		ALERT(at_error, "cycler at %.0f %.0f %0.f missing modelname", pev->origin.x, pev->origin.y, pev->origin.z );
 		REMOVE_ENTITY(ENT(pev));
@@ -133,12 +133,12 @@ void CCycler :: Spawn( )
 
 	if (pev->sequence != 0 || pev->frame != 0)
 	{
-		m_animate = false;
+		m_animate = 0;
 		pev->framerate = 0;
 	}
 	else
 	{
-		m_animate = true;
+		m_animate = 1;
 	}
 }
 
@@ -186,7 +186,7 @@ void CCycler :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE us
 // CyclerPain , changes sequences when shot
 //
 //void CCycler :: Pain( float flDamage )
-bool CCycler :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+int CCycler :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (m_animate)
 	{
@@ -209,7 +209,7 @@ bool CCycler :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 		ALERT( at_console, "sequence: %d, frame %.0f\n", pev->sequence, pev->frame );
 	}
 
-	return false;
+	return 0;
 }
 
 #endif
@@ -222,15 +222,15 @@ public:
 	void Think( void );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	virtual int	ObjectCaps( void ) { return (CBaseEntity :: ObjectCaps() | FCAP_DONT_SAVE | FCAP_IMPULSE_USE); }
-	virtual bool	TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	virtual int	TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
 	void	Animate( float frames );
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	inline bool		ShouldAnimate( void ) { return m_animate && m_maxFrame > 1.0; }
-	bool		m_animate;
+	inline int		ShouldAnimate( void ) { return m_animate && m_maxFrame > 1.0; }
+	int			m_animate;
 	float		m_lastTime;
 	float		m_maxFrame;
 };
@@ -239,7 +239,7 @@ LINK_ENTITY_TO_CLASS( cycler_sprite, CCyclerSprite );
 
 TYPEDESCRIPTION	CCyclerSprite::m_SaveData[] = 
 {
-	DEFINE_FIELD( CCyclerSprite, m_animate, FIELD_BOOLEAN ),
+	DEFINE_FIELD( CCyclerSprite, m_animate, FIELD_INTEGER ),
 	DEFINE_FIELD( CCyclerSprite, m_lastTime, FIELD_TIME ),
 	DEFINE_FIELD( CCyclerSprite, m_maxFrame, FIELD_FLOAT ),
 };
@@ -256,7 +256,7 @@ void CCyclerSprite::Spawn( void )
 
 	pev->frame			= 0;
 	pev->nextthink		= gpGlobals->time + 0.1;
-	m_animate			= true;
+	m_animate			= 1;
 	m_lastTime			= gpGlobals->time;
 
 	PRECACHE_MODEL( (char *)STRING(pev->model) );
@@ -283,13 +283,13 @@ void CCyclerSprite::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 }
 
 
-bool	CCyclerSprite::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+int	CCyclerSprite::TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if ( m_maxFrame > 1.0 )
 	{
 		Animate( 1.0 );
 	}
-	return true;
+	return 1;
 }
 
 void CCyclerSprite::Animate( float frames )
@@ -310,7 +310,7 @@ class CWeaponCycler : public CBasePlayerWeapon
 public:
 	void Spawn( void );
 	int iItemSlot( void ) { return 1; }
-	bool GetItemInfo(ItemInfo *p) {return false; }
+	int GetItemInfo(ItemInfo *p) {return 0; }
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
@@ -390,8 +390,8 @@ void CWeaponCycler::SecondaryAttack( void )
 // Flaming Wreakage
 class CWreckage : public CBaseMonster
 {
-	bool	Save( CSave &save );
-	bool	Restore( CRestore &restore );
+	int		Save( CSave &save );
+	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn( void );
@@ -419,7 +419,7 @@ void CWreckage::Spawn( void )
 	pev->frame			= 0;
 	pev->nextthink		= gpGlobals->time + 0.1;
 
-	if (!FStringNull(pev->model))
+	if (pev->model)
 	{
 		PRECACHE_MODEL( (char *)STRING(pev->model) );
 		SET_MODEL( ENT(pev), STRING(pev->model) );
@@ -431,7 +431,7 @@ void CWreckage::Spawn( void )
 
 void CWreckage::Precache( )
 {
-	if ( !FStringNull(pev->model) )
+	if ( pev->model )
 		PRECACHE_MODEL( (char *)STRING(pev->model) );
 }
 
@@ -440,7 +440,7 @@ void CWreckage::Think( void )
 	StudioFrameAdvance( );
 	pev->nextthink = gpGlobals->time + 0.2;
 
-	if (0 != pev->dmgtime)
+	if (pev->dmgtime)
 	{
 		if (pev->dmgtime < gpGlobals->time)
 		{

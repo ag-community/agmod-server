@@ -61,9 +61,9 @@ void CGraph :: InitGraph( void)
 
 	// Make the graph unavailable
 	//
-	m_fGraphPresent = 0;
-	m_fGraphPointersSet = 0;
-	m_fRoutingComplete = 0;
+	m_fGraphPresent = false;
+	m_fGraphPointersSet = false;
+	m_fRoutingComplete = false;
 
 	// Free the link pool
 	//
@@ -116,7 +116,7 @@ void CGraph :: InitGraph( void)
 // reasonable number of nodes so we can build the path which
 // will be saved to disk.
 //=========================================================
-bool CGraph :: AllocNodes ( void )
+int CGraph :: AllocNodes ( void )
 {
 //  malloc all of the nodes
 	WorldGraph.m_pNodes = (CNode *)calloc ( sizeof ( CNode ), MAX_NODES );
@@ -164,12 +164,12 @@ entvars_t* CGraph :: LinkEntForLink ( CLink *pLink, CNode *pNode )
 		///!!!UNDONE - check for TOGGLE or STAY open doors here. If a door is in the way, and is 
 		// TOGGLE or STAY OPEN, even monsters that can't open doors can go that way.
 
-		if ( ( pevLinkEnt->spawnflags & SF_DOOR_USE_ONLY ) != 0 )
+		if ( ( pevLinkEnt->spawnflags & SF_DOOR_USE_ONLY ) )
 		{// door is use only, so the door is all the monster has to worry about
 			return pevLinkEnt;
 		}
 
-		while ( true )
+		while ( 1 )
 		{
 			pentTrigger = FIND_ENTITY_BY_TARGET ( pentSearch, STRING( pevLinkEnt->targetname ) );// find the button or trigger
 
@@ -213,13 +213,13 @@ entvars_t* CGraph :: LinkEntForLink ( CLink *pLink, CNode *pNode )
 // Given the monster's capability, determine whether
 // or not the monster can go this way. 
 //=========================================================
-bool	CGraph :: HandleLinkEnt ( int iNode, entvars_t *pevLinkEnt, int afCapMask, NODEQUERY queryType )
+int	CGraph :: HandleLinkEnt ( int iNode, entvars_t *pevLinkEnt, int afCapMask, NODEQUERY queryType )
 {
 	edict_t  *pentWorld;
 	CBaseEntity	*pDoor;
 	TraceResult	tr;
 
-	if ( 0 == m_fGraphPresent || 0 == m_fGraphPointersSet )
+	if ( !m_fGraphPresent || !m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available
 		ALERT ( at_aiconsole, "Graph not ready!\n" );
 		return false;
@@ -238,17 +238,17 @@ bool	CGraph :: HandleLinkEnt ( int iNode, entvars_t *pevLinkEnt, int afCapMask, 
 
 		pDoor = ( CBaseEntity::Instance( pevLinkEnt ) );
 
-		if ( ( pevLinkEnt->spawnflags & SF_DOOR_USE_ONLY ) != 0 ) 
+		if ( ( pevLinkEnt->spawnflags & SF_DOOR_USE_ONLY ) ) 
 		{// door is use only.
 
-			if  ( ( afCapMask & bits_CAP_OPEN_DOORS ) != 0 )
+			if  ( ( afCapMask & bits_CAP_OPEN_DOORS ) )
 			{// let monster right through if he can open doors
 				return true;
 			}
 			else 
 			{
 				// monster should try for it if the door is open and looks as if it will stay that way
-				if ( pDoor->GetToggleState()== TS_AT_TOP && ( pevLinkEnt->spawnflags & SF_DOOR_NO_AUTO_RETURN ) != 0 )
+				if ( pDoor->GetToggleState()== TS_AT_TOP && ( pevLinkEnt->spawnflags & SF_DOOR_NO_AUTO_RETURN ) )
 				{
 					return true;
 				}
@@ -260,13 +260,13 @@ bool	CGraph :: HandleLinkEnt ( int iNode, entvars_t *pevLinkEnt, int afCapMask, 
 		{// door must be opened with a button or trigger field.
 			
 			// monster should try for it if the door is open and looks as if it will stay that way
-			if ( pDoor->GetToggleState() == TS_AT_TOP && ( pevLinkEnt->spawnflags & SF_DOOR_NO_AUTO_RETURN ) != 0 )
+			if ( pDoor->GetToggleState() == TS_AT_TOP && ( pevLinkEnt->spawnflags & SF_DOOR_NO_AUTO_RETURN ) )
 			{
 				return true;
 			}
 			if  ( ( afCapMask & bits_CAP_OPEN_DOORS ) )
 			{
-				if ( ( pevLinkEnt->spawnflags & SF_DOOR_NOMONSTERS ) == 0 || queryType == NODEGRAPH_STATIC )
+				if ( !( pevLinkEnt->spawnflags & SF_DOOR_NOMONSTERS ) || queryType == NODEGRAPH_STATIC )
 					return true;
 			}
 
@@ -587,16 +587,16 @@ int CGraph :: FindShortestPath ( int *piPath, int iStart, int iDest, int iHull, 
 	int		iNumPathNodes;
 	int		iHullMask;
 
-	if ( 0 == m_fGraphPresent || 0 == m_fGraphPointersSet )
+	if ( !m_fGraphPresent || !m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available or built
 		ALERT ( at_aiconsole, "Graph not ready!\n" );
-		return 0;
+		return false;
 	}
 	
 	if ( iStart < 0 || iStart > m_cNodes )
 	{// The start node is bad?
 		ALERT ( at_aiconsole, "Can't build a path, iStart is %d!\n", iStart );
-		return 0;
+		return false;
 	}
 
 	if (iStart == iDest)
@@ -608,7 +608,7 @@ int CGraph :: FindShortestPath ( int *piPath, int iStart, int iDest, int iHull, 
 
 	// Is routing information present.
 	//
-	if (0 != m_fRoutingComplete)
+	if (m_fRoutingComplete)
 	{
 		int iCap = CapIndex( afCapMask );
 
@@ -871,7 +871,7 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
 	int	i;
 	TraceResult tr;
 
-	if ( 0 == m_fGraphPresent || 0 == m_fGraphPointersSet )
+	if ( !m_fGraphPresent || !m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available
 		ALERT ( at_aiconsole, "Graph not ready!\n" );
 		return -1;
@@ -937,7 +937,7 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
     {
         for (j = m_RangeStart[0][i]; j <= m_RangeEnd[0][i]; j++)
         {
-			if ((m_pNodes[m_di[j].m_SortedBy[0]].m_afNodeInfo & afNodeTypes) == 0) continue;
+			if (!(m_pNodes[m_di[j].m_SortedBy[0]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgY = m_pNodes[m_di[j].m_SortedBy[0]].m_Region[1];
 			if (rgY > m_maxBoxY) break;
@@ -954,7 +954,7 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
     {
         for (j = m_RangeStart[1][i]; j <= m_RangeEnd[1][i]; j++)
         {
-			if ((m_pNodes[m_di[j].m_SortedBy[1]].m_afNodeInfo & afNodeTypes) == 0) continue;
+			if (!(m_pNodes[m_di[j].m_SortedBy[1]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgZ = m_pNodes[m_di[j].m_SortedBy[1]].m_Region[2];
             if (rgZ > m_maxBoxZ) break;
@@ -970,7 +970,7 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
     {
         for (j = m_RangeStart[2][i]; j <= m_RangeEnd[2][i]; j++)
         {
-			if ((m_pNodes[m_di[j].m_SortedBy[2]].m_afNodeInfo & afNodeTypes) == 0) continue;
+			if (!(m_pNodes[m_di[j].m_SortedBy[2]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgX = m_pNodes[m_di[j].m_SortedBy[2]].m_Region[0];
             if (rgX > m_maxBoxX) break;
@@ -986,7 +986,7 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
     {
         for (j = m_RangeStart[0][i]; j <= m_RangeEnd[0][i]; j++)
         {
-			if ((m_pNodes[m_di[j].m_SortedBy[0]].m_afNodeInfo & afNodeTypes) == 0) continue;
+			if (!(m_pNodes[m_di[j].m_SortedBy[0]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgY = m_pNodes[m_di[j].m_SortedBy[0]].m_Region[1];
 			if (rgY > m_maxBoxY) break;
@@ -1003,7 +1003,7 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
     {
         for (j = m_RangeStart[1][i]; j <= m_RangeEnd[1][i]; j++)
         {
-			if ((m_pNodes[m_di[j].m_SortedBy[1]].m_afNodeInfo & afNodeTypes) == 0) continue;
+			if (!(m_pNodes[m_di[j].m_SortedBy[1]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgZ = m_pNodes[m_di[j].m_SortedBy[1]].m_Region[2];
             if (rgZ > m_maxBoxZ) break;
@@ -1019,7 +1019,7 @@ int	CGraph :: FindNearestNode ( const Vector &vecOrigin,  int afNodeTypes )
     {
         for (j = m_RangeStart[2][i]; j <= m_RangeEnd[2][i]; j++)
         {
-			if ((m_pNodes[m_di[j].m_SortedBy[2]].m_afNodeInfo & afNodeTypes) == 0) continue;
+			if (!(m_pNodes[m_di[j].m_SortedBy[2]].m_afNodeInfo & afNodeTypes)) continue;
 
 			int rgX = m_pNodes[m_di[j].m_SortedBy[2]].m_Region[0];
             if (rgX > m_maxBoxX) break;
@@ -1087,7 +1087,7 @@ void CGraph :: ShowNodeConnections ( int iNode )
 	CNode	*pLinkNode;
 	int	i;
 
-	if ( 0 == m_fGraphPresent || 0 == m_fGraphPointersSet )
+	if ( !m_fGraphPresent || !m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available or built
 		ALERT ( at_aiconsole, "Graph not ready!\n" );
 		return;
@@ -1157,7 +1157,7 @@ int CGraph :: LinkVisibleNodes ( CLink *pLinkPool, FILE *file, int *piBadNode )
 	if ( m_cNodes <= 0 )
 	{
 		ALERT ( at_aiconsole, "No Nodes!\n" );
-		return 0;
+		return false;
 	}
 
 	// if the file pointer is bad, don't blow up, just don't write the
@@ -1231,7 +1231,7 @@ int CGraph :: LinkVisibleNodes ( CLink *pLinkPool, FILE *file, int *piBadNode )
 							 &tr );
 			
 			
-			if ( 0 != tr.fStartSolid )
+			if ( tr.fStartSolid )
 				continue;
 
 			if ( tr.flFraction != 1.0 )
@@ -1295,13 +1295,13 @@ int CGraph :: LinkVisibleNodes ( CLink *pLinkPool, FILE *file, int *piBadNode )
 				ALERT ( at_aiconsole, "**LinkVisibleNodes:\nNode %d has NodeLinks > MAX_NODE_INITIAL_LINKS", i );
 				fprintf ( file, "** NODE %d HAS NodeLinks > MAX_NODE_INITIAL_LINKS **\n", i );
 				*piBadNode = i;
-				return 0;
+				return	false;
 			}
 			else if ( cTotalLinks > MAX_NODE_INITIAL_LINKS * m_cNodes )
 			{// this is paranoia
 				ALERT ( at_aiconsole, "**LinkVisibleNodes:\nTotalLinks > MAX_NODE_INITIAL_LINKS * NUMNODES" );
 				*piBadNode = i;
-				return 0;
+				return	false;
 			}
 
 			if ( cLinksThisNode == 0 )
@@ -1464,7 +1464,7 @@ void CTestHull :: Spawn( entvars_t *pevMasterNode )
 	pev->health			= 50;
 	pev->yaw_speed		= 8;
 
-	if ( 0 != WorldGraph.m_fGraphPresent )
+	if ( WorldGraph.m_fGraphPresent )
 	{// graph loaded from disk, so we don't need the test hull
 		SetThink ( &CTestHull::SUB_Remove );
 		pev->nextthink = gpGlobals->time;
@@ -1500,21 +1500,21 @@ void CTestHull::DropDelay ( void )
 // nodes start out as ents in the world. As they are spawned,
 // the node info is recorded then the ents are discarded.
 //=========================================================
-bool CNodeEnt :: KeyValue( KeyValueData *pkvd )
+void CNodeEnt :: KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "hinttype"))
 	{
 		m_sHintType = (short)atoi( pkvd->szValue );
-		return true;
+		pkvd->fHandled = true;
 	}
 
 	if (FStrEq(pkvd->szKeyName, "activity"))
 	{
 		m_sHintActivity = (short)atoi( pkvd->szValue );
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CBaseEntity::KeyValue( pkvd );
+	else
+		CBaseEntity::KeyValue( pkvd );
 }
 
 //=========================================================
@@ -1524,7 +1524,7 @@ void CNodeEnt :: Spawn( void )
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_NOT;// always solid_not 
 
-	if ( 0 != WorldGraph.m_fGraphPresent )
+	if ( WorldGraph.m_fGraphPresent )
 	{// graph loaded from disk, so discard all these node ents as soon as they spawn
 		REMOVE_ENTITY( edict() );
 		return;
@@ -1699,7 +1699,7 @@ void CTestHull :: BuildNodeGraph( void )
 	//
 	for ( i = 0; i < WorldGraph.m_cNodes; i++)
 	{
-		if ((WorldGraph.m_pNodes[ i ].m_afNodeInfo & bits_NODE_AIR) != 0)
+		if (WorldGraph.m_pNodes[ i ].m_afNodeInfo & bits_NODE_AIR)
 		{
 			// do nothing
 		}
@@ -1736,7 +1736,7 @@ void CTestHull :: BuildNodeGraph( void )
 			if ( trEnt.flFraction < tr.flFraction )
 			{
 				// If it was a world brush entity, copy the node location
-				if ( trEnt.pHit && (trEnt.pHit->v.flags & FL_WORLDBRUSH) != 0 )
+				if ( trEnt.pHit && (trEnt.pHit->v.flags & FL_WORLDBRUSH) )
 					tr.vecEndPos = trEnt.vecEndPos;
 			}
 
@@ -1747,7 +1747,7 @@ void CTestHull :: BuildNodeGraph( void )
 
 	cPoolLinks = WorldGraph.LinkVisibleNodes( pTempPool, file, &iBadNode );
 	
-	if ( 0 == cPoolLinks )
+	if ( !cPoolLinks )
 	{
 		ALERT ( at_aiconsole, "**ConnectVisibleNodes FAILED!\n" );
 		
@@ -1845,7 +1845,7 @@ void CTestHull :: BuildNodeGraph( void )
 				{
 					int SaveFlags = pev->flags;
 					int MoveMode = WALKMOVE_WORLDONLY;
-					if ((pSrcNode->m_afNodeInfo & bits_NODE_WATER) != 0)
+					if (pSrcNode->m_afNodeInfo & bits_NODE_WATER)
 					{
 						pev->flags |= FL_SWIM;
 						MoveMode = WALKMOVE_NORMAL;
@@ -1855,7 +1855,7 @@ void CTestHull :: BuildNodeGraph( void )
 
 					flDist = ( vecSpot - pev->origin ).Length2D();
 
-					bool fWalkFailed = false;
+					int fWalkFailed = false;
 
 					// in this loop we take tiny steps from the current node to the nodes that it links to, one at a time.
 					// pev->angles.y = flYaw;
@@ -1912,7 +1912,7 @@ void CTestHull :: BuildNodeGraph( void )
 					TraceResult tr;
 
 					UTIL_TraceHull( pSrcNode->m_vecOrigin + Vector( 0, 0, 32 ), pDestNode->m_vecOriginPeek + Vector( 0, 0, 32 ), ignore_monsters, large_hull, ENT( pev ), &tr );
-					if (0 != tr.fStartSolid || tr.flFraction < 1.0)
+					if (tr.fStartSolid || tr.flFraction < 1.0)
 					{
 						pTempPool[ pSrcNode->m_iFirstLink + j ].m_afLinkInfo &= ~bits_LINK_FLY_HULL;
 					}
@@ -2028,7 +2028,7 @@ void CTestHull :: BuildNodeGraph( void )
 	//
 	for ( i = 0 ; i < WorldGraph.m_cNodes ; i++ )
 	{
-		if ((WorldGraph.m_pNodes[ i ].m_afNodeInfo & bits_NODE_LAND) != 0)
+		if ((WorldGraph.m_pNodes[ i ].m_afNodeInfo & bits_NODE_LAND))
 		{
 			WorldGraph.m_pNodes[ i ].m_vecOrigin.z -= NODE_HEIGHT;
 		}
@@ -2047,9 +2047,9 @@ void CTestHull :: BuildNodeGraph( void )
 
 	// We now have some graphing capabilities.
 	//
-	WorldGraph.m_fGraphPresent = 1;//graph is in memory.
-	WorldGraph.m_fGraphPointersSet = 1;// since the graph was generated, the pointers are ready
-	WorldGraph.m_fRoutingComplete = 0; // Optimal routes aren't computed, yet.
+	WorldGraph.m_fGraphPresent = true;//graph is in memory.
+	WorldGraph.m_fGraphPointersSet = true;// since the graph was generated, the pointers are ready
+	WorldGraph.m_fRoutingComplete = false; // Optimal routes aren't computed, yet.
 
 	// Compute and compress the routing information.
 	//
@@ -2071,7 +2071,7 @@ void CTestHull :: PathFind ( void )
 	int	i;
 	CNode	*pNode, *pNextNode;
 
-	if ( 0 == WorldGraph.m_fGraphPresent || 0 == WorldGraph.m_fGraphPointersSet )
+	if ( !WorldGraph.m_fGraphPresent || !WorldGraph.m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available
 		ALERT ( at_aiconsole, "Graph not ready!\n" );
 		return;
@@ -2079,7 +2079,7 @@ void CTestHull :: PathFind ( void )
 
 	iPathSize = WorldGraph.FindShortestPath ( iPath, 0, 19, 0, 0 ); // UNDONE use hull constant
 
-	if ( 0 == iPathSize )
+	if ( !iPathSize )
 	{
 		ALERT ( at_aiconsole, "No Path!\n" );
 		return;
@@ -2293,7 +2293,7 @@ void CQueuePriority::Heap_SiftDown(int iSubRoot)
 void CQueuePriority::Heap_SiftUp(void)
 {
 	int child = m_cSize-1;
-	while (0 != child)
+	while (child)
 	{
 		int parent = HEAP_PARENT(child);
 		if ( m_heap[ parent ].Priority <= m_heap[ child ].Priority )
@@ -2314,7 +2314,7 @@ void CQueuePriority::Heap_SiftUp(void)
 // will be loaded. If file cannot be loaded, the node tree
 // will be created and saved to disk.
 //=========================================================
-bool CGraph :: FLoadGraph ( char *szMapName )
+int CGraph :: FLoadGraph ( char *szMapName )
 {
 	char	szFilename[MAX_PATH];
 	int		iVersion;
@@ -2426,7 +2426,7 @@ bool CGraph :: FLoadGraph ( char *szMapName )
 
 		// Malloc for the routing info.
 		//
-		m_fRoutingComplete = 0;
+		m_fRoutingComplete = false;
 		m_pRouteInfo = (char *)calloc( sizeof(char), m_nRouteInfo );
 		if ( !m_pRouteInfo )
 		{
@@ -2445,7 +2445,7 @@ bool CGraph :: FLoadGraph ( char *szMapName )
 		if (length < 0) goto ShortFile;
 		memcpy(m_pRouteInfo, pMemFile, sizeof(char)*m_nRouteInfo);
 		pMemFile += sizeof(char)*m_nRouteInfo;
-		m_fRoutingComplete = 1;
+		m_fRoutingComplete = true;;
 
 		// malloc for the hash links
 		//
@@ -2465,8 +2465,8 @@ bool CGraph :: FLoadGraph ( char *szMapName )
 
 		// Set the graph present flag, clear the pointers set flag
 		//
-		m_fGraphPresent = 1;
-		m_fGraphPointersSet = 0;
+		m_fGraphPresent = true;
+		m_fGraphPointersSet = false;
 		
 		FREE_FILE(aMemFile);
 
@@ -2488,14 +2488,14 @@ NoMemory:
 // CGraph - FSaveGraph - It's not rocket science.
 // this WILL overwrite existing files.
 //=========================================================
-bool CGraph :: FSaveGraph ( char *szMapName )
+int CGraph :: FSaveGraph ( char *szMapName )
 {
 	
 	int		iVersion = GRAPH_VERSION;
 	char	szFilename[MAX_PATH];
 	FILE	*file;
 
-	if ( 0 == m_fGraphPresent || 0 == m_fGraphPointersSet )
+	if ( !m_fGraphPresent || !m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available or built
 		ALERT ( at_aiconsole, "Graph not ready!\n" );
 		return false;
@@ -2539,12 +2539,12 @@ bool CGraph :: FSaveGraph ( char *szMapName )
 
 		// Write the route info.
 		//
-		if ( m_pRouteInfo && 0 != m_nRouteInfo )
+		if ( m_pRouteInfo && m_nRouteInfo )
 		{
 			fwrite ( m_pRouteInfo, sizeof( char ), m_nRouteInfo, file );
 		}
 
-		if (m_pHashLinks && 0 != m_nHashLinks)
+		if (m_pHashLinks && m_nHashLinks)
 		{
 			fwrite(m_pHashLinks, sizeof(short), m_nHashLinks, file);
 		}
@@ -2560,7 +2560,7 @@ bool CGraph :: FSaveGraph ( char *szMapName )
 // this is done after loading the graph from disk, whereupon
 // the pointers are not valid.
 //=========================================================
-bool CGraph :: FSetGraphPointers ( void )
+int CGraph :: FSetGraphPointers ( void )
 {
 	int	i;
 	edict_t	*pentLinkEnt;
@@ -2600,7 +2600,7 @@ bool CGraph :: FSetGraphPointers ( void )
 	}
 
 	// the pointers are now set.
-	m_fGraphPointersSet = 1;
+	m_fGraphPointersSet = true;
 	return true;
 }
 
@@ -2619,9 +2619,9 @@ bool CGraph :: FSetGraphPointers ( void )
 // though. ( I now suspect that we are getting GMT back from
 // these functions and must compensate for local time ) (sjb)
 //=========================================================
-bool CGraph :: CheckNODFile ( char *szMapName )
+int CGraph :: CheckNODFile ( char *szMapName )
 {
-	bool 		retValue;
+	int 		retValue;
 
 	char		szBspFilename[MAX_PATH];
 	char		szGraphFilename[MAX_PATH];
@@ -3149,7 +3149,7 @@ void CGraph :: ComputeStaticRoutingTables( void )
 						bool CanRepeat = ((BestNextNodes[i] == iLastNode) && cRepeats < 127);
 						bool CanSequence = (BestNextNodes[i] == i && cSequence < 128);
 
-						if (0 != cRepeats)
+						if (cRepeats)
 						{
 							if (CanRepeat)
 							{
@@ -3196,7 +3196,7 @@ void CGraph :: ComputeStaticRoutingTables( void )
 								}
 							}
 						}
-						else if (0 != cSequence)
+						else if (cSequence)
 						{
 							if (CanSequence)
 							{
@@ -3246,7 +3246,7 @@ void CGraph :: ComputeStaticRoutingTables( void )
 						}
 						iLastNode = BestNextNodes[i];
 					}
-					if (0 != cRepeats)
+					if (cRepeats)
 					{
 						// Emit the repeat phrase.
 						//
@@ -3277,7 +3277,7 @@ void CGraph :: ComputeStaticRoutingTables( void )
 							ALERT( at_aiconsole, "Nodes need sorting (%d,%d)!\n", iLastNode, iFrom);
 						}
 					}
-					if (0 != cSequence)
+					if (cSequence)
 					{
 						// Emit the Sequence phrase.
 						//
@@ -3339,7 +3339,7 @@ void CGraph :: ComputeStaticRoutingTables( void )
 #if 0
 	TestRoutingTables();
 #endif
-	m_fRoutingComplete = 1;
+	m_fRoutingComplete = true;
 }
 
 // Test those routing tables. Doesn't really work, yet.
@@ -3370,9 +3370,9 @@ void CGraph :: TestRoutingTables( void )
 				{
 					for (int iTo = 0; iTo < m_cNodes; iTo++)
 					{
-						m_fRoutingComplete = 0;
+						m_fRoutingComplete = false;
 						int cPathSize1 = FindShortestPath(pMyPath, iFrom, iTo, iHull, iCapMask);
-						m_fRoutingComplete = 1;
+						m_fRoutingComplete = true;
 						int cPathSize2 = FindShortestPath(pMyPath2, iFrom, iTo, iHull, iCapMask);
 
 						// Unless we can look at the entire path, we can verify that it's correct.
@@ -3448,9 +3448,9 @@ void CGraph :: TestRoutingTables( void )
 								ALERT(at_aiconsole, "%d ", pMyPath2[i]);
 							}
 							ALERT(at_aiconsole, "\n");
-							m_fRoutingComplete = 0;
+							m_fRoutingComplete = false;
 							cPathSize1 = FindShortestPath(pMyPath, iFrom, iTo, iHull, iCapMask);
-							m_fRoutingComplete = 1;
+							m_fRoutingComplete = true;
 							cPathSize2 = FindShortestPath(pMyPath2, iFrom, iTo, iHull, iCapMask);
 							goto EnoughSaid;
 						}
@@ -3507,7 +3507,7 @@ LINK_ENTITY_TO_CLASS( node_viewer_large, CNodeViewer );
 
 void CNodeViewer::Spawn( )
 {
-	if ( 0 == WorldGraph.m_fGraphPresent || 0 == WorldGraph.m_fGraphPointersSet )
+	if ( !WorldGraph.m_fGraphPresent || !WorldGraph.m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available or built
 		ALERT ( at_console, "Graph not ready!\n" );
 		UTIL_Remove( this );

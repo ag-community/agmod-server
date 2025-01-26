@@ -47,7 +47,7 @@ void PM_ShowClipBox( void )
 	vec3_t org;
 	vec3_t offset = { 0, 0, 0 };
 
-	if ( 0 == pmove->runfuncs )
+	if ( !pmove->runfuncs )
 		return;
 
 	// More debugging, draw the particle bbox for player and for the entity we are looking directly at.
@@ -62,7 +62,7 @@ void PM_ShowClipBox( void )
 
 	VectorCopy( pmove->origin, org );
 
-	if ( 0 != pmove->server )
+	if ( pmove->server )
 	{
 		VectorAdd( org, offset, org );
 	}
@@ -72,9 +72,9 @@ void PM_ShowClipBox( void )
 	}
 
 	// Show our BBOX in particles.
-	PM_DrawBBox( pmove->player_mins[pmove->usehull], pmove->player_maxs[pmove->usehull], org, 0 != pmove->server ? 132 : 0, 0.1 );
+	PM_DrawBBox( pmove->player_mins[pmove->usehull], pmove->player_maxs[pmove->usehull], org, pmove->server ? 132 : 0, 0.1 );
 
-	PM_ParticleLine( org, org, 0 != pmove->server ? 132 : 0, 0.1, 5.0 );
+	PM_ParticleLine( org, org, pmove->server ? 132 : 0, 0.1, 5.0 );
 /*
 	{
 		int i;
@@ -165,9 +165,9 @@ void PM_DrawPhysEntBBox(int num, int pcolor, float life)
 		pmove->PM_GetModelBounds( pe->model, modelmins, modelmaxs );
 		for (j = 0; j < 8; j++)
 		{
-			tmp[0] = (j & 1) != 0 ? modelmins[0] - gap : modelmaxs[0] + gap;
-			tmp[1] = (j & 2) != 0 ? modelmins[1] - gap : modelmaxs[1] + gap;
-			tmp[2] = (j & 4) != 0 ? modelmins[2] - gap : modelmaxs[2] + gap;
+			tmp[0] = (j & 1) ? modelmins[0] - gap : modelmaxs[0] + gap;
+			tmp[1] = (j & 2) ? modelmins[1] - gap : modelmaxs[1] + gap;
+			tmp[2] = (j & 4) ? modelmins[2] - gap : modelmaxs[2] + gap;
 
 			VectorCopy(tmp, p[j]);
 		}
@@ -205,9 +205,9 @@ void PM_DrawPhysEntBBox(int num, int pcolor, float life)
 	{
 		for (j = 0; j < 8; j++)
 		{
-			tmp[0] = (j & 1) != 0 ? pe->mins[0] : pe->maxs[0];
-			tmp[1] = (j & 2) != 0 ? pe->mins[1] : pe->maxs[1];
-			tmp[2] = (j & 4) != 0 ? pe->mins[2] : pe->maxs[2];
+			tmp[0] = (j & 1) ? pe->mins[0] : pe->maxs[0];
+			tmp[1] = (j & 2) ? pe->mins[1] : pe->maxs[1];
+			tmp[2] = (j & 4) ? pe->mins[2] : pe->maxs[2];
 
 			VectorAdd(tmp, pe->origin, tmp);
 			VectorCopy(tmp, p[j]);
@@ -242,9 +242,9 @@ void PM_DrawBBox(vec3_t mins, vec3_t maxs, vec3_t origin, int pcolor, float life
 
 	for (j = 0; j < 8; j++)
 	{
-		tmp[0] = (j & 1) != 0 ? mins[0] - gap : maxs[0] + gap;
-		tmp[1] = (j & 2) != 0 ? mins[1] - gap : maxs[1] + gap ;
-		tmp[2] = (j & 4) != 0 ? mins[2] - gap : maxs[2] + gap ;
+		tmp[0] = (j & 1) ? mins[0] - gap : maxs[0] + gap;
+		tmp[1] = (j & 2) ? mins[1] - gap : maxs[1] + gap ;
+		tmp[2] = (j & 4) ? mins[2] - gap : maxs[2] + gap ;
 
 		VectorAdd(tmp, origin, tmp);
 		VectorCopy(tmp, p[j]);

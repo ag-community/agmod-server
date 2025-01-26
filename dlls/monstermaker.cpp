@@ -36,15 +36,15 @@ class CMonsterMaker : public CBaseMonster
 public:
 	void Spawn( void );
 	void Precache( void );
-	bool KeyValue( KeyValueData* pkvd);
+	void KeyValue( KeyValueData* pkvd);
 	void EXPORT ToggleUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	void EXPORT CyclicUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	void EXPORT MakerThink ( void );
 	void DeathNotice ( entvars_t *pevChild );// monster maker children use this to tell the monster maker that they have died.
 	void MakeMonster( void );
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 
 	static	TYPEDESCRIPTION m_SaveData[];
 	
@@ -78,26 +78,26 @@ TYPEDESCRIPTION	CMonsterMaker::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE( CMonsterMaker, CBaseMonster );
 
-bool CMonsterMaker :: KeyValue( KeyValueData *pkvd )
+void CMonsterMaker :: KeyValue( KeyValueData *pkvd )
 {
 	
 	if ( FStrEq(pkvd->szKeyName, "monstercount") )
 	{
 		m_cNumMonsters = atoi(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "m_imaxlivechildren") )
 	{
 		m_iMaxLiveChildren = atoi(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "monstertype") )
 	{
 		m_iszMonsterClassname = ALLOC_STRING( pkvd->szValue );
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CBaseMonster::KeyValue( pkvd );
+	else
+		CBaseMonster::KeyValue( pkvd );
 }
 
 
@@ -109,7 +109,7 @@ void CMonsterMaker :: Spawn( )
 	Precache();
 	if ( !FStringNull ( pev->targetname ) )
 	{
-		if ( (pev->spawnflags & SF_MONSTERMAKER_CYCLIC) != 0 )
+		if ( pev->spawnflags & SF_MONSTERMAKER_CYCLIC )
 		{
 			SetUse ( &CMonsterMaker::CyclicUse );// drop one monster each time we fire
 		}
@@ -168,7 +168,7 @@ void CMonsterMaker::MakeMonster( void )
 		return;
 	}
 
-	if ( 0 == m_flGround )
+	if ( !m_flGround )
 	{
 		// set altitude. Now that I'm activated, any breakables, etc should be out from under me. 
 		TraceResult tr;
@@ -184,7 +184,7 @@ void CMonsterMaker::MakeMonster( void )
 
 	CBaseEntity *pList[2];
 	int count = UTIL_EntitiesInBox( pList, 2, mins, maxs, FL_CLIENT|FL_MONSTER );
-	if ( 0 != count )
+	if ( count )
 	{
 		// don't build a stack of monsters!
 		return;
@@ -211,7 +211,7 @@ void CMonsterMaker::MakeMonster( void )
 	SetBits( pevCreate->spawnflags, SF_MONSTER_FALL_TO_GROUND );
 
 	// Children hit monsterclip brushes
-	if ( (pev->spawnflags & SF_MONSTERMAKER_MONSTERCLIP) != 0 )
+	if ( pev->spawnflags & SF_MONSTERMAKER_MONSTERCLIP )
 		SetBits( pevCreate->spawnflags, SF_MONSTER_HITMONSTERCLIP );
 
 	DispatchSpawn( ENT( pevCreate ) );

@@ -90,7 +90,7 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 	bool CheckRangeAttack1 ( float flDot, float flDist );
 	bool CheckRangeAttack2 ( float flDot, float flDist );
-	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 
 	virtual float GetDamageAmount( void ) { return gSkillData.headcrabDmgBite; }
 	virtual int GetVoicePitch( void ) { return 100; }
@@ -342,7 +342,7 @@ void CHeadCrab :: RunTask ( Task_t *pTask )
 //=========================================================
 void CHeadCrab :: LeapTouch ( CBaseEntity *pOther )
 {
-	if ( 0 == pOther->pev->takedamage )
+	if ( !pOther->pev->takedamage )
 	{
 		return;
 	}
@@ -424,10 +424,10 @@ bool CHeadCrab :: CheckRangeAttack2 ( float flDot, float flDist )
 #endif
 }
 
-bool CHeadCrab :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+int CHeadCrab :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	// Don't take any acid damage -- BigMomma's mortar is acid
-	if ( (bitsDamageType & DMG_ACID) != 0 )
+	if ( bitsDamageType & DMG_ACID )
 		flDamage = 0;
 
 	return CBaseMonster::TakeDamage( pevInflictor, pevAttacker, flDamage, bitsDamageType );
@@ -521,9 +521,9 @@ void CBabyCrab :: SetYawSpeed ( void )
 
 bool CBabyCrab :: CheckRangeAttack1( float flDot, float flDist )
 {
-	if ( (pev->flags & FL_ONGROUND) != 0 )
+	if ( pev->flags & FL_ONGROUND )
 	{
-		if ( pev->groundentity && (pev->groundentity->v.flags & (FL_CLIENT|FL_MONSTER)) != 0)
+		if ( pev->groundentity && (pev->groundentity->v.flags & (FL_CLIENT|FL_MONSTER)) )
 			return true;
 
 		// A little less accurate, but jump from closer

@@ -39,25 +39,25 @@ class CPathTrack : public CPointEntity
 public:
 	void		Spawn( void );
 	void		Activate( void );
-	bool		KeyValue( KeyValueData* pkvd);
+	void		KeyValue( KeyValueData* pkvd);
 	
 	void		SetPrevious( CPathTrack *pprevious );
 	void		Link( void );
 	void		Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
-	CPathTrack	*ValidPath( CPathTrack *ppath, bool testFlag );		// Returns ppath if enabled, NULL otherwise
+	CPathTrack	*ValidPath( CPathTrack *ppath, int testFlag );		// Returns ppath if enabled, NULL otherwise
 	void		Project( CPathTrack *pstart, CPathTrack *pend, Vector *origin, float dist );
 
 	static CPathTrack *Instance( edict_t *pent );
 
-	CPathTrack	*LookAhead( Vector *origin, float dist, bool move );
+	CPathTrack	*LookAhead( Vector *origin, float dist, int move );
 	CPathTrack	*Nearest( Vector origin );
 
 	CPathTrack	*GetNext( void );
 	CPathTrack	*GetPrevious( void );
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 #if PATH_SPARKLE_DEBUG
@@ -80,7 +80,7 @@ public:
 
 	void Blocked( CBaseEntity *pOther );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	bool KeyValue( KeyValueData* pkvd );
+	void KeyValue( KeyValueData* pkvd );
 
 	void EXPORT Next( void );
 	void EXPORT Find( void );
@@ -98,8 +98,8 @@ public:
 	
 	static CFuncTrackTrain *Instance( edict_t *pent );
 
-	virtual bool	Save( CSave &save );
-	virtual bool 	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 	virtual int	ObjectCaps( void ) { return (CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DIRECTIONAL_USE; }
@@ -114,7 +114,7 @@ public:
 	float		m_startSpeed;
 	Vector		m_controlMins;
 	Vector		m_controlMaxs;
-	bool		m_soundPlaying;
+	int			m_soundPlaying;
 	int			m_sounds;
 	float		m_flVolume;
 	float		m_flBank;

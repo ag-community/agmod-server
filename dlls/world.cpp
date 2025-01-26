@@ -40,7 +40,7 @@ extern CSoundEnt *pSoundEnt;
 
 DLL_GLOBAL edict_t				*g_pBodyQueueHead;
 CGlobalState					gGlobalState;
-extern DLL_GLOBAL	bool			gDisplayTitle;
+extern DLL_GLOBAL	int			gDisplayTitle;
 
 extern void W_Precache(void);
 
@@ -106,7 +106,7 @@ class CDecal : public CBaseEntity
 {
 public:
 	void	Spawn( void );
-	bool	KeyValue( KeyValueData *pkvd );
+	void	KeyValue( KeyValueData *pkvd );
 	void	EXPORT StaticDecal( void );
 	void	EXPORT TriggerDecal( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 };
@@ -116,7 +116,7 @@ LINK_ENTITY_TO_CLASS( infodecal, CDecal );
 // UNDONE:  These won't get sent to joining players in multi-player
 void CDecal :: Spawn( void )
 {
-	if ( pev->skin < 0 || ((0 != gpGlobals->deathmatch && CVAR_GET_FLOAT("sv_singleplayer") == 0.0f) && FBitSet( pev->spawnflags, SF_DECAL_NOTINDEATHMATCH )) )
+	if ( pev->skin < 0 || ((gpGlobals->deathmatch && CVAR_GET_FLOAT("sv_singleplayer") == 0.0f) && FBitSet( pev->spawnflags, SF_DECAL_NOTINDEATHMATCH )) )
 	{
 		REMOVE_ENTITY(ENT(pev));
 		return;
@@ -153,7 +153,7 @@ void CDecal :: TriggerDecal ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 		WRITE_SHORT( (int)pev->skin );
 		entityIndex = (short)ENTINDEX(trace.pHit);
 		WRITE_SHORT( entityIndex );
-		if ( 0 != entityIndex )
+		if ( entityIndex )
 			WRITE_SHORT( (int)VARS(trace.pHit)->modelindex );
 	MESSAGE_END();
 
@@ -170,7 +170,7 @@ void CDecal :: StaticDecal( void )
 	UTIL_TraceLine( pev->origin - Vector(5,5,5), pev->origin + Vector(5,5,5),  ignore_monsters, ENT(pev), &trace );
 
 	entityIndex = (short)ENTINDEX(trace.pHit);
-	if ( 0 != entityIndex )
+	if ( entityIndex )
 		modelIndex = (int)VARS(trace.pHit)->modelindex;
 	else
 		modelIndex = 0;
@@ -181,22 +181,19 @@ void CDecal :: StaticDecal( void )
 }
 
 
-bool CDecal :: KeyValue( KeyValueData *pkvd )
+void CDecal :: KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "texture"))
 	{
 		pev->skin = DECAL_INDEX( pkvd->szValue );
 		
 		// Found
-		if (pev->skin < 0)
-		{
-			ALERT( at_console, "Can't find decal %s\n", pkvd->szValue );
-		}
-
-		return true;
+		if ( pev->skin >= 0 )
+			return;
+		ALERT( at_console, "Can't find decal %s\n", pkvd->szValue );
 	}
-	
-	return CBaseEntity::KeyValue( pkvd );
+	else
+		CBaseEntity::KeyValue( pkvd );
 }
 
 
@@ -233,7 +230,7 @@ static void InitBodyQue(void)
 //
 void CopyToBodyQue(entvars_t *pev) 
 {
-	if ((pev->effects & EF_NODRAW) != 0)
+	if (pev->effects & EF_NODRAW)
 		return;
 
 	entvars_t *pevHead	= VARS(g_pBodyQueueHead);
@@ -277,7 +274,7 @@ void CGlobalState::Reset( void )
 
 globalentity_t *CGlobalState :: Find( string_t globalname )
 {
-	if ( FStringNull(globalname ))
+	if ( !globalname )
 		return NULL;
 
 	globalentity_t *pTest;
@@ -372,27 +369,27 @@ TYPEDESCRIPTION	gGlobalEntitySaveData[] =
 };
 
 
-bool CGlobalState::Save( CSave &save )
+int CGlobalState::Save( CSave &save )
 {
 	int i;
 	globalentity_t *pEntity;
 
 	if ( !save.WriteFields( "GLOBAL", this, m_SaveData, ARRAYSIZE(m_SaveData) ) )
-		return false;
+		return 0;
 	
 	pEntity = m_pList;
 	for ( i = 0; i < m_listCount && pEntity; i++ )
 	{
 		if ( !save.WriteFields( "GENT", pEntity, gGlobalEntitySaveData, ARRAYSIZE(gGlobalEntitySaveData) ) )
-			return false;
+			return 0;
 
 		pEntity = pEntity->pNext;
 	}
 	
-	return true;
+	return 1;
 }
 
-bool CGlobalState::Restore( CRestore &restore )
+int CGlobalState::Restore( CRestore &restore )
 {
 	int i, listCount;
 	globalentity_t tmpEntity;
@@ -400,7 +397,7 @@ bool CGlobalState::Restore( CRestore &restore )
 
 	ClearStates();
 	if ( !restore.ReadFields( "GLOBAL", this, m_SaveData, ARRAYSIZE(m_SaveData) ) )
-		return false;
+		return 0;
 	
 	listCount = m_listCount;	// Get new list count
 	m_listCount = 0;				// Clear loaded data
@@ -408,10 +405,10 @@ bool CGlobalState::Restore( CRestore &restore )
 	for ( i = 0; i < listCount; i++ )
 	{
 		if ( !restore.ReadFields( "GENT", &tmpEntity, gGlobalEntitySaveData, ARRAYSIZE(gGlobalEntitySaveData) ) )
-			return false;
+			return 0;
 		EntityAdd( MAKE_STRING(tmpEntity.name), MAKE_STRING(tmpEntity.levelName), tmpEntity.state );
 	}
-	return true;
+	return 1;
 }
 
 void CGlobalState::EntityUpdate( string_t globalname, string_t mapname )
@@ -642,7 +639,7 @@ void CWorld :: Precache( void )
 	else
 		CVAR_SET_FLOAT( "sv_zmax", 4096 );
 
-	if ( !FStringNull(pev->netname ))
+	if ( pev->netname )
 	{
 		ALERT( at_aiconsole, "Chapter title: %s\n", STRING(pev->netname) );
 		CBaseEntity *pEntity = CBaseEntity::Create( "env_message", g_vecZero, g_vecZero, NULL );
@@ -657,18 +654,18 @@ void CWorld :: Precache( void )
 	}
 	
 	// TODO: move this to before InstallGameRules()?
-	if ( (pev->spawnflags & SF_WORLD_DARK ) != 0)
+	if ( pev->spawnflags & SF_WORLD_DARK )
 		CVAR_SET_FLOAT( "v_dark", 1.0 );
 	else
 		CVAR_SET_FLOAT( "v_dark", 0.0 );
 
-	if ( (pev->spawnflags & SF_WORLD_TITLE ) != 0)
+	if ( pev->spawnflags & SF_WORLD_TITLE )
 		gDisplayTitle = true;		// display the game title if this key is set
 	else
 		gDisplayTitle = false;
 
 	// TODO: move this to before InstallGameRules()?
-	if ( (pev->spawnflags & SF_WORLD_FORCETEAM ) != 0)
+	if ( pev->spawnflags & SF_WORLD_FORCETEAM )
 	{
 		CVAR_SET_FLOAT( "mp_defaultteam", 1 );
 	}
@@ -682,63 +679,63 @@ void CWorld :: Precache( void )
 //
 // Just to ignore the "wad" field.
 //
-bool CWorld :: KeyValue( KeyValueData *pkvd )
+void CWorld :: KeyValue( KeyValueData *pkvd )
 {
 	if ( FStrEq(pkvd->szKeyName, "skyname") )
 	{
 		// Sent over net now.
 		CVAR_SET_STRING( "sv_skyname", pkvd->szValue );
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "sounds") )
 	{
 		gpGlobals->cdAudioTrack = atoi(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "WaveHeight") )
 	{
 		// Sent over net now.
 		pev->scale = atof(pkvd->szValue) * (1.0/8.0);
+		pkvd->fHandled = true;
 		CVAR_SET_FLOAT( "sv_wateramp", pev->scale );
-		return true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "MaxRange") )
 	{
 		pev->speed = atof(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "chaptertitle") )
 	{
 		pev->netname = ALLOC_STRING(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "startdark") )
 	{
 		// UNDONE: This is a gross hack!!! The CVAR is NOT sent over the client/sever link
 		// but it will work for single player
 		int flag = atoi(pkvd->szValue);
-		if ( 0 != flag )
+		pkvd->fHandled = true;
+		if ( flag )
 			pev->spawnflags |= SF_WORLD_DARK;
-		return true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "newunit") )
 	{
 		// Single player only.  Clear save directory if set
 		if ( atoi(pkvd->szValue) )
 			CVAR_SET_FLOAT( "sv_newunit", 1 );
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "gametitle") )
 	{
 		if ( atoi(pkvd->szValue) )
 			pev->spawnflags |= SF_WORLD_TITLE;
 
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "mapteams") )
 	{
 		pev->team = ALLOC_STRING( pkvd->szValue );
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "defaultteam") )
 	{
@@ -746,8 +743,8 @@ bool CWorld :: KeyValue( KeyValueData *pkvd )
 		{
 			pev->spawnflags |= SF_WORLD_FORCETEAM;
 		}
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CBaseEntity::KeyValue( pkvd );
+	else
+		CBaseEntity::KeyValue( pkvd );
 }

@@ -21,7 +21,7 @@
 #include "monsterevent.h"
 #endif
 
-extern bool IsSoundEvent( int eventNumber );
+extern int IsSoundEvent( int eventNumber );
 
 int LookupActivity( void *pmodel, entvars_t *pev, int activity );
 int LookupActivityHeaviest( void *pmodel, entvars_t *pev, int activity );
@@ -38,7 +38,7 @@ void SetBodygroup( void *pmodel, entvars_t *pev, int iGroup, int iValue );
 int GetBodygroup( void *pmodel, entvars_t *pev, int iGroup );
 
 int GetAnimationEvent( void *pmodel, entvars_t *pev, MonsterEvent_t *pMonsterEvent, float flStart, float flEnd, int index );
-bool ExtractBbox( void *pmodel, int sequence, float *mins, float *maxs );
+int ExtractBbox( void *pmodel, int sequence, float *mins, float *maxs );
 
 // From /engine/studio.h
 #define STUDIO_LOOPING		0x0001

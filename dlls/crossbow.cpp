@@ -104,7 +104,7 @@ void CCrossbowBolt::BoltTouch( CBaseEntity *pOther )
 	SetTouch( NULL );
 	SetThink( NULL );
 
-	if (0 != pOther->pev->takedamage)
+	if (pOther->pev->takedamage)
 	{
 		TraceResult tr = UTIL_GetGlobalTrace( );
 		entvars_t	*pevOwner;
@@ -250,7 +250,7 @@ void CCrossbow::Spawn( )
 	FallInit();// get ready to fall down.
 }
 
-bool CCrossbow::AddToPlayer( CBasePlayer *pPlayer )
+int CCrossbow::AddToPlayer( CBasePlayer *pPlayer )
 {
 	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
 	{
@@ -278,7 +278,7 @@ void CCrossbow::Precache( void )
 }
 
 
-bool CCrossbow::GetItemInfo(ItemInfo *p)
+int CCrossbow::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "bolts";
@@ -291,13 +291,13 @@ bool CCrossbow::GetItemInfo(ItemInfo *p)
 	p->iId = WEAPON_CROSSBOW;
 	p->iFlags = 0;
 	p->iWeight = CROSSBOW_WEIGHT;
-	return true;
+	return 1;
 }
 
 
 bool CCrossbow::Deploy( )
 {
-	if (0 != m_iClip)
+	if (m_iClip)
 		return DefaultDeploy( "models/v_crossbow.mdl", "models/p_crossbow.mdl", CROSSBOW_DRAW1, "bow" );
 	return DefaultDeploy( "models/v_crossbow.mdl", "models/p_crossbow.mdl", CROSSBOW_DRAW2, "bow" );
 }
@@ -312,7 +312,7 @@ void CCrossbow::Holster( int skiplocal /* = 0 */ )
 	}
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
-	if (0 != m_iClip)
+	if (m_iClip)
 		SendWeaponAnim( CROSSBOW_HOLSTER1 );
 	else
 		SendWeaponAnim( CROSSBOW_HOLSTER2 );
@@ -385,7 +385,7 @@ void CCrossbow::FireSniperBolt()
 	UTIL_TraceLine(vecSrc, vecSrc + vecDir * 8192, dont_ignore_monsters, m_pPlayer->edict(), &tr);
 
 #ifndef CLIENT_DLL
-	if ( 0 != tr.pHit->v.takedamage )
+	if ( tr.pHit->v.takedamage )
 	{
 #ifndef CLIENT_WEAPONS
 		switch (RANDOM_LONG(0, 1))
@@ -506,7 +506,7 @@ void CCrossbow::FireBolt()
 	pBolt->pev->avelocity.z = 10;
 #endif
 
-	if (0 == m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
+	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", false, 0);
 
@@ -591,7 +591,7 @@ void CCrossbow::WeaponIdle( void )
 		float flRand = UTIL_SharedRandomFloat( m_pPlayer->random_seed, 0, 1 );
 		if (flRand <= 0.75)
 		{
-			if (0 != m_iClip)
+			if (m_iClip)
 			{
 				SendWeaponAnim( CROSSBOW_IDLE1 );
 			}
@@ -603,7 +603,7 @@ void CCrossbow::WeaponIdle( void )
 		}
 		else
 		{
-			if (0 != m_iClip)
+			if (m_iClip)
 			{
 				SendWeaponAnim( CROSSBOW_FIDGET1 );
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 90.0 / 30.0;

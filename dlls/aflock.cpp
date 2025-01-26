@@ -36,11 +36,11 @@ class CFlockingFlyerFlock : public CBaseMonster
 public:
 	void Spawn( void );
 	void Precache( void );
-	bool KeyValue( KeyValueData *pkvd );
+	void KeyValue( KeyValueData *pkvd );
 	void SpawnFlock( void );
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// Sounds are shared by the flock
@@ -82,12 +82,12 @@ public:
 	bool FPathBlocked( void );
 	//void KeyValue( KeyValueData *pkvd );
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	bool IsLeader( void ) { return m_pSquadLeader == this; }
-	bool InSquad( void ) { return m_pSquadLeader != NULL; }
+	int IsLeader( void ) { return m_pSquadLeader == this; }
+	int	InSquad( void ) { return m_pSquadLeader != NULL; }
 	int	SquadCount( void );
 	void SquadRemove( CFlockingFlyer *pRemove );
 	void SquadUnlink( void );
@@ -130,20 +130,18 @@ IMPLEMENT_SAVERESTORE( CFlockingFlyer, CBaseMonster );
 
 //=========================================================
 //=========================================================
-bool CFlockingFlyerFlock :: KeyValue( KeyValueData *pkvd )
+void CFlockingFlyerFlock :: KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "iFlockSize"))
 	{
 		m_cFlockSize = atoi(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "flFlockRadius"))
 	{
 		m_flFlockRadius = atof(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
-
-	return false;
 }
 
 //=========================================================

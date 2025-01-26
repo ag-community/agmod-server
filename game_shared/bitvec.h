@@ -22,8 +22,8 @@ class CBitVecAccessor
 public:
 				CBitVecAccessor(uint32 *pDWords, int iBit);
 
-	void		operator=(bool val);
-				operator bool();
+	void		operator=(int val);
+				operator uint32();
 
 private:
 	uint32	*m_pDWords;
@@ -60,7 +60,7 @@ public:
 
 private:
 
-	enum {NUM_DWORDS = NUM_BITS/32 + (NUM_BITS & 31) != 0 ? 1 : 0};
+	enum {NUM_DWORDS = NUM_BITS/32 + !!(NUM_BITS & 31)};
 	uint32	m_DWords[NUM_DWORDS];
 };
 
@@ -77,7 +77,7 @@ inline CBitVecAccessor::CBitVecAccessor(uint32 *pDWords, int iBit)
 }
 
 
-inline void CBitVecAccessor::operator=(bool val)
+inline void CBitVecAccessor::operator=(int val)
 {
 	if(val)
 		m_pDWords[m_iBit >> 5] |= (1 << (m_iBit & 31));
@@ -85,9 +85,9 @@ inline void CBitVecAccessor::operator=(bool val)
 		m_pDWords[m_iBit >> 5] &= ~(uint32)(1 << (m_iBit & 31));
 }
 
-inline CBitVecAccessor::operator bool()
+inline CBitVecAccessor::operator uint32()
 {
-	return (m_pDWords[m_iBit >> 5] & (1 << (m_iBit & 31))) != 0;
+	return m_pDWords[m_iBit >> 5] & (1 << (m_iBit & 31));
 }
 
 

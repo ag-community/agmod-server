@@ -204,7 +204,7 @@ public:
 	void Precache( void );
 	void SetYawSpeed( void );
 	int  Classify ( void );
-	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 
@@ -239,8 +239,8 @@ public:
 
 	void FlameDamage( Vector vecStart, Vector vecEnd, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType );
 
-	virtual bool	Save( CSave &save );
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	CUSTOM_SCHEDULES;
@@ -834,7 +834,7 @@ void CGargantua::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vec
 	}
 
 	// UNDONE: Hit group specific damage?
-	if ( (bitsDamageType & (GARG_DAMAGE|DMG_BLAST)) != 0 )
+	if ( bitsDamageType & (GARG_DAMAGE|DMG_BLAST) )
 	{
 		if ( m_painSoundTime < gpGlobals->time )
 		{
@@ -863,15 +863,15 @@ void CGargantua::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vec
 
 
 
-bool CGargantua::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+int CGargantua::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	ALERT( at_aiconsole, "CGargantua::TakeDamage\n");
 
 	if ( IsAlive() )
 	{
-		if ( (bitsDamageType & GARG_DAMAGE) == 0 )
+		if ( !(bitsDamageType & GARG_DAMAGE) )
 			flDamage *= 0.01;
-		if ( (bitsDamageType & DMG_BLAST) != 0 )
+		if ( bitsDamageType & DMG_BLAST )
 			SetConditions( bits_COND_LIGHT_DAMAGE );
 	}
 
@@ -985,7 +985,7 @@ void CGargantua::HandleAnimEvent(MonsterEvent_t *pEvent)
 			CBaseEntity *pHurt = GargantuaCheckTraceHullAttack( GARG_ATTACKDIST + 10.0, gSkillData.gargantuaDmgSlash, DMG_SLASH );
 			if (pHurt)
 			{
-				if ( (pHurt->pev->flags & (FL_MONSTER|FL_CLIENT)) != 0 )
+				if ( pHurt->pev->flags & (FL_MONSTER|FL_CLIENT) )
 				{
 					pHurt->pev->punchangle.x = -30; // pitch
 					pHurt->pev->punchangle.y = -30;	// yaw

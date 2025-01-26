@@ -29,19 +29,19 @@ class CAirtank : public CGrenade
 	int	 BloodColor( void ) { return DONT_BLEED; };
 	void Killed( entvars_t *pevAttacker, int iGib );
 
-	virtual bool	Save( CSave &save ); 
-	virtual bool 	Restore( CRestore &restore );
+	virtual int		Save( CSave &save ); 
+	virtual int		Restore( CRestore &restore );
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	bool	 m_state;
+	int	 m_state;
 };
 
 
 LINK_ENTITY_TO_CLASS( item_airtank, CAirtank );
 TYPEDESCRIPTION	CAirtank::m_SaveData[] = 
 {
-	DEFINE_FIELD( CAirtank, m_state, FIELD_BOOLEAN ),
+	DEFINE_FIELD( CAirtank, m_state, FIELD_INTEGER ),
 };
 
 IMPLEMENT_SAVERESTORE( CAirtank, CGrenade );
@@ -65,7 +65,7 @@ void CAirtank :: Spawn( void )
 	pev->takedamage		= DAMAGE_YES;
 	pev->health			= 20;
 	pev->dmg			= 50;
-	m_state				= true;
+	m_state				= 1;
 }
 
 void CAirtank::Precache( void )
@@ -88,7 +88,7 @@ void CAirtank :: Killed( entvars_t *pevAttacker, int iGib )
 void CAirtank::TankThink( void )
 {
 	// Fire trigger
-	m_state = true;
+	m_state = 1;
 	SUB_UseTargets( this, USE_TOGGLE, 0 );
 }
 
@@ -113,6 +113,6 @@ void CAirtank::TankTouch( CBaseEntity *pOther )
 
 	// recharge airtank in 30 seconds
 	pev->nextthink = gpGlobals->time + 30;
-	m_state = false;
+	m_state = 0;
 	SUB_UseTargets( this, USE_TOGGLE, 1 );
 }

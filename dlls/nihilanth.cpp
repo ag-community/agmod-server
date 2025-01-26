@@ -29,8 +29,8 @@
 class CNihilanth : public CBaseMonster
 {
 public:
-	bool	Save( CSave &save );
-	bool	Restore( CRestore &restore );
+	int		Save( CSave &save );
+	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn( void );
@@ -68,7 +68,7 @@ public:
 	void ShootBalls( void );
 	void MakeFriend( Vector vecPos );
 	
-	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	int  TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 
 	void PainSound( void );
@@ -173,8 +173,8 @@ IMPLEMENT_SAVERESTORE( CNihilanth, CBaseMonster );
 class CNihilanthHVR : public CBaseMonster
 {
 public:
-	bool	Save( CSave &save );
-	bool	Restore( CRestore &restore );
+	int		Save( CSave &save );
+	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn( void );
@@ -1235,22 +1235,22 @@ void CNihilanth::CommandUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 }
 
 
-bool CNihilanth :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+int CNihilanth :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (pevInflictor->owner == edict())
-		return false;
+		return 0;
 
 	if (flDamage >= pev->health)
 	{
 		pev->health = 1;
 		if (m_irritation != 3)
-			return false;
+			return 0;
 	}
 	
 	PainSound( );
 
 	pev->health -= flDamage;
-	return false;
+	return 0;
 }
 
 
@@ -1487,7 +1487,7 @@ void CNihilanthHVR :: ZapThink( void  )
 		UTIL_TraceLine( pev->origin, m_hEnemy->Center(), dont_ignore_monsters, edict(), &tr );
 
 		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
-		if (pEntity != NULL && 0 != pEntity->pev->takedamage)
+		if (pEntity != NULL && pEntity->pev->takedamage)
 		{
 			ClearMultiDamage( );
 			pEntity->TraceAttack( pev, gSkillData.nihilanthZap, pev->velocity, &tr, DMG_SHOCK );

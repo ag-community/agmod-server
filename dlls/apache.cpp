@@ -29,8 +29,8 @@ extern DLL_GLOBAL int		g_iSkillLevel;
 
 class CApache : public CBaseMonster
 {
-	bool		Save( CSave &save );
-	bool		Restore( CRestore &restore );
+	int		Save( CSave &save );
+	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	void Spawn( void );
@@ -58,7 +58,7 @@ class CApache : public CBaseMonster
 	void FireRocket( void );
 	bool FireGun( void );
 	
-	bool TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
+	int  TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 
 	int m_iRockets;
@@ -137,7 +137,7 @@ void CApache :: Spawn( void )
 
 	InitBoneControllers();
 
-	if ((pev->spawnflags & SF_WAITFORTRIGGER) != 0)
+	if (pev->spawnflags & SF_WAITFORTRIGGER)
 	{
 		SetUse( &CApache::StartupUse );
 	}
@@ -206,7 +206,7 @@ void CApache :: Killed( entvars_t *pevAttacker, int iGib )
 	pev->health = 0;
 	pev->takedamage = DAMAGE_NO;
 
-	if ((pev->spawnflags & SF_NOWRECKAGE) != 0)
+	if (pev->spawnflags & SF_NOWRECKAGE)
 	{
 		m_flNextRocket = gpGlobals->time + 4.0;
 	}
@@ -354,7 +354,7 @@ void CApache :: DyingThink( void )
 
 		RadiusDamage( pev->origin, pev, pev, 300, CLASS_NONE, DMG_BLAST );
 
-		if (/*!(pev->spawnflags & SF_NOWRECKAGE) && */(pev->flags & FL_ONGROUND) != 0)
+		if (/*!(pev->spawnflags & SF_NOWRECKAGE) && */(pev->flags & FL_ONGROUND))
 		{
 			CBaseEntity *pWreckage = Create( "cycler_wreckage", pev->origin, pev->angles );
 			// SET_MODEL( ENT(pWreckage->pev), STRING(pev->model) );
@@ -886,12 +886,12 @@ void CApache :: ShowDamage( void )
 }
 
 
-bool CApache :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
+int CApache :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType )
 {
 	if (pevInflictor->owner == edict())
-		return false;
+		return 0;
 
-	if ((bitsDamageType & DMG_BLAST) != 0)
+	if (bitsDamageType & DMG_BLAST)
 	{
 		flDamage *= 2;
 	}
@@ -915,7 +915,7 @@ void CApache::TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir
 	// ALERT( at_console, "%d %.0f\n", ptr->iHitgroup, flDamage );
 
 	// ignore blades
-	if (ptr->iHitgroup == 6 && (bitsDamageType & (DMG_ENERGYBEAM|DMG_BULLET|DMG_CLUB)) != 0)
+	if (ptr->iHitgroup == 6 && (bitsDamageType & (DMG_ENERGYBEAM|DMG_BULLET|DMG_CLUB)))
 		return;
 
 	// hit hard, hits cockpit, hits engines
@@ -944,8 +944,8 @@ class CApacheHVR : public CGrenade
 	void EXPORT IgniteThink( void );
 	void EXPORT AccelerateThink( void );
 
-	bool	Save( CSave &save );
-	bool	Restore( CRestore &restore );
+	int		Save( CSave &save );
+	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int m_iTrail;

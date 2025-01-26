@@ -53,7 +53,7 @@ void CSound :: Reset ( void )
 //=========================================================
 bool CSound :: FIsSound ( void )
 {
-	if ( (m_iType & ( bits_SOUND_COMBAT | bits_SOUND_WORLD | bits_SOUND_PLAYER | bits_SOUND_DANGER ) ) != 0)
+	if ( m_iType & ( bits_SOUND_COMBAT | bits_SOUND_WORLD | bits_SOUND_PLAYER | bits_SOUND_DANGER ) )
 	{
 		return true;
 	}
@@ -66,7 +66,7 @@ bool CSound :: FIsSound ( void )
 //=========================================================
 bool CSound :: FIsScent ( void )
 {
-	if ( (m_iType & ( bits_SOUND_CARCASS | bits_SOUND_MEAT | bits_SOUND_GARBAGE ) ) != 0 )
+	if ( m_iType & ( bits_SOUND_CARCASS | bits_SOUND_MEAT | bits_SOUND_GARBAGE ) )
 	{
 		return true;
 	}

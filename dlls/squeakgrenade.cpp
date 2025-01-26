@@ -53,8 +53,8 @@ class CSqueakGrenade : public CGrenade
 	void Killed( entvars_t *pevAttacker, int iGib );
 	void GibMonster( void );
 
-	virtual bool	Save( CSave &save ); 
-	virtual bool	Restore( CRestore &restore );
+	virtual int		Save( CSave &save ); 
+	virtual int		Restore( CRestore &restore );
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -230,7 +230,6 @@ void CSqueakGrenade::HuntThink( void )
 		pev->velocity = pev->velocity * 0.9;
 		pev->velocity.z += 8.0;
 	}
-	// TODO: fix this
 	else if (pev->movetype = MOVETYPE_FLY)
 	{
 		pev->movetype = MOVETYPE_BOUNCE;
@@ -292,7 +291,7 @@ void CSqueakGrenade::HuntThink( void )
 		pev->velocity = pev->velocity * flAdj + m_vecTarget * 300;
 	}
 
-	if ((pev->flags & FL_ONGROUND) != 0)
+	if (pev->flags & FL_ONGROUND)
 	{
 		pev->avelocity = Vector( 0, 0, 0 );
 	}
@@ -341,7 +340,7 @@ void CSqueakGrenade::SuperBounceTouch( CBaseEntity *pOther )
 	// higher pitch as squeeker gets closer to detonation time
 	flpitch = 155.0 - 60.0 * ((m_flDie - gpGlobals->time) / SQUEEK_DETONATE_DELAY);
 
-	if ( 0 != pOther->pev->takedamage && m_flNextAttack < gpGlobals->time )
+	if ( pOther->pev->takedamage && m_flNextAttack < gpGlobals->time )
 	{
 		// attack!
 
@@ -383,7 +382,7 @@ void CSqueakGrenade::SuperBounceTouch( CBaseEntity *pOther )
 		return;
 	}
 
-	if ((pev->flags & FL_ONGROUND) == 0)
+	if (!(pev->flags & FL_ONGROUND))
 	{
 		// play bounce sound
 		float flRndSound = RANDOM_FLOAT ( 0 , 1 );
@@ -449,7 +448,7 @@ void CSqueak::Precache( void )
 }
 
 
-bool CSqueak::GetItemInfo(ItemInfo *p)
+int CSqueak::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
 	p->pszAmmo1 = "Snarks";
@@ -463,7 +462,7 @@ bool CSqueak::GetItemInfo(ItemInfo *p)
 	p->iWeight = SNARK_WEIGHT;
 	p->iFlags = ITEM_FLAG_LIMITINWORLD | ITEM_FLAG_EXHAUSTIBLE;
 
-	return true;
+	return 1;
 }
 
 
@@ -488,7 +487,7 @@ void CSqueak::Holster( int skiplocal /* = 0 */ )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	
-	if ( 0 == m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
+	if ( !m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
 	{
 		m_pPlayer->pev->weapons &= ~(1<<WEAPON_SNARK);
 		SetThink( &CSqueak::DestroyItem );
@@ -503,7 +502,7 @@ void CSqueak::Holster( int skiplocal /* = 0 */ )
 
 void CSqueak::PrimaryAttack()
 {
-	if ( 0 != m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
+	if ( m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
 	{
 		UTIL_MakeVectors( m_pPlayer->pev->v_angle );
 		TraceResult tr;
@@ -512,7 +511,7 @@ void CSqueak::PrimaryAttack()
 		// HACK HACK:  Ugly hacks to handle change in origin based on new physics code for players
 		// Move origin up if crouched and start trace a bit outside of body ( 20 units instead of 16 )
 		trace_origin = m_pPlayer->pev->origin;
-		if (( m_pPlayer->pev->flags & FL_DUCKING) != 0 )
+		if ( m_pPlayer->pev->flags & FL_DUCKING )
 		{
 			trace_origin = trace_origin - ( VEC_HULL_MIN - VEC_DUCK_HULL_MIN );
 		}
@@ -551,7 +550,7 @@ void CSqueak::PrimaryAttack()
 
 			m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 
-			m_fJustThrown = true;
+			m_fJustThrown = 1;
 
 			m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
@@ -573,9 +572,9 @@ void CSqueak::WeaponIdle( void )
 
 	if (m_fJustThrown)
 	{
-		m_fJustThrown = false;
+		m_fJustThrown = 0;
 
-		if ( 0 == m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] )
+		if ( !m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] )
 		{
 			RetireWeapon();
 			return;

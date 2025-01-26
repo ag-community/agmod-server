@@ -120,7 +120,7 @@ void CGenericMonster :: Spawn()
 
 	MonsterInit();
 
-	if ( (pev->spawnflags & SF_GENERICMONSTER_NOTSOLID) != 0 )
+	if ( pev->spawnflags & SF_GENERICMONSTER_NOTSOLID )
 	{
 		pev->solid = SOLID_NOT;
 		pev->takedamage = DAMAGE_NO;

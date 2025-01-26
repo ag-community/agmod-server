@@ -84,8 +84,8 @@ public:
 	void IdleSound ( void );
 	CUSTOM_SCHEDULES;
 
-	bool Save( CSave &save ); 
-	bool Restore( CRestore &restore );
+	int	Save( CSave &save ); 
+	int Restore( CRestore &restore );
 	static TYPEDESCRIPTION m_SaveData[];
 
 	float m_flLastShot;
@@ -633,7 +633,7 @@ bool CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
 
 		UTIL_TraceHull( pev->origin + Vector( 0, 0, 36 ), vecDest + Vector( 0, 0, 36 ), dont_ignore_monsters, human_hull, ENT(pev), &tr);
 
-		if ( 0 != tr.fStartSolid || tr.flFraction < 1.0)
+		if ( tr.fStartSolid || tr.flFraction < 1.0)
 		{
 			return false;
 		}
@@ -716,7 +716,7 @@ void CHAssassin :: RunAI( void )
 
 	// always visible if moving
 	// always visible is not on hard
-	if (g_iSkillLevel != SKILL_HARD || m_hEnemy == NULL || pev->deadflag != DEAD_NO || m_Activity == ACT_RUN || m_Activity == ACT_WALK || !(pev->flags & FL_ONGROUND) == 0)
+	if (g_iSkillLevel != SKILL_HARD || m_hEnemy == NULL || pev->deadflag != DEAD_NO || m_Activity == ACT_RUN || m_Activity == ACT_WALK || !(pev->flags & FL_ONGROUND))
 		m_iTargetRanderamt = 255;
 	else
 		m_iTargetRanderamt = 20;
@@ -740,8 +740,8 @@ void CHAssassin :: RunAI( void )
 
 	if (m_Activity == ACT_RUN || m_Activity == ACT_WALK)
 	{
-		static bool iStep = false;
-		iStep = !iStep;
+		static int iStep = 0;
+		iStep = ! iStep;
 		if (iStep)
 		{
 			switch( RANDOM_LONG( 0, 3 ) )
@@ -813,7 +813,7 @@ void CHAssassin :: RunTask ( Task_t *pTask )
 			ResetSequenceInfo( );
 			SetYawSpeed();
 		}
-		if ((pev->flags & FL_ONGROUND) != 0)
+		if (pev->flags & FL_ONGROUND)
 		{
 			// ALERT( at_console, "on ground\n");
 			TaskComplete( );
@@ -844,11 +844,11 @@ Schedule_t *CHAssassin :: GetSchedule ( void )
 				pSound = PBestSound();
 
 				ASSERT( pSound != NULL );
-				if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) != 0 )
+				if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) )
 				{
 					return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
 				}
-				if ( pSound && (pSound->m_iType & bits_SOUND_COMBAT) != 0 )
+				if ( pSound && (pSound->m_iType & bits_SOUND_COMBAT) )
 				{
 					return GetScheduleOfType( SCHED_INVESTIGATE_SOUND );
 				}
@@ -868,7 +868,7 @@ Schedule_t *CHAssassin :: GetSchedule ( void )
 			// flying?
 			if ( pev->movetype == MOVETYPE_TOSS)
 			{
-				if ((pev->flags & FL_ONGROUND) != 0)
+				if (pev->flags & FL_ONGROUND)
 				{
 					// ALERT( at_console, "landed\n");
 					// just landed
@@ -892,7 +892,7 @@ Schedule_t *CHAssassin :: GetSchedule ( void )
 				pSound = PBestSound();
 
 				ASSERT( pSound != NULL );
-				if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) != 0 )
+				if ( pSound && (pSound->m_iType & bits_SOUND_DANGER) )
 				{
 					return GetScheduleOfType( SCHED_TAKE_COVER_FROM_BEST_SOUND );
 				}
@@ -986,7 +986,7 @@ Schedule_t* CHAssassin :: GetScheduleOfType ( int Type )
 	case SCHED_CHASE_ENEMY:
 		return slAssassinHunt;
 	case SCHED_MELEE_ATTACK1:
-		if ((pev->flags & FL_ONGROUND) != 0)
+		if (pev->flags & FL_ONGROUND)
 		{
 			if (m_flNextJump > gpGlobals->time)
 			{

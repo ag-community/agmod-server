@@ -42,7 +42,7 @@ extern DLL_GLOBAL bool	g_fGameOver;
 extern int gmsgDeathMsg;	// client dll messages
 extern int gmsgMOTD;
 
-bool g_teamplay = false;
+int g_teamplay = 0;
 
 //=========================================================
 //=========================================================
@@ -78,7 +78,7 @@ edict_t *CGameRules :: GetPlayerSpawnSpot( CBasePlayer *pPlayer )
 	pPlayer->pev->velocity = g_vecZero;
 	pPlayer->pev->angles = VARS(pentSpawnSpot)->angles;
 	pPlayer->pev->punchangle = g_vecZero;
-	pPlayer->pev->fixangle = 1;
+	pPlayer->pev->fixangle = true;
 	
 	return pentSpawnSpot;
 }
@@ -391,19 +391,19 @@ AgGameRules* InstallGameRules(void)
 	{
 		// teamplay
 
-		g_teamplay = true;
+		g_teamplay = 1;
 		return new CHalfLifeTeamplay;
 	}
 	if ((int)gpGlobals->deathmatch == 1)
 	{
 		// vanilla deathmatch
-		g_teamplay = false;
+		g_teamplay = 0;
 		return new CHalfLifeMultiplay;
 	}
 	else
 	{
 		// vanilla deathmatch??
-		g_teamplay = false;
+		g_teamplay = 0;
 		return new CHalfLifeMultiplay;
 	}
 }

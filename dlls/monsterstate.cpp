@@ -66,7 +66,7 @@ void CBaseMonster :: RunAI ( void )
 
 	// IDLE sound permitted in ALERT state is because monsters were silent in ALERT state. Only play IDLE sound in IDLE state
 	// once we have sounds for that state.
-	if ( ( m_MonsterState == MONSTERSTATE_IDLE || m_MonsterState == MONSTERSTATE_ALERT ) && RANDOM_LONG(0,99) == 0 && (pev->flags & SF_MONSTER_GAG) == 0 )
+	if ( ( m_MonsterState == MONSTERSTATE_IDLE || m_MonsterState == MONSTERSTATE_ALERT ) && RANDOM_LONG(0,99) == 0 && !(pev->flags & SF_MONSTER_GAG) )
 	{
 		IdleSound();
 	}
@@ -135,23 +135,23 @@ MONSTERSTATE CBaseMonster :: GetIdealState ( void )
 		IDLE goes to HUNT upon smelling food
 		*/
 		{
-			if ( (iConditions & bits_COND_NEW_ENEMY ) != 0 )			
+			if ( iConditions & bits_COND_NEW_ENEMY )			
 			{
 				// new enemy! This means an idle monster has seen someone it dislikes, or 
 				// that a monster in combat has found a more suitable target to attack
 				m_IdealMonsterState = MONSTERSTATE_COMBAT;
 			}
-			else if ( (iConditions & bits_COND_LIGHT_DAMAGE ) != 0 )
+			else if ( iConditions & bits_COND_LIGHT_DAMAGE )
 			{
 				MakeIdealYaw ( m_vecEnemyLKP );
 				m_IdealMonsterState = MONSTERSTATE_ALERT;
 			}
-			else if ( (iConditions & bits_COND_HEAVY_DAMAGE ) != 0 )
+			else if ( iConditions & bits_COND_HEAVY_DAMAGE )
 			{
 				MakeIdealYaw ( m_vecEnemyLKP );
 				m_IdealMonsterState = MONSTERSTATE_ALERT;
 			}
-			else if ( (iConditions & bits_COND_HEAR_SOUND) != 0 )
+			else if ( iConditions & bits_COND_HEAR_SOUND )
 			{
 				CSound *pSound;
 				
@@ -160,11 +160,11 @@ MONSTERSTATE CBaseMonster :: GetIdealState ( void )
 				if ( pSound )
 				{
 					MakeIdealYaw ( pSound->m_vecOrigin );
-					if ( (pSound->m_iType & (bits_SOUND_COMBAT|bits_SOUND_DANGER) ) != 0 )
+					if ( pSound->m_iType & (bits_SOUND_COMBAT|bits_SOUND_DANGER) )
 						m_IdealMonsterState = MONSTERSTATE_ALERT;
 				}
 			}
-			else if ( (iConditions & (bits_COND_SMELL | bits_COND_SMELL_FOOD) ) != 0 )
+			else if ( iConditions & (bits_COND_SMELL | bits_COND_SMELL_FOOD) )
 			{
 				m_IdealMonsterState = MONSTERSTATE_ALERT;
 			}
@@ -178,12 +178,12 @@ MONSTERSTATE CBaseMonster :: GetIdealState ( void )
 		ALERT goes to HUNT upon hearing a noise
 		*/
 		{
-			if ( (iConditions & (bits_COND_NEW_ENEMY|bits_COND_SEE_ENEMY) ) != 0 )			
+			if ( iConditions & (bits_COND_NEW_ENEMY|bits_COND_SEE_ENEMY) )			
 			{
 				// see an enemy we MUST attack
 				m_IdealMonsterState = MONSTERSTATE_COMBAT;
 			}
-			else if ( (iConditions & bits_COND_HEAR_SOUND) != 0 )
+			else if ( iConditions & bits_COND_HEAR_SOUND )
 			{
 				m_IdealMonsterState = MONSTERSTATE_ALERT;
 				CSound *pSound = PBestSound();
@@ -218,7 +218,7 @@ MONSTERSTATE CBaseMonster :: GetIdealState ( void )
 			break;
 		}
 	case MONSTERSTATE_SCRIPT:
-		if ( (iConditions & (bits_COND_TASK_FAILED|bits_COND_LIGHT_DAMAGE|bits_COND_HEAVY_DAMAGE) ) != 0 )
+		if ( iConditions & (bits_COND_TASK_FAILED|bits_COND_LIGHT_DAMAGE|bits_COND_HEAVY_DAMAGE) )
 		{
 			ExitScriptedSequence();	// This will set the ideal state
 		}

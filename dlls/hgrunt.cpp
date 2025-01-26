@@ -147,14 +147,14 @@ public:
 	void GibMonster( void );
 	void SpeakSentence( void );
 
-	bool Save( CSave &save ); 
-	bool Restore( CRestore &restore );
+	int	Save( CSave &save ); 
+	int Restore( CRestore &restore );
 	
 	CBaseEntity	*Kick( void );
 	Schedule_t	*GetSchedule( void );
 	Schedule_t  *GetScheduleOfType ( int Type );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
-	bool TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 
 	int IRelationship ( CBaseEntity *pTarget );
 
@@ -334,7 +334,7 @@ bool CHGrunt :: FOkToSpeak( void )
 	if (gpGlobals->time <= CTalkMonster::g_talkWaitTime)
 		return false;
 
-	if ( (pev->spawnflags & SF_MONSTER_GAG) != 0 )
+	if ( pev->spawnflags & SF_MONSTER_GAG )
 	{
 		if ( m_MonsterState != MONSTERSTATE_COMBAT )
 		{
@@ -607,7 +607,7 @@ void CHGrunt :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecD
 	if (ptr->iHitgroup == 11)
 	{
 		// make sure we're wearing one
-		if (GetBodygroup( 1 ) == HEAD_GRUNT && (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_BLAST | DMG_CLUB)) != 0)
+		if (GetBodygroup( 1 ) == HEAD_GRUNT && (bitsDamageType & (DMG_BULLET | DMG_SLASH | DMG_BLAST | DMG_CLUB)))
 		{
 			// absorb damage
 			flDamage -= 20;
@@ -629,7 +629,7 @@ void CHGrunt :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecD
 // needs to forget that he is in cover if he's hurt. (Obviously
 // not in a safe place anymore).
 //=========================================================
-bool CHGrunt :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
+int CHGrunt :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType )
 {
 	Forget( bits_MEMORY_INCOVER );
 
@@ -685,9 +685,9 @@ void CHGrunt :: SetYawSpeed ( void )
 
 void CHGrunt :: IdleSound( void )
 {
-	if (FOkToSpeak() && (0 != g_fGruntQuestion || RANDOM_LONG(0,1)))
+	if (FOkToSpeak() && (g_fGruntQuestion || RANDOM_LONG(0,1)))
 	{
-		if (0 == g_fGruntQuestion)
+		if (!g_fGruntQuestion)
 		{
 			// ask question or make statement
 			switch (RANDOM_LONG(0,2))
@@ -1902,7 +1902,7 @@ void CHGrunt :: SetActivity ( Activity NewActivity )
 	case ACT_RANGE_ATTACK2:
 		// grunt is going to a secondary long range attack. This may be a thrown 
 		// grenade or fired grenade, we must determine which and pick proper sequence
-		if ( (pev->weapons & HGRUNT_HANDGRENADE) != 0 )
+		if ( pev->weapons & HGRUNT_HANDGRENADE )
 		{
 			// get toss anim
 			iSequence = LookupSequence( "throwgrenade" );
@@ -1981,7 +1981,7 @@ Schedule_t *CHGrunt :: GetSchedule( void )
 	// flying? If PRONE, barnacle has me. IF not, it's assumed I am rapelling. 
 	if ( pev->movetype == MOVETYPE_FLY && m_MonsterState != MONSTERSTATE_PRONE )
 	{
-		if ((pev->flags & FL_ONGROUND) != 0)
+		if (pev->flags & FL_ONGROUND)
 		{
 			// just landed
 			pev->movetype = MOVETYPE_STEP;
@@ -2006,7 +2006,7 @@ Schedule_t *CHGrunt :: GetSchedule( void )
 		ASSERT( pSound != NULL );
 		if ( pSound)
 		{
-			if ((pSound->m_iType & bits_SOUND_DANGER) != 0)
+			if (pSound->m_iType & bits_SOUND_DANGER)
 			{
 				// dangerous sound nearby!
 				
@@ -2440,7 +2440,7 @@ public:
 	void Spawn( void );
 	int	Classify ( void ) { return	CLASS_HUMAN_MILITARY; }
 
-	bool KeyValue( KeyValueData *pkvd );
+	void KeyValue( KeyValueData *pkvd );
 
 	int	m_iPose;// which sequence to display	-- temporary, don't need to save
 	static char *m_szPoses[3];
@@ -2448,15 +2448,15 @@ public:
 
 char *CDeadHGrunt::m_szPoses[] = { "deadstomach", "deadside", "deadsitting" };
 
-bool CDeadHGrunt::KeyValue( KeyValueData *pkvd )
+void CDeadHGrunt::KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CBaseMonster::KeyValue( pkvd );
+	else 
+		CBaseMonster::KeyValue( pkvd );
 }
 
 LINK_ENTITY_TO_CLASS( monster_hgrunt_dead, CDeadHGrunt );

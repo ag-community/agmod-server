@@ -77,7 +77,7 @@ void CBaseSpectator::SpectatorImpulseCommand(void)
 		//  back around
 
 		bFound = false;
-		while (true)
+		while (1)
 		{
 			pCurrentGoal = FIND_ENTITY_BY_CLASSNAME(pCurrentGoal, "info_player_deathmatch");
 			// Looped around, failure
@@ -100,7 +100,7 @@ void CBaseSpectator::SpectatorImpulseCommand(void)
 		pGoal = pCurrentGoal;
 		UTIL_SetOrigin( pev, pGoal->v.origin );
 		pev->angles = pGoal->v.angles;
-		pev->fixangle = 0;
+		pev->fixangle = false;
 		break;
 	default:
 		ALERT(at_console, "Unknown spectator impulse\n");
@@ -119,7 +119,7 @@ Called every frame after physics are run
 */
 void  CBaseSpectator::SpectatorThink(void)
 {
-	if ((pev->flags & FL_SPECTATOR) == 0)
+	if (!(pev->flags & FL_SPECTATOR))
 	{
 		pev->flags = FL_SPECTATOR;
 	}
@@ -127,7 +127,7 @@ void  CBaseSpectator::SpectatorThink(void)
 	pev->solid	   = SOLID_NOT;
 	pev->movetype  = MOVETYPE_NOCLIP;
 
-	if (0 != pev->impulse)
+	if (pev->impulse)
 		SpectatorImpulseCommand();
 }
 

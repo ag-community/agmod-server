@@ -631,7 +631,7 @@ void CTalkMonster :: RunTask( Task_t *pTask )
 void CTalkMonster :: Killed( entvars_t *pevAttacker, int iGib )
 {
 	// If a client killed me (unless I was already Barnacle'd), make everyone else mad/afraid of him
-	if ( (pevAttacker->flags & FL_CLIENT) != 0 && m_MonsterState != MONSTERSTATE_PRONE )
+	if ( (pevAttacker->flags & FL_CLIENT) && m_MonsterState != MONSTERSTATE_PRONE )
 	{
 		AlertFriends();
 		LimitFollowers( CBaseEntity::Instance(pevAttacker), 0 );
@@ -879,7 +879,7 @@ void CTalkMonster :: Touch( CBaseEntity *pOther )
 	if ( pOther->IsPlayer() )
 	{
 		// Ignore if pissed at player
-		if ( (m_afMemory & bits_MEMORY_PROVOKED) != 0 )
+		if ( m_afMemory & bits_MEMORY_PROVOKED )
 			return;
 
 		// Stay put during speech
@@ -910,7 +910,7 @@ void CTalkMonster :: IdleRespond( void )
 	PlaySentence( m_szGrp[TLK_ANSWER], RANDOM_FLOAT(2.8, 3.2), VOL_NORM, ATTN_IDLE );
 }
 
-bool CTalkMonster :: FOkToSpeak( void )
+int CTalkMonster :: FOkToSpeak( void )
 {
 	// if in the grip of a barnacle, don't speak
 	if ( m_MonsterState == MONSTERSTATE_PRONE || m_IdealMonsterState == MONSTERSTATE_PRONE )
@@ -928,7 +928,7 @@ bool CTalkMonster :: FOkToSpeak( void )
 	if (gpGlobals->time <= CTalkMonster::g_talkWaitTime)
 		return false;
 
-	if ( (pev->spawnflags & SF_MONSTER_GAG) != 0 )
+	if ( pev->spawnflags & SF_MONSTER_GAG )
 		return false;
 
 	if ( m_MonsterState == MONSTERSTATE_PRONE )
@@ -946,7 +946,7 @@ bool CTalkMonster :: FOkToSpeak( void )
 }
 
 
-bool CTalkMonster::CanPlaySentence( bool fDisregardState ) 
+int CTalkMonster::CanPlaySentence( bool fDisregardState ) 
 { 
 	if ( fDisregardState )
 		return CBaseMonster::CanPlaySentence( fDisregardState );
@@ -956,7 +956,7 @@ bool CTalkMonster::CanPlaySentence( bool fDisregardState )
 //=========================================================
 // FIdleStare
 //=========================================================
-bool CTalkMonster :: FIdleStare( void )
+int CTalkMonster :: FIdleStare( void )
 {
 	if (!FOkToSpeak())
 		return false;
@@ -971,7 +971,7 @@ bool CTalkMonster :: FIdleStare( void )
 // IdleHello
 // Try to greet player first time he's seen
 //=========================================================
-bool CTalkMonster :: FIdleHello( void )
+int CTalkMonster :: FIdleHello( void )
 {
 	if (!FOkToSpeak())
 		return false;
@@ -1007,7 +1007,7 @@ bool CTalkMonster :: FIdleHello( void )
 void CTalkMonster :: IdleHeadTurn( Vector &vecFriend )
 {
 	 // turn head in desired direction only if ent has a turnable head
-	if ((m_afCapability & bits_CAP_TURN_HEAD) != 0)
+	if (m_afCapability & bits_CAP_TURN_HEAD)
 	{
 		float yaw = VecToYaw(vecFriend - pev->origin) - pev->angles.y;
 
@@ -1023,7 +1023,7 @@ void CTalkMonster :: IdleHeadTurn( Vector &vecFriend )
 // FIdleSpeak
 // ask question of nearby friend, or make statement
 //=========================================================
-bool CTalkMonster :: FIdleSpeak ( void )
+int CTalkMonster :: FIdleSpeak ( void )
 { 
 	// try to start a conversation, or make statement
 	int pitch;
@@ -1190,7 +1190,7 @@ void CTalkMonster :: SetAnswerQuestion( CTalkMonster *pSpeaker )
 	m_hTalkTarget = (CBaseMonster *)pSpeaker;
 }
 
-bool CTalkMonster :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
+int CTalkMonster :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	if ( IsAlive() )
 	{
@@ -1355,7 +1355,7 @@ void CTalkMonster :: TrySmellTalk( void )
 int CTalkMonster::IRelationship( CBaseEntity *pTarget )
 {
 	if ( pTarget->IsPlayer() )
-		if ( (m_afMemory & bits_MEMORY_PROVOKED) != 0 )
+		if ( m_afMemory & bits_MEMORY_PROVOKED )
 			return R_HT;
 	return CBaseMonster::IRelationship( pTarget );
 }
@@ -1365,7 +1365,7 @@ void CTalkMonster::StopFollowing( bool clearSchedule )
 {
 	if ( IsFollowing() )
 	{
-		if ( (m_afMemory & bits_MEMORY_PROVOKED) == 0 )
+		if ( !(m_afMemory & bits_MEMORY_PROVOKED) )
 		{
 			PlaySentence( m_szGrp[TLK_UNUSE], RANDOM_FLOAT(2.8, 3.2), VOL_NORM, ATTN_IDLE );
 			m_hTalkTarget = m_hTargetEnt;
@@ -1422,7 +1422,7 @@ void CTalkMonster :: FollowerUse( CBaseEntity *pActivator, CBaseEntity *pCaller,
 	if ( pCaller != NULL && pCaller->IsPlayer() )
 	{
 		// Pre-disaster followers can't be used
-		if ( (pev->spawnflags & SF_MONSTER_PREDISASTER) != 0 )
+		if ( pev->spawnflags & SF_MONSTER_PREDISASTER )
 		{
 			DeclineFollowing();
 		}
@@ -1430,7 +1430,7 @@ void CTalkMonster :: FollowerUse( CBaseEntity *pActivator, CBaseEntity *pCaller,
 		{
 			LimitFollowers( pCaller , 1 );
 
-			if ( (m_afMemory & bits_MEMORY_PROVOKED) != 0 )
+			if ( m_afMemory & bits_MEMORY_PROVOKED )
 				ALERT( at_console, "I'm not following you, you evil person!\n" );
 			else
 			{
@@ -1445,28 +1445,28 @@ void CTalkMonster :: FollowerUse( CBaseEntity *pActivator, CBaseEntity *pCaller,
 	}
 }
 
-bool CTalkMonster::KeyValue( KeyValueData *pkvd )
+void CTalkMonster::KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "UseSentence"))
 	{
 		m_iszUse = ALLOC_STRING(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "UnUseSentence"))
 	{
 		m_iszUnUse = ALLOC_STRING(pkvd->szValue);
-		return true;
+		pkvd->fHandled = true;
 	}
-	
-	return CBaseMonster::KeyValue( pkvd );
+	else 
+		CBaseMonster::KeyValue( pkvd );
 }
 
 
 void CTalkMonster::Precache( void )
 {
-	if ( !FStringNull(m_iszUse) )
+	if ( m_iszUse )
 		m_szGrp[TLK_USE] = STRING( m_iszUse );
-	if ( !FStringNull(m_iszUnUse) )
+	if ( m_iszUnUse )
 		m_szGrp[TLK_UNUSE] = STRING( m_iszUnUse );
 }
 

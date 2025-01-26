@@ -31,8 +31,8 @@ public:
 
 	virtual int	ObjectCaps( void ) { return CBaseAnimating :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	virtual bool Save( CSave &save );
-	virtual bool Restore( CRestore &restore );
+	virtual int	Save( CSave &save );
+	virtual int	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
@@ -72,8 +72,8 @@ public:
 	void		LightOn( void );
 	void		LightOff( void );
 
-	virtual bool Save( CSave &save );
-	virtual bool Restore( CRestore &restore );
+	virtual int	Save( CSave &save );
+	virtual int	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
@@ -199,7 +199,7 @@ void CXenHair::Spawn( void )
 	UTIL_SetSize( pev, Vector(-4,-4,0), Vector(4,4,32));
 	pev->sequence = 0;
 	
-	if ( (pev->spawnflags & SF_HAIR_SYNC) == 0)
+	if ( !(pev->spawnflags & SF_HAIR_SYNC) )
 	{
 		pev->frame = RANDOM_FLOAT(0,255);
 		pev->framerate = RANDOM_FLOAT( 0.7, 1.4 );
@@ -265,13 +265,13 @@ public:
 	void		Precache( void );
 	void		Touch( CBaseEntity *pOther );
 	void		Think( void );
-	bool		TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) { Attack(); return 0; }
+	int			TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) { Attack(); return 0; }
 	void		HandleAnimEvent( MonsterEvent_t *pEvent );
 	void		Attack( void );	
 	int			Classify( void ) { return CLASS_BARNACLE; }
 
-	virtual bool Save( CSave &save );
-	virtual bool Restore( CRestore &restore );
+	virtual int	Save( CSave &save );
+	virtual int	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	static const char *pAttackHitSounds[];
@@ -432,7 +432,7 @@ public:
 	void		Precache( void );
 	void		Touch( CBaseEntity *pOther );
 	void		Think( void );
-	bool		TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) { Attack(); return 0; }
+	int			TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType ) { Attack(); return 0; }
 //	void		HandleAnimEvent( MonsterEvent_t *pEvent );
 	void		Attack( void ) {}
 

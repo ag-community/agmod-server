@@ -40,8 +40,8 @@ typedef struct
 class COsprey : public CBaseMonster
 {
 public:
-	bool	Save( CSave &save );
-	bool	Restore( CRestore &restore );
+	int		Save( CSave &save );
+	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 	int		ObjectCaps( void ) { return CBaseMonster :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 	
@@ -170,7 +170,7 @@ void COsprey :: Spawn( void )
 	SetThink( &COsprey::FindAllThink );
 	SetUse( &COsprey::CommandUse );
 
-	if ((pev->spawnflags & SF_WAITFORTRIGGER) == 0)
+	if (!(pev->spawnflags & SF_WAITFORTRIGGER))
 	{
 		pev->nextthink = gpGlobals->time + 1.0;
 	}
@@ -327,7 +327,7 @@ void COsprey :: HoverThink( void )
 	int i;
 	for (i = 0; i < 4; i++)
 	{
-		if (m_hRepel[i] != NULL && m_hRepel[i]->pev->health > 0 && (m_hRepel[i]->pev->flags & FL_ONGROUND) == 0)
+		if (m_hRepel[i] != NULL && m_hRepel[i]->pev->health > 0 && !(m_hRepel[i]->pev->flags & FL_ONGROUND))
 		{
 			break;
 		}

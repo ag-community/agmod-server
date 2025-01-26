@@ -59,8 +59,8 @@ public:
 	void  HandleAnimEvent( MonsterEvent_t *pEvent );
 	CUSTOM_SCHEDULES;
 
-	bool Save( CSave &save ); 
-	bool Restore( CRestore &restore );
+	int	Save( CSave &save ); 
+	int Restore( CRestore &restore );
 	static TYPEDESCRIPTION m_SaveData[];
 
 	Schedule_t *GetSchedule( void );
@@ -357,7 +357,14 @@ void CIchthyosaur::CombatUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 	if ( !ShouldToggle( useType, m_bOnAttack ) )
 		return;
 
-	m_bOnAttack = !m_bOnAttack;
+	if (m_bOnAttack)
+	{
+		m_bOnAttack = 0;
+	}
+	else
+	{
+		m_bOnAttack = 1;
+	}
 }
 
 //=========================================================
@@ -413,7 +420,7 @@ void CIchthyosaur::BecomeDead( void )
 //=========================================================
 void CIchthyosaur :: HandleAnimEvent( MonsterEvent_t *pEvent )
 {
-	bool bDidAttack = false;
+	int bDidAttack = false;
 	switch( pEvent->event )
 	{
 	case ICHTHYOSAUR_AE_SHAKE_RIGHT:
@@ -440,7 +447,7 @@ void CIchthyosaur :: HandleAnimEvent( MonsterEvent_t *pEvent )
 						pHurt->pev->angles.x += RANDOM_FLOAT( -35, 35 );
 						pHurt->pev->angles.y += RANDOM_FLOAT( -90, 90 );
 						pHurt->pev->angles.z = 0;
-						pHurt->pev->fixangle = 1;
+						pHurt->pev->fixangle = true;
 					}
 					pHurt->TakeDamage( pev, pev, gSkillData.ichthyosaurDmgShake, DMG_SLASH );
 				}
@@ -1067,7 +1074,7 @@ Vector CIchthyosaur::DoProbe(const Vector &Probe)
 
 	TraceResult tr;
 	TRACE_MONSTER_HULL(edict(), pev->origin, Probe, dont_ignore_monsters, edict(), &tr);
-	if ( 0 != tr.fAllSolid || tr.flFraction < 0.99 )
+	if ( tr.fAllSolid || tr.flFraction < 0.99 )
 	{
 		if (tr.flFraction < 0.0) tr.flFraction = 0.0;
 		if (tr.flFraction > 1.0) tr.flFraction = 1.0;

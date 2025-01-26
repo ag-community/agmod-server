@@ -164,7 +164,7 @@ void CLegacyCineMonster :: CineThink( void )
 	// THIS is a test feature
 	//UTIL_ParticleEffect(pev->origin, g_vecZero, 255, 20);
 
-	if (0 == pev->animtime)
+	if (!pev->animtime)
 		ResetSequenceInfo( );
 
 	pev->nextthink = gpGlobals->time + 1.0;
