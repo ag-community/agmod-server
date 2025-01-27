@@ -470,6 +470,7 @@ DLL_GLOBAL cvar_t ag_say_on_changelevel_delay = CVar::Create("sv_ag_say_on_chang
 // ## HL25 Gameplay changes ##
 
 DLL_GLOBAL cvar_t ag_hl25_satchel_controls = CVar::Create("sv_ag_hl25_satchel_controls", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE | CCVAR_GAMEMODE);
+DLL_GLOBAL cvar_t ag_hl25_handgrenade_throw = CVar::Create("sv_ag_hl25_handgrenade_throw", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE | CCVAR_GAMEMODE);
 
 DLL_GLOBAL bool g_bLangame = false;
 DLL_GLOBAL bool g_bUseTeamColors = false;
@@ -703,6 +704,7 @@ void AgInitGame()
 
 	// ## HL25 Gameplay changes ##
 	CVAR_REGISTER(&ag_hl25_satchel_controls);
+	CVAR_REGISTER(&ag_hl25_handgrenade_throw);
 
 	Command.Init();
 
