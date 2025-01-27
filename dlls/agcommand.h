@@ -13,44 +13,44 @@
 class AgCommand
 {
 public:
-    AgCommand();
-    virtual ~AgCommand();
+	AgCommand();
+	virtual ~AgCommand();
 
-    static void Init();
+	static void Init();
 
-    static bool HandleCommand(CBasePlayer* pPlayer);
+	static bool HandleCommand(CBasePlayer* pPlayer);
 
-    static void AddAdmin(const AgString& sAdmin, const AgString& sPassword, CBasePlayer* pPlayer = NULL);
-    static void ListAdmins(CBasePlayer* pPlayer = NULL);
-    static void DelAdmin(const AgString& sAdmin, CBasePlayer* pPlayer = NULL);
+	static void AddAdmin(const AgString& sAdmin, const AgString& sPassword, CBasePlayer* pPlayer = NULL);
+	static void ListAdmins(CBasePlayer* pPlayer = NULL);
+	static void DelAdmin(const AgString& sAdmin, CBasePlayer* pPlayer = NULL);
 
-    static void Start(const AgString& sSpawn);
-    static void Allow(const AgString& sPlayerIdOrName, CBasePlayer* pPlayer = NULL);
-    static void Allow(CBasePlayer* target, CBasePlayer* pPlayer = NULL);
-    static void Abort(CBasePlayer* pPlayer);
-    static void Pause(CBasePlayer* pPlayer);
+	static void Start(const AgString& sSpawn);
+	static void Allow(const AgString& sPlayerIdOrName, CBasePlayer* pPlayer = NULL);
+	static void Allow(CBasePlayer* target, CBasePlayer* pPlayer = NULL);
+	static void Abort(CBasePlayer* pPlayer);
+	static void Pause(CBasePlayer* pPlayer);
 
-    static void Kick(const AgString& sPlayerIdOrName);
-    static void Kick(CBasePlayer* target);
-    static void Map(const AgString& sMap);
-    static void NextMap(const AgString& sMap, CBasePlayer* pPlayer = NULL);
+	static void Kick(const AgString& sPlayerIdOrName);
+	static void Kick(CBasePlayer* target);
+	static void Map(const AgString& sMap);
+	static void NextMap(const AgString& sMap, CBasePlayer* pPlayer = NULL);
 
-    static void Setting(const AgString& sSetting, const AgString& sValue, CBasePlayer* pPlayer = NULL);
+	static void Setting(const AgString& sSetting, const AgString& sValue, CBasePlayer* pPlayer = NULL);
 
-    static void Help(CBasePlayer* pPlayer);
-    static void Variables(CBasePlayer* pPlayer);
+	static void Help(CBasePlayer* pPlayer);
+	static void Variables(CBasePlayer* pPlayer);
 
-    static void TeamUp(CBasePlayer* pPlayer, const AgString& sPlayerIdOrName, const AgString& sTeam);
-    static void TeamUp(CBasePlayer* pPlayer, CBasePlayer* target, const AgString& sTeam);
-    static void Spectator(CBasePlayer* pPlayer, const AgString& sPlayerIdOrName);
-    static void Spectator(CBasePlayer* pPlayer, CBasePlayer* target);
+	static void TeamUp(CBasePlayer* pPlayer, const AgString& sPlayerIdOrName, const AgString& sTeam);
+	static void TeamUp(CBasePlayer* pPlayer, CBasePlayer* target, const AgString& sTeam);
+	static void Spectator(CBasePlayer* pPlayer, const AgString& sPlayerIdOrName);
+	static void Spectator(CBasePlayer* pPlayer, CBasePlayer* target);
 
-    static void Exec(const AgString& sExec, CBasePlayer* pPlayer);
+	static void Exec(const AgString& sExec, CBasePlayer* pPlayer);
 
-    static void MaxTime();
-    static void MoreTime();
-    static void AddRespawningStaticBot(CBasePlayer* pPlayer);
-    static void AgGamemodeDefaultCVars();
+	static void MaxTime();
+	static void MoreTime();
+	static void AddRespawningStaticBot(CBasePlayer* pPlayer);
+	static void AgGamemodeDefaultCVars();
 };
 
 extern DLL_GLOBAL AgCommand Command;

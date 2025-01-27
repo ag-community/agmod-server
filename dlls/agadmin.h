@@ -11,12 +11,12 @@
 class AgAdmin
 {
 public:
-    AgAdmin();
-    virtual ~AgAdmin();
+	AgAdmin();
+	virtual ~AgAdmin();
 
-    AgString      m_sAdmin;
-    AgString      m_sPassword;
-    AgString      m_sAuthID;
+	AgString m_sAdmin;
+	AgString m_sPassword;
+	AgString m_sAuthID;
 };
 
 #endif // !defined(AFX_AGADMIN_H__E1E58F06_B2BD_43F9_99A0_0B3F6D6B7B16__INCLUDED_)

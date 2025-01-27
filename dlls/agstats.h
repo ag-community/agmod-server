@@ -43,23 +43,24 @@ protected:
 			m_mapWeaponStats.clear();
 		}
 
-		int m_iKills;				  //Kills
-		int m_iDeaths;				//Deaths
-		int m_iTeamKills;			//Teamkills
-		int m_iDamageTaken;		//Damage taken
-		int m_iDamageGiven;   //Damage given
+		int m_iKills;		// Kills
+		int m_iDeaths;		// Deaths
+		int m_iTeamKills;	// Teamkills
+		int m_iDamageTaken; // Damage taken
+		int m_iDamageGiven; // Damage given
 		AgString m_sName;
-		typedef std::map<AgString, AgWeaponStats*, std::less<AgString> > AgWeaponStatsMap;
+		typedef std::map<AgString, AgWeaponStats*, std::less<AgString>> AgWeaponStatsMap;
 		AgWeaponStatsMap m_mapWeaponStats;
 		AgWeaponStats* GetWeaponStats(const char* pszItem);
 	};
 
-	typedef std::map<AgString, AgPlayerStats*, std::less<AgString> > AgPlayerStatsMap;
+	typedef std::map<AgString, AgPlayerStats*, std::less<AgString>> AgPlayerStatsMap;
 	AgPlayerStatsMap m_mapPlayerStats;
 
 	AgPlayerStats* GetStats(CBasePlayer* pPlayer);
 
 	void PrintStats(CBasePlayer* pPlayer, CBasePlayer* pStatsPlayer);
+
 public:
 	AgStats();
 	virtual ~AgStats();

@@ -11,69 +11,75 @@
 
 class AgArena
 {
-    typedef std::list<int> AgWaitList;
-    enum ArenaStatus { Waiting, Countdown, Spawning, Playing, PlayerDied };
+	typedef std::list<int> AgWaitList;
+	enum ArenaStatus
+	{
+		Waiting,
+		Countdown,
+		Spawning,
+		Playing,
+		PlayerDied
+	};
 
-    AgWaitList  m_lstWaitList;
-    ArenaStatus m_Status;
+	AgWaitList m_lstWaitList;
+	ArenaStatus m_Status;
 
-    float m_fNextCountdown;
-    float m_fMatchStart;
-    float m_fNextSay;
+	float m_fNextCountdown;
+	float m_fMatchStart;
+	float m_fNextSay;
 
-    EHANDLE m_Player1;
-    EHANDLE m_Player2;
+	EHANDLE m_Player1;
+	EHANDLE m_Player2;
 
-    AgString m_sWinner;
+	AgString m_sWinner;
 
-    CBasePlayer* GetPlayer1();
-    CBasePlayer* GetPlayer2();
+	CBasePlayer* GetPlayer1();
+	CBasePlayer* GetPlayer2();
 
-    void Add(CBasePlayer* pPlayer);
-    void Remove(CBasePlayer* pPlayer);
+	void Add(CBasePlayer* pPlayer);
+	void Remove(CBasePlayer* pPlayer);
 
 public:
-    AgArena();
-    virtual ~AgArena();
+	AgArena();
+	virtual ~AgArena();
 
-    void Think();
+	void Think();
 
-    void Ready(CBasePlayer* pPlayer);
-    void NotReady(CBasePlayer* pPlayer);
+	void Ready(CBasePlayer* pPlayer);
+	void NotReady(CBasePlayer* pPlayer);
 
-    void ClientDisconnected(CBasePlayer* pPlayer);
-    void ClientConnected(CBasePlayer* pPlayer);
+	void ClientDisconnected(CBasePlayer* pPlayer);
+	void ClientConnected(CBasePlayer* pPlayer);
 
-    bool CanTakeDamage();
-    bool CanHaveItem();
-
+	bool CanTakeDamage();
+	bool CanHaveItem();
 };
 
 
-inline  CBasePlayer* AgArena::GetPlayer1()
+inline CBasePlayer* AgArena::GetPlayer1()
 {
-    if (m_Player1)
-        return (CBasePlayer*)(CBaseEntity*)m_Player1;
-    else
-        return NULL;
+	if (m_Player1)
+		return (CBasePlayer*)(CBaseEntity*)m_Player1;
+	else
+		return NULL;
 };
 
 inline CBasePlayer* AgArena::GetPlayer2()
 {
-    if (m_Player2)
-        return (CBasePlayer*)(CBaseEntity*)m_Player2;
-    else
-        return NULL;
+	if (m_Player2)
+		return (CBasePlayer*)(CBaseEntity*)m_Player2;
+	else
+		return NULL;
 };
 
 inline bool AgArena::CanTakeDamage()
 {
-    return Playing == m_Status || PlayerDied == m_Status;
+	return Playing == m_Status || PlayerDied == m_Status;
 }
 
 inline bool AgArena::CanHaveItem()
 {
-    return Spawning == m_Status;
+	return Spawning == m_Status;
 }
 
 

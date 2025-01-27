@@ -13,19 +13,19 @@
 class CBasePlayer;
 class AgScoreCache
 {
-    typedef std::map<AgString, AgScore*, std::less<AgString> > AgScoreMap;
-    AgScoreMap m_mapScores; //Holds the map score for each player.
+	typedef std::map<AgString, AgScore*, std::less<AgString>> AgScoreMap;
+	AgScoreMap m_mapScores; // Holds the map score for each player.
 
 public:
-    AgScoreCache();
-    virtual ~AgScoreCache();
+	AgScoreCache();
+	virtual ~AgScoreCache();
 
-    //Score cache.
-    AgScore* FindScore(CBasePlayer* pPlayer);     //Find a score for a player.
-    void     RestoreScore(CBasePlayer* pPlayer);  //Restore his score from scorecache.
-    void     UpdateScore(CBasePlayer* pPlayer);   //Update the cache with current score.
-    void     RestoreInGame(CBasePlayer* pPlayer); //Restore ingame flag from the scorecache.
-    void     Reset();                             //Reset it.
+	// Score cache.
+	AgScore* FindScore(CBasePlayer* pPlayer); // Find a score for a player.
+	void RestoreScore(CBasePlayer* pPlayer);  // Restore his score from scorecache.
+	void UpdateScore(CBasePlayer* pPlayer);	  // Update the cache with current score.
+	void RestoreInGame(CBasePlayer* pPlayer); // Restore ingame flag from the scorecache.
+	void Reset();							  // Reset it.
 };
 
 #endif // !defined(AFX_AGSCORECACHE_H__92DDA4B4_AB28_483B_8028_FAAB0667ECD4__INCLUDED_)

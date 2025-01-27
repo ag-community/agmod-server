@@ -5,11 +5,11 @@ extern std::map<int, std::string> spawnSystemName;
 class CSpawnChooser
 {
 private:
-	static constexpr unsigned int SPOT_UNKNOWN        = 0;
-	static constexpr unsigned int SPOT_VISIBLE        = (1 << 0);
-	static constexpr unsigned int SPOT_AUDIBLE        = (1 << 1);
+	static constexpr unsigned int SPOT_UNKNOWN = 0;
+	static constexpr unsigned int SPOT_VISIBLE = (1 << 0);
+	static constexpr unsigned int SPOT_AUDIBLE = (1 << 1);
 	static constexpr unsigned int SPOT_BARELY_AUDIBLE = (1 << 2);
-	static constexpr unsigned int SPOT_SAFE           = (1 << 3);
+	static constexpr unsigned int SPOT_SAFE = (1 << 3);
 
 	CBasePlayer* m_spawningPlayer;
 	CBaseEntity* m_lastSpawn;
@@ -39,13 +39,13 @@ public:
 	CSpawnChooser(CBasePlayer* player)
 	{
 		m_spawningPlayer = player;
-		m_lastSpawn      = nullptr;
+		m_lastSpawn = nullptr;
 	}
 
 	CSpawnChooser(CBasePlayer* player, CBaseEntity* lastSpot)
 	{
 		m_spawningPlayer = player;
-		m_lastSpawn      = lastSpot;
+		m_lastSpawn = lastSpot;
 	}
 
 	// Uses the original spawn system, the only one that AG has had prior to version 6.7,

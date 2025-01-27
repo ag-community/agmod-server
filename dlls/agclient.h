@@ -10,14 +10,18 @@
 class AgClient
 {
 public:
-    AgClient();
-    virtual ~AgClient();
+	AgClient();
+	virtual ~AgClient();
 
-    enum say_type { All, Team, Close };
-    bool HandleCommand(CBasePlayer* pPlayer);
-    void Say(CBasePlayer* pPlayer, say_type Type);
-    void Play(CBasePlayer* pPlayer, say_type Type, const char* pszWave);
-
+	enum say_type
+	{
+		All,
+		Team,
+		Close
+	};
+	bool HandleCommand(CBasePlayer* pPlayer);
+	void Say(CBasePlayer* pPlayer, say_type Type);
+	void Play(CBasePlayer* pPlayer, say_type Type, const char* pszWave);
 };
 
 #endif // !defined(AFX_AGCLIENT_H__F5D30437_55C8_4113_B813_61931ACAC42B__INCLUDED_)

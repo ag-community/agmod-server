@@ -37,7 +37,6 @@ AgSettings::AgSettings()
 
 AgSettings::~AgSettings()
 {
-
 }
 
 bool AgSettings::Think()
@@ -52,7 +51,7 @@ bool AgSettings::Think()
 	{
 		m_bChangeNextLevel = false;
 		g_bMapchange = true;
-		//Change the map.
+		// Change the map.
 		AgChangelevel(g_sNextMap);
 
 		if (g_sNextRules.size())
@@ -66,16 +65,16 @@ bool AgSettings::Think()
 	if (g_fGameOver)
 		return true;
 
-	//No need to do rest of this every frame.
+	// No need to do rest of this every frame.
 	if (m_fNextCheck > gpGlobals->time)
 		return true;
 
 	if (m_bCalcNextMap)
 		CalcNextMap();
 
-	m_fNextCheck = gpGlobals->time + 5.0; //Every 5 seconds.
+	m_fNextCheck = gpGlobals->time + 5.0; // Every 5 seconds.
 
-	//Check if to display next map.
+	// Check if to display next map.
 	if (m_bCheckNextMap && timelimit.value || m_bCheckNextMap && fraglimit.value)
 	{
 		if (timeleft.value && 60 > timeleft.value || fraglimit.value && 2 > fragsleft.value)
@@ -114,7 +113,7 @@ void AgSettings::Changelevel(const AgString& sMap)
 	char szTemp[64];
 	strcpy(szTemp, sMap.c_str());
 
-	//Check if it exists.
+	// Check if it exists.
 	if (IS_MAP_VALID(szTemp))
 	{
 		g_sNextMap = sMap;
@@ -136,7 +135,7 @@ void AgSettings::SetNextLevel(const AgString& sMap)
 	char szTemp[64];
 	strcpy(szTemp, sMap.c_str());
 
-	//Check if it exists.
+	// Check if it exists.
 	if (IS_MAP_VALID(szTemp))
 		g_sNextMap = sMap;
 
@@ -269,7 +268,7 @@ typedef struct mapcycle_item_s
 	struct mapcycle_item_s* next;
 
 	char mapname[32];
-	int  minplayers, maxplayers;
+	int minplayers, maxplayers;
 	char rulebuffer[MAX_RULE_BUFFER];
 } mapcycle_item_t;
 
@@ -288,7 +287,7 @@ Clean up memory used by mapcycle when switching it
 */
 void AgDestroyMapCycle(mapcycle_t* cycle)
 {
-	mapcycle_item_t* p, * n, * start;
+	mapcycle_item_t *p, *n, *start;
 	p = cycle->items;
 	if (p)
 	{
@@ -318,8 +317,8 @@ Parse a token out of a string
 */
 char* AgCOM_Parse(char* data)
 {
-	int             c;
-	int             len;
+	int c;
+	int len;
 
 	len = 0;
 	com_token[0] = 0;
@@ -332,7 +331,7 @@ skipwhite:
 	while ((c = *data) <= ' ')
 	{
 		if (c == 0)
-			return NULL;                    // end of file;
+			return NULL; // end of file;
 		data++;
 	}
 
@@ -427,7 +426,7 @@ int AgReloadMapCycleFile(char* filename, mapcycle_t* cycle)
 	char* pFileList;
 	char* aFileList = pFileList = (char*)LOAD_FILE_FOR_ME(filename, &length);
 	int hasbuffer;
-	mapcycle_item_s* item, * newlist = NULL, * next;
+	mapcycle_item_s *item, *newlist = NULL, *next;
 
 	if (pFileList && length)
 	{
@@ -501,7 +500,6 @@ int AgReloadMapCycleFile(char* filename, mapcycle_t* cycle)
 			{
 				ALERT(at_console, "Skipping %s from mapcycle, not a valid map\n", szMap);
 			}
-
 		}
 
 		FREE_FILE(aFileList);
@@ -547,7 +545,7 @@ Determine the current # of active players on the server for map cycling logic
 */
 int AgCountPlayers(void)
 {
-	int	num = 0;
+	int num = 0;
 
 	for (int i = 1; i <= gpGlobals->maxClients; i++)
 	{
@@ -573,9 +571,9 @@ Parse commands/key value pairs to issue right after map xxx command is issued on
 void AgExtractCommandString(char* s, char* szCommand)
 {
 	// Now make rules happen
-	char	pkey[512];
-	char	value[512];	// use two buffers so compares
-								// work without stomping on each other
+	char pkey[512];
+	char value[512]; // use two buffers so compares
+					 // work without stomping on each other
 	char* o;
 
 	if (*s == '\\')
@@ -634,9 +632,9 @@ void AgSettings::CalcNextMap()
 	char szCommands[1500];
 	char szRules[1500];
 	int minplayers = 0, maxplayers = 0;
-	strcpy(szFirstMapInList, "boot_camp");  // the absolute default level is hldm1
+	strcpy(szFirstMapInList, "boot_camp"); // the absolute default level is hldm1
 
-	int	curplayers;
+	int curplayers;
 	bool do_cycle = true;
 
 	// find the map to change to
@@ -744,7 +742,7 @@ void AgSettings::CalcNextMap()
 
 	g_sNextMap = szNextMap;
 	g_sNextRules = szCommands;
-	//No need to calc more.
+	// No need to calc more.
 	m_bCalcNextMap = false;
 }
 

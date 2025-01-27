@@ -1,17 +1,17 @@
 /***
-*
-*	Copyright (c) 1999, 2000 Valve LLC. All rights reserved.
-*
-*	This product contains software technology licensed from Id
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
-*	All Rights Reserved.
-*
-*   Use, distribution, and modification of this source code and/or resulting
-*   object code is restricted to non-commercial enhancements to products from
-*   Valve LLC.  All other use, distribution, or modification is prohibited
-*   without written permission from Valve LLC.
-*
-****/
+ *
+ *	Copyright (c) 1999, 2000 Valve LLC. All rights reserved.
+ *
+ *	This product contains software technology licensed from Id
+ *	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
+ *	All Rights Reserved.
+ *
+ *   Use, distribution, and modification of this source code and/or resulting
+ *   object code is restricted to non-commercial enhancements to products from
+ *   Valve LLC.  All other use, distribution, or modification is prohibited
+ *   without written permission from Valve LLC.
+ *
+ ****/
 //
 // multi_gamerules.h
 //
@@ -28,7 +28,7 @@
 
 
 //=========================================================
-// CHalfLifeRules - rules for the single player Half-Life 
+// CHalfLifeRules - rules for the single player Half-Life
 // game.
 //=========================================================
 class CHalfLifeRules : public AgGameRules
@@ -51,7 +51,7 @@ public:
 
 	// Client connection/disconnection
 	virtual bool ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
-	virtual void InitHUD(CBasePlayer* pl);		// the client dll is ready for updating
+	virtual void InitHUD(CBasePlayer* pl); // the client dll is ready for updating
 	virtual void ClientDisconnected(edict_t* pClient);
 
 	// Client damage rules
@@ -103,13 +103,13 @@ public:
 	// What happens to a dead player's weapons
 	virtual int DeadPlayerWeapons(CBasePlayer* pPlayer);
 
-	// What happens to a dead player's ammo	
+	// What happens to a dead player's ammo
 	virtual int DeadPlayerAmmo(CBasePlayer* pPlayer);
 
 	// Monsters
 	virtual bool FAllowMonsters(void);
 
-	// Teamplay stuff	
+	// Teamplay stuff
 	virtual const char* GetTeamID(CBaseEntity* pEntity) { return ""; };
 	virtual int PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget);
 

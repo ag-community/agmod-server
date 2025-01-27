@@ -4,13 +4,13 @@ constexpr float ATTEMPT_MIN_TIME = 0.5f;
 
 namespace SpeedrunStats
 {
-	void Init();
-	void AddJump();
-	void AddDuck();
-	void AddDistance(float* dist);
-	void AddLoad();
-	void PrintSession();
-	void PrintRun();
-	void ShowRunTime();
-	void EndRun();
+void Init();
+void AddJump();
+void AddDuck();
+void AddDistance(float* dist);
+void AddLoad();
+void PrintSession();
+void PrintRun();
+void ShowRunTime();
+void EndRun();
 }

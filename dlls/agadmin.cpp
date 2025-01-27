@@ -15,7 +15,6 @@ AgAdmin::AgAdmin()
 
 AgAdmin::~AgAdmin()
 {
-
 }
 
 //-- Martin Webrant

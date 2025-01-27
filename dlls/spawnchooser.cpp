@@ -11,9 +11,9 @@
 extern std::vector<CBaseEntity*> g_spawnPoints;
 extern std::vector<CBaseEntity*> g_spawnHistory;
 
-extern void SetupVisibility(edict_t *pViewEntity, edict_t *pClient, unsigned char **pvs, unsigned char **pas);
+extern void SetupVisibility(edict_t* pViewEntity, edict_t* pClient, unsigned char** pvs, unsigned char** pas);
 
-inline int FNullEnt( CBaseEntity *ent ) { return (ent == NULL) || FNullEnt( ent->edict() ); }
+inline int FNullEnt(CBaseEntity* ent) { return (ent == NULL) || FNullEnt(ent->edict()); }
 
 std::map<int, std::string> spawnSystemName = {
 	{0, "Classic"},
@@ -26,7 +26,7 @@ std::map<int, std::string> spawnSystemName = {
 // Checks if the spot is clear of players
 bool CSpawnChooser::IsSpawnPointValid(CBasePlayer* pPlayer, CBaseEntity* pSpot)
 {
-	CBaseEntity *ent = NULL;
+	CBaseEntity* ent = NULL;
 
 	if (!pSpot->IsTriggered(pPlayer))
 		return false;
@@ -102,7 +102,7 @@ CBaseEntity* CSpawnChooser::GetClassicSpawnPoint()
 	for (int i = GetRandomNumber(1, 5); i > 0; i--)
 		pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
 
-	if (FNullEnt(pSpot))  // skip over the null point
+	if (FNullEnt(pSpot)) // skip over the null point
 		pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
 
 	if (FNullEnt(pSpot) && singleplayer.value > 0.0f)
@@ -151,7 +151,7 @@ CBaseEntity* CSpawnChooser::GetFarSpawnPoint()
 		return GetRandomSpawnPoint();
 	}
 	std::vector<CBasePlayer*> enemies = m_spawningPlayer->GetPlayingEnemies();
-	
+
 	if (enemies.empty() || IsCleanStartNeeded())
 	{
 		ALERT(at_aiconsole, "No enemy found. Selecting some random spawn without distance checks...\n");
@@ -159,7 +159,7 @@ CBaseEntity* CSpawnChooser::GetFarSpawnPoint()
 	}
 	ALERT(at_aiconsole, "Enemies: %d\n", enemies.size());
 
-	
+
 	std::map<CBaseEntity*, float> distancesFromEnemy;
 	std::vector<float> distancesToSort;
 
@@ -209,7 +209,7 @@ CBaseEntity* CSpawnChooser::GetFarSpawnPoint()
 	// so now we just take a random one out of the first N spawns
 	const auto selectedDistance = distancesToSort[GetRandomNumber(0, numberOfFarSpawns - 1)];
 	ALERT(at_aiconsole, "Selected distance: %.2f\n", selectedDistance);
-	
+
 	CBaseEntity* pSpot = nullptr;
 
 	// Figure out what spawn spot corresponds to that distance, because we know what
@@ -257,7 +257,7 @@ CBaseEntity* CSpawnChooser::GetPositionAwareSpawnPoint()
 		return GetRandomSpawnPoint();
 	}
 	SetupSpotAwareness();
-	
+
 	std::vector<int> spotsToSelect;
 	CBaseEntity* pSpot = nullptr;
 	auto total = ag_spawn_pa_safe_chance.value + ag_spawn_pa_audible_chance.value + ag_spawn_pa_visible_chance.value;
@@ -322,16 +322,16 @@ CBaseEntity* CSpawnChooser::GetPositionAwareSpawnPoint()
 // the spots from the 1st list, then from the 2nd, etc. until it finds one that is not empty
 std::vector<int> CSpawnChooser::SelectSpotsFallingBack(std::vector<std::vector<int>> allSpots)
 {
-    std::vector<int> result;
-    for (const auto spots : allSpots)
-    {
-        if (!spots.empty())
-        {
-            result = spots;
-            break;
-        }
-    }
-    return result;
+	std::vector<int> result;
+	for (const auto spots : allSpots)
+	{
+		if (!spots.empty())
+		{
+			result = spots;
+			break;
+		}
+	}
+	return result;
 }
 
 void CSpawnChooser::SetupSpotAwareness()
@@ -390,7 +390,7 @@ void CSpawnChooser::SetupSpotAwareness()
 			// We move the player that is used by the engine, to this spawnpoint, to check the PVS/PAS from there
 			enginePlayer->pev->origin = spawnPoint->pev->origin;
 			SetupVisibility(nullptr, enginePlayer->edict(), &pvs, &pas);
-			
+
 			// TODO: maybe predict the position where the enemy will be in a second,
 			// and also check PVS and PAS from there as long as it's inbounds?
 			const auto visible = ENGINE_CHECK_VISIBILITY(enemy->edict(), pvs);

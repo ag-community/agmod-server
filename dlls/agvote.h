@@ -10,34 +10,39 @@
 class AgVote
 {
 protected:
-    AgString m_sVote;
-    AgString m_sValue;
-    AgString m_sValue2;
-    AgString m_sFullValue;
-    CBasePlayer* m_sTarget;
-    AgString m_sCalled;
-    AgString m_sCallerID;
-    AgString m_sAuthID;
+	AgString m_sVote;
+	AgString m_sValue;
+	AgString m_sValue2;
+	AgString m_sFullValue;
+	CBasePlayer* m_sTarget;
+	AgString m_sCalled;
+	AgString m_sCallerID;
+	AgString m_sAuthID;
 
-    double m_fMaxTime;
-    double m_fNextCount;
-    double m_fNextVote;
+	double m_fMaxTime;
+	double m_fNextCount;
+	double m_fNextVote;
 
-    enum VoteStatus { NotRunning = 0, Called = 1, Accepted = 2, Denied = 3, };
+	enum VoteStatus
+	{
+		NotRunning = 0,
+		Called = 1,
+		Accepted = 2,
+		Denied = 3,
+	};
 
-    bool m_bRunning;
+	bool m_bRunning;
 
 public:
-    AgVote();
-    virtual ~AgVote();
+	AgVote();
+	virtual ~AgVote();
 
-    bool HandleCommand(CBasePlayer* pPlayer);
+	bool HandleCommand(CBasePlayer* pPlayer);
 
-    bool CallVote(CBasePlayer* pPlayer);
-    void Think();
+	bool CallVote(CBasePlayer* pPlayer);
+	void Think();
 
-    bool ResetVote();
-
+	bool ResetVote();
 };
 
 #endif // !defined(AFX_AGVOTE_H__9CC79DD3_49A1_42BF_8757_9F250760B2BD__INCLUDED_)

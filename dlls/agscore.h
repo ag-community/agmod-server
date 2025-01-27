@@ -13,9 +13,9 @@ public:
 	AgScore();
 	virtual ~AgScore();
 
-	int		        m_iFrags;
-	int		        m_iDeaths;
-	bool          m_bIngame;
+	int m_iFrags;
+	int m_iDeaths;
+	bool m_bIngame;
 };
 
 #endif // !defined(AFX_AGSCORE_H__7014D216_A0B2_432F_9A67_E54F7D3D6B1D__INCLUDED_)

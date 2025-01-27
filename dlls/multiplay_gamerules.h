@@ -1,17 +1,17 @@
 /***
-*
-*	Copyright (c) 1999, 2000 Valve LLC. All rights reserved.
-*
-*	This product contains software technology licensed from Id
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
-*	All Rights Reserved.
-*
-*   Use, distribution, and modification of this source code and/or resulting
-*   object code is restricted to non-commercial enhancements to products from
-*   Valve LLC.  All other use, distribution, or modification is prohibited
-*   without written permission from Valve LLC.
-*
-****/
+ *
+ *	Copyright (c) 1999, 2000 Valve LLC. All rights reserved.
+ *
+ *	This product contains software technology licensed from Id
+ *	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
+ *	All Rights Reserved.
+ *
+ *   Use, distribution, and modification of this source code and/or resulting
+ *   object code is restricted to non-commercial enhancements to products from
+ *   Valve LLC.  All other use, distribution, or modification is prohibited
+ *   without written permission from Valve LLC.
+ *
+ ****/
 //
 // multi_gamerules.h
 //
@@ -26,11 +26,11 @@
 #include "aggamerules.h"
 //-- Martin Webrant
 
-#define ITEM_RESPAWN_TIME			30
-#define WEAPON_RESPAWN_TIME			20
-#define AMMO_RESPAWN_TIME			20
-#define HEALTHCHARGER_RECHARGE_TIME	60
-#define HEVCHARGER_RECHARGE_TIME	30
+#define ITEM_RESPAWN_TIME 30
+#define WEAPON_RESPAWN_TIME 20
+#define AMMO_RESPAWN_TIME 20
+#define HEALTHCHARGER_RECHARGE_TIME 60
+#define HEVCHARGER_RECHARGE_TIME 30
 
 //=========================================================
 // CHalfLifeMultiplay - rules for the basic half life multiplayer
@@ -38,11 +38,12 @@
 //=========================================================
 //++ BulliT
 class CHalfLifeMultiplay : public AgGameRules
-	//class CHalfLifeMultiplay : public CGameRules
-	//-- Martin Webrant
+// class CHalfLifeMultiplay : public CGameRules
+//-- Martin Webrant
 {
 private:
 	void ClampIntermissionTime();
+
 public:
 	CHalfLifeMultiplay();
 
@@ -61,17 +62,17 @@ public:
 	virtual bool IsCoOp(void);
 
 	// Client connection/disconnection
-		// If ClientConnected returns false, the connection is rejected and the user is provided the reason specified in
-		//  svRejectReason
-		// Only the client's name and remote address are provided to the dll for verification.
+	// If ClientConnected returns false, the connection is rejected and the user is provided the reason specified in
+	//  svRejectReason
+	// Only the client's name and remote address are provided to the dll for verification.
 	virtual bool ClientConnected(edict_t* pEntity, const char* pszName, const char* pszAddress, char szRejectReason[128]);
-	virtual void InitHUD(CBasePlayer* pl);		// the client dll is ready for updating
+	virtual void InitHUD(CBasePlayer* pl); // the client dll is ready for updating
 	virtual void ClientDisconnected(edict_t* pClient);
-	virtual void UpdateGameMode(CBasePlayer* pPlayer);  // the client needs to be informed of the current game mode
+	virtual void UpdateGameMode(CBasePlayer* pPlayer); // the client needs to be informed of the current game mode
 
-// Client damage rules
+	// Client damage rules
 	virtual float FlPlayerFallDamage(CBasePlayer* pPlayer);
-	virtual bool  FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker);
+	virtual bool FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker);
 
 	// Client spawn/respawn control
 	virtual void PlayerSpawn(CBasePlayer* pPlayer);
@@ -90,9 +91,9 @@ public:
 
 	// Weapon retrieval
 	virtual void PlayerGotWeapon(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);
-	virtual bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon);// The player is touching an CBasePlayerItem, do I give it to him?
+	virtual bool CanHavePlayerItem(CBasePlayer* pPlayer, CBasePlayerItem* pWeapon); // The player is touching an CBasePlayerItem, do I give it to him?
 
-// Weapon spawn/respawn control
+	// Weapon spawn/respawn control
 	virtual int WeaponShouldRespawn(CBasePlayerItem* pWeapon);
 	virtual float FlWeaponRespawnTime(CBasePlayerItem* pWeapon);
 	virtual float FlWeaponTryRespawn(CBasePlayerItem* pWeapon);
@@ -122,10 +123,10 @@ public:
 	// What happens to a dead player's weapons
 	virtual int DeadPlayerWeapons(CBasePlayer* pPlayer);
 
-	// What happens to a dead player's ammo	
+	// What happens to a dead player's ammo
 	virtual int DeadPlayerAmmo(CBasePlayer* pPlayer);
 
-	// Teamplay stuff	
+	// Teamplay stuff
 	virtual const char* GetTeamID(CBaseEntity* pEntity) { return ""; }
 	virtual int PlayerRelationship(CBaseEntity* pPlayer, CBaseEntity* pTarget);
 

@@ -12,11 +12,13 @@ int AgRandom::GetSeed()
 	return _seed;
 }
 
-void AgRandom::SeedRNG(unsigned int seed) {
+void AgRandom::SeedRNG(unsigned int seed)
+{
 	_seed = seed;
-	s = (long) seed;
+	s = (long)seed;
 }
 
-int AgRandom::GetRandomInt() {
+int AgRandom::GetRandomInt()
+{
 	return (((s = s * 214013L + 2531011L) >> 16) & 0x7fff);
 }

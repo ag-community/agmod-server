@@ -9,15 +9,15 @@
 
 class AgWallhack
 {
-    AgString m_sData;
+	AgString m_sData;
 
 public:
-    AgWallhack();
-    virtual ~AgWallhack();
+	AgWallhack();
+	virtual ~AgWallhack();
 
-    void Init();
+	void Init();
 
-    void SendToPlayer(CBasePlayer* pPlayer);
+	void SendToPlayer(CBasePlayer* pPlayer);
 };
 
 extern DLL_GLOBAL AgWallhack Wallhack;

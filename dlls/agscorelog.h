@@ -9,24 +9,24 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-typedef std::map<AgString, int, std::less<AgString> > AgScoreLogMap;
+typedef std::map<AgString, int, std::less<AgString>> AgScoreLogMap;
 
 class AgScoreLog
 {
-    float m_fNextLogUpdate;
-    void EndScore();
+	float m_fNextLogUpdate;
+	void EndScore();
 
 public:
-    AgScoreLog();
-    virtual ~AgScoreLog();
+	AgScoreLog();
+	virtual ~AgScoreLog();
 
-    void Think();
+	void Think();
 
-    void Start();
-    void End();
-    void Score();
+	void Start();
+	void End();
+	void Score();
 
-    void GetScores(AgScoreLogMap& mapScores);
+	void GetScores(AgScoreLogMap& mapScores);
 };
 
 #endif // !defined(AFX_AGSCORELOG_H__A764B26F_F098_4237_B5B9_A62BD9FD9BF6__INCLUDED_)

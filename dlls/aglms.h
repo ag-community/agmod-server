@@ -11,28 +11,34 @@
 
 class AgLMS
 {
-    enum LMSStatus { Waiting, Countdown, Spawning, Playing };
-    LMSStatus m_Status;
-    float m_fNextCountdown;
-    float m_fMatchStart;
-    float m_fNextSay;
-    AgString m_sWinner;
+	enum LMSStatus
+	{
+		Waiting,
+		Countdown,
+		Spawning,
+		Playing
+	};
+	LMSStatus m_Status;
+	float m_fNextCountdown;
+	float m_fMatchStart;
+	float m_fNextSay;
+	AgString m_sWinner;
 
 public:
-    AgLMS();
-    virtual ~AgLMS();
+	AgLMS();
+	virtual ~AgLMS();
 
-    void Think();
+	void Think();
 
-    void ClientDisconnected(CBasePlayer* pPlayer);
-    void ClientConnected(CBasePlayer* pPlayer);
+	void ClientDisconnected(CBasePlayer* pPlayer);
+	void ClientConnected(CBasePlayer* pPlayer);
 
-    bool CanTakeDamage();
+	bool CanTakeDamage();
 };
 
 inline bool AgLMS::CanTakeDamage()
 {
-    return Playing == m_Status;
+	return Playing == m_Status;
 }
 
 

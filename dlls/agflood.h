@@ -3,6 +3,6 @@
 
 namespace AgFlood
 {
-	void UpdateFlooding(CBasePlayer* player);
-	void RestoreFlooding(CBasePlayer* player);
+void UpdateFlooding(CBasePlayer* player);
+void RestoreFlooding(CBasePlayer* player);
 };
