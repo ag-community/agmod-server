@@ -467,6 +467,9 @@ DLL_GLOBAL cvar_t ag_log_cvars = CVar::Create("sv_ag_log_cvars", "0", FCVAR_SERV
 // When doing `delay_changelevel`, on 1 it prints the map change message and delay status to chat instead of console
 DLL_GLOBAL cvar_t ag_say_on_changelevel_delay = CVar::Create("sv_ag_say_on_changelevel_delay", "1");
 
+// ## HL25 Gameplay changes ##
+
+DLL_GLOBAL cvar_t ag_hl25_satchel_controls = CVar::Create("sv_ag_hl25_satchel_controls", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE | CCVAR_GAMEMODE);
 
 DLL_GLOBAL bool g_bLangame = false;
 DLL_GLOBAL bool g_bUseTeamColors = false;
@@ -697,6 +700,9 @@ void AgInitGame()
 	CVAR_REGISTER(&ag_countdown);
 	CVAR_REGISTER(&ag_log_cvars);
 	CVAR_REGISTER(&ag_say_on_changelevel_delay);
+
+	// ## HL25 Gameplay changes ##
+	CVAR_REGISTER(&ag_hl25_satchel_controls);
 
 	Command.Init();
 

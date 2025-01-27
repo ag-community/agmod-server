@@ -262,7 +262,7 @@ LINK_ENTITY_TO_CLASS(weapon_satchel, CSatchel);
 //=========================================================
 int CSatchel::AddDuplicate(CBasePlayerItem* pOriginal)
 {
-	CSatchel* pSatchel;
+	CSatchel* pSatchel = nullptr;
 
 #ifdef CLIENT_DLL
 	if (bIsMultiplayer())
@@ -272,10 +272,37 @@ int CSatchel::AddDuplicate(CBasePlayerItem* pOriginal)
 	{
 		pSatchel = (CSatchel*)pOriginal;
 
-		if (pSatchel->m_chargeReady != 0)
+		if (ag_hl25_satchel_controls.value == 1)
 		{
-			// player has some satchels deployed. Refuse to add more.
-			return false;
+			if (pOriginal->m_pPlayer == NULL)
+				return true;
+			int nSatchelsInPocket = pSatchel->m_pPlayer->m_rgAmmo[pSatchel->PrimaryAmmoIndex()];
+			int nNumSatchels = 0;
+			CBaseEntity* pLiveSatchel = NULL;
+			while ((pLiveSatchel = UTIL_FindEntityInSphere(pLiveSatchel, pOriginal->m_pPlayer->pev->origin, 4096)) != NULL)
+			{
+				if (FClassnameIs(pLiveSatchel->pev, "monster_satchel"))
+				{
+					if (pLiveSatchel->pev->owner == pOriginal->m_pPlayer->edict())
+					{
+						nNumSatchels++;
+					}
+				}
+			}
+
+			if (pSatchel->m_chargeReady != 0 && (nSatchelsInPocket + nNumSatchels) >= SATCHEL_MAX_CARRY)
+			{
+				// player has some satchels deployed. Refuse to add more.
+				return false;
+			}
+		}
+		else
+		{
+			if (pSatchel->m_chargeReady != 0)
+			{
+				// player has some satchels deployed. Refuse to add more.
+				return false;
+			}
 		}
 	}
 
@@ -422,53 +449,54 @@ void CSatchel::Holster(int skiplocal /* = 0 */)
 
 void CSatchel::PrimaryAttack()
 {
-	switch (m_chargeReady)
+	if (ag_hl25_satchel_controls.value == 1)
 	{
-	case 0:
-	{
-		Throw();
-	}
-	break;
-	case 1:
-	{
-		SendWeaponAnim(SATCHEL_RADIO_FIRE);
-
-		edict_t* pPlayer = m_pPlayer->edict();
-
-		CBaseEntity* pSatchel = NULL;
-
-		while ((pSatchel = UTIL_FindEntityInSphere(pSatchel, m_pPlayer->pev->origin, WORLD_BOUNDARY_DIST)) != NULL)
-		{
-			if (FClassnameIs(pSatchel->pev, "monster_satchel"))
-			{
-				if (pSatchel->pev->owner == pPlayer)
-				{
-					pSatchel->Use(m_pPlayer, m_pPlayer, USE_ON, 0);
-				}
-			}
-		}
-
-		m_chargeReady = 2;
-		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
-		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
-		break;
-	}
-
-	case 2:
 		// we're reloading, don't allow fire
+		if (m_chargeReady != 2)
 		{
+			Throw();
+		}
+	}
+	else
+	{
+		switch (m_chargeReady)
+		{
+		case 0:
+		{
+			Throw();
 		}
 		break;
+		case 1:
+		{
+			Detonate();
+			break;
+		}
+
+		case 2:
+			// we're reloading, don't allow fire
+			{
+			}
+			break;
+		}
 	}
 }
 
 
 void CSatchel::SecondaryAttack(void)
 {
-	if (m_chargeReady != 2)
+	if (ag_hl25_satchel_controls.value == 1)
 	{
-		Throw();
+		if (m_chargeReady == 1)
+		{
+			Detonate();
+		}
+	}
+	else
+	{
+		if (m_chargeReady != 2)
+		{
+			Throw();
+		}
 	}
 }
 
@@ -504,6 +532,29 @@ void CSatchel::Throw(void)
 		m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
 		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
 	}
+}
+
+
+void CSatchel::Detonate()
+{
+	SendWeaponAnim(SATCHEL_RADIO_FIRE);
+	edict_t* pPlayer = m_pPlayer->edict();
+	CBaseEntity* pSatchel = NULL;
+	while ((pSatchel = UTIL_FindEntityInSphere(pSatchel, m_pPlayer->pev->origin, 4096)) != NULL)
+	{
+		if (FClassnameIs(pSatchel->pev, "monster_satchel"))
+		{
+			if (pSatchel->pev->owner == pPlayer)
+			{
+				pSatchel->Use(m_pPlayer, m_pPlayer, USE_ON, 0);
+				m_chargeReady = 2;
+			}
+		}
+	}
+	m_chargeReady = 2;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
+	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
 }
 
 
