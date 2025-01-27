@@ -735,7 +735,7 @@ void AgInitGame()
 //  $holdtime (stay on the screen for this long)
 
 
-void AgSay(CBasePlayer* pPlayer, const AgString& sText, float* pfFloodProtected, float fHoldTime, float x, float y, int iChannel)
+void AgSay(CBasePlayer* pPlayer, const AgString& sText, float* pfFloodProtected, float fHoldTime, float x, float y, int iChannel, int r, int g, int b)
 {
 	if (g_fGameOver)
 		return;
@@ -757,7 +757,10 @@ void AgSay(CBasePlayer* pPlayer, const AgString& sText, float* pfFloodProtected,
 	hText.x = x;
 	hText.y = y;
 
-	hText.r1 = hText.g1 = hText.b1 = 180;
+	hText.r1 = r;
+	hText.g1 = g;
+	hText.b1 = b; 
+	// hText.r1 = hText.g1 = hText.b1 = 180;
 	hText.a1 = 0;
 
 	hText.r2 = hText.g2 = hText.b2 = 0;

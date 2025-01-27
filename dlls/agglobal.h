@@ -262,7 +262,7 @@ void RemoveColorCodes(AgString& input);
 
 void AgChangelevel(const AgString& sLevelname);
 
-void AgSay(CBasePlayer* pPlayer, const AgString& sText, float* pfFloodProtected = NULL, float fHoldTime = 3.5, float x = -1, float y = -1, int iChannel = 5);
+void AgSay(CBasePlayer* pPlayer, const AgString& sText, float* pfFloodProtected = NULL, float fHoldTime = 3.5, float x = -1, float y = -1, int iChannel = 5, int r = 180, int g = 180, int b = 180);
 void AgConsole(const AgString& sText, CBasePlayer* pPlayer = NULL);
 
 void AgResetMap();
