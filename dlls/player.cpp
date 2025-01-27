@@ -2149,7 +2149,7 @@ void CBasePlayer::PreThink(void)
 	// in the event that the player JUST spawned, and the level node graph
 	// was loaded, fix all of the node graph pointers before the game starts.
 	// !!!BUGBUG - now that we have multiplayer, this needs to be moved!
-	if (0 != WorldGraph.m_fGraphPresent && 0 == WorldGraph.m_fGraphPointersSet)
+	if (WorldGraph.m_fGraphPresent && !WorldGraph.m_fGraphPointersSet)
 	{
 		if (!WorldGraph.FSetGraphPointers())
 			ALERT(at_console, "**Graph pointers were not set!\n");
@@ -3306,7 +3306,7 @@ void CBasePlayer::Spawn( void )
 		ALERT ( at_console, "Couldn't alloc player sound slot!\n" );
 	}
 
-	m_fNoPlayerSound = false;// normal sound behavior.
+	m_fNoPlayerSound = false;// normal sound behavior
 
 	m_pLastItem = NULL;
 	m_fInitHUD = true;

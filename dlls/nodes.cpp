@@ -61,9 +61,9 @@ void CGraph :: InitGraph( void)
 
 	// Make the graph unavailable
 	//
-	m_fGraphPresent = false;
-	m_fGraphPointersSet = false;
-	m_fRoutingComplete = false;
+	m_fGraphPresent = 0;
+	m_fGraphPointersSet = 0;
+	m_fRoutingComplete = 0;
 
 	// Free the link pool
 	//
@@ -116,13 +116,13 @@ void CGraph :: InitGraph( void)
 // reasonable number of nodes so we can build the path which
 // will be saved to disk.
 //=========================================================
-int CGraph :: AllocNodes ( void )
+bool CGraph :: AllocNodes ( void )
 {
 //  malloc all of the nodes
-	WorldGraph.m_pNodes = (CNode *)calloc ( sizeof ( CNode ), MAX_NODES );
+	m_pNodes = (CNode *)calloc ( sizeof ( CNode ), MAX_NODES );
 
 // could not malloc space for all the nodes!
-	if ( !WorldGraph.m_pNodes )
+	if ( !m_pNodes )
 	{
 		ALERT ( at_aiconsole, "**ERROR**\nCouldn't malloc %d nodes!\n", WorldGraph.m_cNodes );
 		return false;
@@ -169,7 +169,7 @@ entvars_t* CGraph :: LinkEntForLink ( CLink *pLink, CNode *pNode )
 			return pevLinkEnt;
 		}
 
-		while ( 1 )
+		while ( true )
 		{
 			pentTrigger = FIND_ENTITY_BY_TARGET ( pentSearch, STRING( pevLinkEnt->targetname ) );// find the button or trigger
 
@@ -213,7 +213,7 @@ entvars_t* CGraph :: LinkEntForLink ( CLink *pLink, CNode *pNode )
 // Given the monster's capability, determine whether
 // or not the monster can go this way. 
 //=========================================================
-int	CGraph :: HandleLinkEnt ( int iNode, entvars_t *pevLinkEnt, int afCapMask, NODEQUERY queryType )
+bool	CGraph :: HandleLinkEnt ( int iNode, entvars_t *pevLinkEnt, int afCapMask, NODEQUERY queryType )
 {
 	edict_t  *pentWorld;
 	CBaseEntity	*pDoor;
@@ -590,13 +590,13 @@ int CGraph :: FindShortestPath ( int *piPath, int iStart, int iDest, int iHull, 
 	if ( !m_fGraphPresent || !m_fGraphPointersSet )
 	{// protect us in the case that the node graph isn't available or built
 		ALERT ( at_aiconsole, "Graph not ready!\n" );
-		return false;
+		return 0;
 	}
 	
 	if ( iStart < 0 || iStart > m_cNodes )
 	{// The start node is bad?
 		ALERT ( at_aiconsole, "Can't build a path, iStart is %d!\n", iStart );
-		return false;
+		return 0;
 	}
 
 	if (iStart == iDest)
@@ -1157,7 +1157,7 @@ int CGraph :: LinkVisibleNodes ( CLink *pLinkPool, FILE *file, int *piBadNode )
 	if ( m_cNodes <= 0 )
 	{
 		ALERT ( at_aiconsole, "No Nodes!\n" );
-		return false;
+		return 0;
 	}
 
 	// if the file pointer is bad, don't blow up, just don't write the
@@ -1295,13 +1295,13 @@ int CGraph :: LinkVisibleNodes ( CLink *pLinkPool, FILE *file, int *piBadNode )
 				ALERT ( at_aiconsole, "**LinkVisibleNodes:\nNode %d has NodeLinks > MAX_NODE_INITIAL_LINKS", i );
 				fprintf ( file, "** NODE %d HAS NodeLinks > MAX_NODE_INITIAL_LINKS **\n", i );
 				*piBadNode = i;
-				return	false;
+				return 0;
 			}
 			else if ( cTotalLinks > MAX_NODE_INITIAL_LINKS * m_cNodes )
 			{// this is paranoia
 				ALERT ( at_aiconsole, "**LinkVisibleNodes:\nTotalLinks > MAX_NODE_INITIAL_LINKS * NUMNODES" );
 				*piBadNode = i;
-				return	false;
+				return 0;
 			}
 
 			if ( cLinksThisNode == 0 )
@@ -1855,7 +1855,7 @@ void CTestHull :: BuildNodeGraph( void )
 
 					flDist = ( vecSpot - pev->origin ).Length2D();
 
-					int fWalkFailed = false;
+					bool fWalkFailed = false;
 
 					// in this loop we take tiny steps from the current node to the nodes that it links to, one at a time.
 					// pev->angles.y = flYaw;
@@ -2047,9 +2047,9 @@ void CTestHull :: BuildNodeGraph( void )
 
 	// We now have some graphing capabilities.
 	//
-	WorldGraph.m_fGraphPresent = true;//graph is in memory.
-	WorldGraph.m_fGraphPointersSet = true;// since the graph was generated, the pointers are ready
-	WorldGraph.m_fRoutingComplete = false; // Optimal routes aren't computed, yet.
+	WorldGraph.m_fGraphPresent = 1;//graph is in memory.
+	WorldGraph.m_fGraphPointersSet = 1;// since the graph was generated, the pointers are ready
+	WorldGraph.m_fRoutingComplete = 0; // Optimal routes aren't computed, yet.
 
 	// Compute and compress the routing information.
 	//
@@ -2314,7 +2314,7 @@ void CQueuePriority::Heap_SiftUp(void)
 // will be loaded. If file cannot be loaded, the node tree
 // will be created and saved to disk.
 //=========================================================
-int CGraph :: FLoadGraph ( char *szMapName )
+bool CGraph :: FLoadGraph ( char *szMapName )
 {
 	char	szFilename[MAX_PATH];
 	int		iVersion;
@@ -2426,7 +2426,7 @@ int CGraph :: FLoadGraph ( char *szMapName )
 
 		// Malloc for the routing info.
 		//
-		m_fRoutingComplete = false;
+		m_fRoutingComplete = 0;
 		m_pRouteInfo = (char *)calloc( sizeof(char), m_nRouteInfo );
 		if ( !m_pRouteInfo )
 		{
@@ -2445,7 +2445,7 @@ int CGraph :: FLoadGraph ( char *szMapName )
 		if (length < 0) goto ShortFile;
 		memcpy(m_pRouteInfo, pMemFile, sizeof(char)*m_nRouteInfo);
 		pMemFile += sizeof(char)*m_nRouteInfo;
-		m_fRoutingComplete = true;;
+		m_fRoutingComplete = 1;
 
 		// malloc for the hash links
 		//
@@ -2465,8 +2465,8 @@ int CGraph :: FLoadGraph ( char *szMapName )
 
 		// Set the graph present flag, clear the pointers set flag
 		//
-		m_fGraphPresent = true;
-		m_fGraphPointersSet = false;
+		m_fGraphPresent = 1;
+		m_fGraphPointersSet = 0;
 		
 		FREE_FILE(aMemFile);
 
@@ -2488,7 +2488,7 @@ NoMemory:
 // CGraph - FSaveGraph - It's not rocket science.
 // this WILL overwrite existing files.
 //=========================================================
-int CGraph :: FSaveGraph ( char *szMapName )
+bool CGraph :: FSaveGraph ( char *szMapName )
 {
 	
 	int		iVersion = GRAPH_VERSION;
@@ -2560,7 +2560,7 @@ int CGraph :: FSaveGraph ( char *szMapName )
 // this is done after loading the graph from disk, whereupon
 // the pointers are not valid.
 //=========================================================
-int CGraph :: FSetGraphPointers ( void )
+bool CGraph :: FSetGraphPointers ( void )
 {
 	int	i;
 	edict_t	*pentLinkEnt;
@@ -2600,7 +2600,7 @@ int CGraph :: FSetGraphPointers ( void )
 	}
 
 	// the pointers are now set.
-	m_fGraphPointersSet = true;
+	m_fGraphPointersSet = 1;
 	return true;
 }
 
@@ -2619,9 +2619,9 @@ int CGraph :: FSetGraphPointers ( void )
 // though. ( I now suspect that we are getting GMT back from
 // these functions and must compensate for local time ) (sjb)
 //=========================================================
-int CGraph :: CheckNODFile ( char *szMapName )
+bool CGraph :: CheckNODFile ( char *szMapName )
 {
-	int 		retValue;
+	bool 		retValue;
 
 	char		szBspFilename[MAX_PATH];
 	char		szGraphFilename[MAX_PATH];
@@ -3339,7 +3339,7 @@ void CGraph :: ComputeStaticRoutingTables( void )
 #if 0
 	TestRoutingTables();
 #endif
-	m_fRoutingComplete = true;
+	m_fRoutingComplete = 1;
 }
 
 // Test those routing tables. Doesn't really work, yet.
@@ -3370,9 +3370,9 @@ void CGraph :: TestRoutingTables( void )
 				{
 					for (int iTo = 0; iTo < m_cNodes; iTo++)
 					{
-						m_fRoutingComplete = false;
+						m_fRoutingComplete = 0;
 						int cPathSize1 = FindShortestPath(pMyPath, iFrom, iTo, iHull, iCapMask);
-						m_fRoutingComplete = true;
+						m_fRoutingComplete = 1;
 						int cPathSize2 = FindShortestPath(pMyPath2, iFrom, iTo, iHull, iCapMask);
 
 						// Unless we can look at the entire path, we can verify that it's correct.
@@ -3448,9 +3448,9 @@ void CGraph :: TestRoutingTables( void )
 								ALERT(at_aiconsole, "%d ", pMyPath2[i]);
 							}
 							ALERT(at_aiconsole, "\n");
-							m_fRoutingComplete = false;
+							m_fRoutingComplete = 0;
 							cPathSize1 = FindShortestPath(pMyPath, iFrom, iTo, iHull, iCapMask);
-							m_fRoutingComplete = true;
+							m_fRoutingComplete = 1;
 							cPathSize2 = FindShortestPath(pMyPath2, iFrom, iTo, iHull, iCapMask);
 							goto EnoughSaid;
 						}

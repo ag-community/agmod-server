@@ -110,9 +110,9 @@ class CGraph
 public:
 
 // the graph has two flags, and should not be accessed unless both flags are true!
-	bool	m_fGraphPresent;// is the graph in memory?
-	bool	m_fGraphPointersSet;// are the entity pointers for the graph all set?
-	bool    m_fRoutingComplete; // are the optimal routes computed, yet?
+	qboolean m_fGraphPresent;// is the graph in memory?
+	qboolean m_fGraphPointersSet;// are the entity pointers for the graph all set?
+	qboolean m_fRoutingComplete; // are the optimal routes computed, yet?
 
 	CNode	*m_pNodes;// pointer to the memory block that contains all node info
 	CLink	*m_pLinkPool;// big list of all node connections
@@ -171,16 +171,16 @@ public:
 	enum NODEQUERY { NODEGRAPH_DYNAMIC, NODEGRAPH_STATIC };
 	// A static query means we're asking about the possiblity of handling this entity at ANY time
 	// A dynamic query means we're asking about it RIGHT NOW.  So we should query the current state
-	int		HandleLinkEnt ( int iNode, entvars_t *pevLinkEnt, int afCapMask, NODEQUERY queryType );
+	bool		HandleLinkEnt ( int iNode, entvars_t *pevLinkEnt, int afCapMask, NODEQUERY queryType );
 	entvars_t*	LinkEntForLink ( CLink *pLink, CNode *pNode );
 	void	ShowNodeConnections ( int iNode );
 	void	InitGraph( void );
-	int		AllocNodes ( void );
+	bool	AllocNodes ( void );
 	
-	int		CheckNODFile(char *szMapName);
-	int		FLoadGraph(char *szMapName);
-	int		FSaveGraph(char *szMapName);
-	int		FSetGraphPointers(void);
+	bool	CheckNODFile(char *szMapName);
+	bool	FLoadGraph(char *szMapName);
+	bool	FSaveGraph(char *szMapName);
+	bool	FSetGraphPointers(void);
 	void	CheckNode(Vector vecOrigin, int iNode);
 
 	void    BuildRegionTables(void);
@@ -298,8 +298,8 @@ class CQueue
 public:
 
 	CQueue( void );// constructor
-	inline int Full ( void ) { return ( m_cSize == MAX_STACK_NODES ); }
-	inline int Empty ( void ) { return ( m_cSize == 0 ); }
+	inline bool Full ( void ) { return ( m_cSize == MAX_STACK_NODES ); }
+	inline bool Empty ( void ) { return ( m_cSize == 0 ); }
 	//inline int Tail ( void ) { return ( m_queue[ m_tail ] ); }
 	inline int Size ( void ) { return ( m_cSize ); }
 	void Insert( int, float );
@@ -325,8 +325,8 @@ class CQueuePriority
 public:
 
 	CQueuePriority( void );// constructor
-	inline int Full ( void ) { return ( m_cSize == MAX_STACK_NODES ); }
-	inline int Empty ( void ) { return ( m_cSize == 0 ); }
+	inline bool Full ( void ) { return ( m_cSize == MAX_STACK_NODES ); }
+	inline bool Empty ( void ) { return ( m_cSize == 0 ); }
 	//inline int Tail ( float & ) { return ( m_queue[ m_tail ].Id ); }
 	inline int Size ( void ) { return ( m_cSize ); }
 	void Insert( int, float );
