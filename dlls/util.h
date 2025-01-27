@@ -467,6 +467,7 @@ extern DLL_GLOBAL int g_Language;
 
 #define SVC_TEMPENTITY 23
 #define SVC_INTERMISSION 30
+#define SVC_FINALE 31
 #define SVC_CDTRACK 32
 #define SVC_WEAPONANIM 35
 #define SVC_ROOMTYPE 37

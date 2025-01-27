@@ -60,7 +60,8 @@ enum enumGameType
 	ARCADE = 4,
 	SGBOW = 5,
 	INSTAGIB = 6,
-	DOM = 7
+	DOM = 7,
+	TOURNAMENT = 8
 };
 //-- muphicks
 extern DLL_GLOBAL byte g_GameType;
