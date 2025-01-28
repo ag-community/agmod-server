@@ -52,6 +52,10 @@ public:
 	// to give you the next spot where you can spawn (one out of the next 1 to 5 spots)
 	CBaseEntity* GetClassicSpawnPoint();
 
+	// Uses the original spawn system (HL25 version)
+	// In this version the randomness of the initial spawn points has been improved
+	CBaseEntity* GetHL25SpawnPoint();
+
 	// Gives you a random spawn spot, it can be any in the map, no conditions
 	CBaseEntity* GetRandomSpawnPoint();
 

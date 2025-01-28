@@ -3148,6 +3148,7 @@ edict_t* EntSelectSpawnPoint(CBasePlayer* pPlayer)
 		case 1: pSpot = spawnChooser.GetRandomSpawnPoint(); break;
 		case 2: pSpot = spawnChooser.GetFarSpawnPoint(); break;
 		case 3: pSpot = spawnChooser.GetPositionAwareSpawnPoint(); break;
+		case 4: pSpot = spawnChooser.GetHL25SpawnPoint(); break;
 		default: pSpot = spawnChooser.GetClassicSpawnPoint(); break;
 		}
 

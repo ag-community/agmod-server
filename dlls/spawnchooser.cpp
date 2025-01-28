@@ -133,6 +133,71 @@ CBaseEntity* CSpawnChooser::GetClassicSpawnPoint()
 	return nullptr;
 }
 
+CBaseEntity* CSpawnChooser::GetHL25SpawnPoint()
+{
+	int nNumRandomSpawnsToTry = 10;
+
+	if (!m_spawningPlayer)
+	{
+		ALERT(at_warning, "Failed to get a classic spawn point, spawning player info is missing! Relying on the random spawn system to get the next spawn spot...\n");
+
+		if (g_spawnPoints.empty())
+		{
+			ALERT(at_error, "No deathmatch spawn spots detected! Can't rely on the random spawn system...\n");
+			return nullptr;
+		}
+		return GetRandomSpawnPoint();
+	}
+
+	if (NULL == m_lastSpawn)
+	{
+		int nNumSpawnPoints = 0;
+		CBaseEntity* pEnt = UTIL_FindEntityByClassname(NULL, "info_player_deathmatch");
+		while (NULL != pEnt)
+		{
+			nNumSpawnPoints++;
+			pEnt = UTIL_FindEntityByClassname(pEnt, "info_player_deathmatch");
+		}
+		nNumRandomSpawnsToTry = nNumSpawnPoints;
+	}
+
+	CBaseEntity* pSpot = m_lastSpawn;
+
+	// Randomize the start spot
+	for (int i = GetRandomNumber(1, nNumRandomSpawnsToTry); i > 0; i--)
+		pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
+
+	if (FNullEnt(pSpot)) // skip over the null point
+		pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
+
+	if (FNullEnt(pSpot) && singleplayer.value > 0.0f)
+		pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_start");
+
+	CBaseEntity* pFirstSpot = pSpot;
+
+	do
+	{
+		if (pSpot)
+		{
+			// check if pSpot is valid
+			if (IsSpawnPointValid(m_spawningPlayer, pSpot))
+			{
+				if (pSpot->pev->origin == Vector(0, 0, 0))
+				{
+					pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
+					continue;
+				}
+
+				return pSpot;
+			}
+		}
+		// increment pSpot
+		pSpot = UTIL_FindEntityByClassname(pSpot, "info_player_deathmatch");
+	} while (pSpot != pFirstSpot); // loop if we're not back to the start
+
+	return nullptr;
+}
+
 // Get one of the spawn points that is furthest from enemies
 // Take the furthest 25% of all spawn points and choose of those randomly,
 // and if the 25% is less than 3 spawns, then make it 3 spawns minimum,
