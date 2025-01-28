@@ -27,9 +27,9 @@
 void AgInitTimer();
 
 #ifdef AG_NO_CLIENT_DLL
-DLL_GLOBAL cvar_t ag_version = CVar::Create("sv_ag_version", "6.7mini-updated", FCVAR_SERVER);
+DLL_GLOBAL cvar_t ag_version = CVar::Create("sv_ag_version", "6.8mini-u", FCVAR_SERVER);
 #else
-DLL_GLOBAL cvar_t ag_version = CVar::Create("sv_ag_version", "6.7updated", FCVAR_SERVER);
+DLL_GLOBAL cvar_t ag_version = CVar::Create("sv_ag_version", "6.8u", FCVAR_SERVER);
 #endif
 
 
