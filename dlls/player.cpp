@@ -3212,6 +3212,7 @@ ReturnSpot:
 
 void CBasePlayer::Spawn(void)
 {
+	m_flStartCharge = gpGlobals->time;
 	pev->classname = MAKE_STRING("player");
 	pev->health = 100;
 	pev->armorvalue = 0;
