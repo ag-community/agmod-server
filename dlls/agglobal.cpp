@@ -349,10 +349,10 @@ DLL_GLOBAL cvar_t ag_spawn_seed = CVar::Create("ag_spawn_seed", "0", FCVAR_SERVE
 // of having to do this with both sv_ag_fps_limit and ag_fps_limit. We'll see if it's the right decision
 
 // Default: 0 - Cap players' fps_max. Standard in 2021 is 144 (125 and 100 before; 250 for bhop)
-DLL_GLOBAL cvar_t ag_fps_limit = CVar::Create("ag_fps_limit", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE);
+DLL_GLOBAL cvar_t ag_fps_limit = CVar::Create("ag_fps_limit", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE | CCVAR_GAMEMODE);
 
 // Default: 0 - Whether to limit the fps to the most common fps among players
-DLL_GLOBAL cvar_t ag_fps_limit_auto = CVar::Create("ag_fps_limit_auto", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE);
+DLL_GLOBAL cvar_t ag_fps_limit_auto = CVar::Create("ag_fps_limit_auto", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE | CCVAR_GAMEMODE);
 
 // Default: 10 seconds - How often to check for changing the limit
 DLL_GLOBAL cvar_t ag_fps_limit_check_interval = CVar::Create("ag_fps_limit_check_interval", "10.0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE);
