@@ -6525,6 +6525,7 @@ void CBasePlayer::RecordGame()
 	if (m_bRecording)
 		return;
 
+	UTIL_SayText("[INFO] Recording demo automatically\n", this);
 	CLIENT_COMMAND(edict(), "stop; wait; agrecord \"match_%s\"\n", AgSanitizedShortGamename().c_str());
 	m_bRecording = true;
 }
