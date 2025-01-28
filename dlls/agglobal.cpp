@@ -90,6 +90,9 @@ DLL_GLOBAL cvar_t ag_rpg_fix = CVar::Create("ag_rpg_fix", "0", FCVAR_SERVER | FC
 // Default: 0 - Don't force clients to record matches
 DLL_GLOBAL cvar_t ag_force_match_recording = CVar::Create("sv_ag_force_match_recording", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE | CCVAR_GAMEMODE);
 
+// Default: 0 - Don't force clients to take screenshots at the end of the map
+DLL_GLOBAL cvar_t ag_force_take_end_screenshot = CVar::Create("sv_ag_force_take_end_screenshot", "0", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE | CCVAR_GAMEMODE);
+
 // Default: 0.75 - avg @ 144 fps was 0.83s, but sometimes it went down to 0.7s...
 DLL_GLOBAL cvar_t ag_min_respawn_time = CVar::Create("sv_ag_min_respawn_time", "0.75", FCVAR_SERVER | FCVAR_UNLOGGED, CCVAR_VOTABLE | CCVAR_GAMEMODE);
 
@@ -514,6 +517,7 @@ void AgInitGame()
 	CVAR_REGISTER(&ag_gauss_fix);
 	CVAR_REGISTER(&ag_rpg_fix);
 	CVAR_REGISTER(&ag_force_match_recording);
+	CVAR_REGISTER(&ag_force_take_end_screenshot);
 	CVAR_REGISTER(&ag_min_respawn_time);
 	CVAR_REGISTER(&ag_forcerespawn_time);
 	CVAR_REGISTER(&ag_bot_limit);

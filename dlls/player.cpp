@@ -6448,6 +6448,7 @@ void CBasePlayer::Init()
 	m_bSpawnFull = false;
 
 	m_bRecording = false;
+	m_bEndScreenshotTaken = false;
 
 	Spectate_Init();
 	if (ARENA == AgGametype())
@@ -6537,6 +6538,19 @@ void CBasePlayer::StopGameRecording()
 
 	CLIENT_COMMAND(edict(), "stop\n");
 	m_bRecording = false;
+}
+
+// 
+void CBasePlayer::TakeScreenshot()
+{
+	if (ag_force_take_end_screenshot.value == 0.0f || m_bEndScreenshotTaken)
+		return;
+
+	// We force the client to display the scoreboard because it is not being
+	// displayed due to the tournament gamemode sending a SVC_FINALE to the client
+	// as the new intermission mode.
+	CLIENT_COMMAND(edict(), "stop;wait;wait;+showscores;wait;wait;snapshot\n");
+	m_bEndScreenshotTaken = true;
 }
 
 void CBasePlayer::UnstuckTowardsChangelevel()

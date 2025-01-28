@@ -206,6 +206,7 @@ extern cvar_t ag_flood_model_spec_cooldown;
 extern cvar_t ag_enforcement_cooldown;
 
 extern cvar_t ag_force_match_recording;
+extern cvar_t ag_force_take_end_screenshot;
 
 extern cvar_t ag_match_mute;
 
