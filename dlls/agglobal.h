@@ -243,6 +243,7 @@ extern cvar_t ag_unstuck_max_attempts;
 
 extern cvar_t ag_hl25_satchel_controls;
 extern cvar_t ag_hl25_handgrenade_throw;
+extern cvar_t ag_hl25_mp5_max_initial_ammo;
 
 extern bool g_bLangame;
 extern bool g_bUseTeamColors;

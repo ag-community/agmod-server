@@ -73,7 +73,7 @@ void CMP5::Spawn()
 	m_iDefaultAmmo = MP5_DEFAULT_GIVE;
 	//++ BulliT
 #ifndef CLIENT_DLL
-	if (ARENA == AgGametype() || ARCADE == AgGametype() || LMS == AgGametype())
+	if (ARENA == AgGametype() || ARCADE == AgGametype() || LMS == AgGametype() || ag_hl25_mp5_max_initial_ammo.value == 1)
 		m_iDefaultAmmo = MP5_MAX_CLIP;
 #endif
 	//-- Martin Webrant
