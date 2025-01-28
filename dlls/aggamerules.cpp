@@ -1025,6 +1025,23 @@ void AgGameRules::GoToIntermission()
 		else
 			AgConsole("There was no gamemode-related cvar changed by the end of this game");
 	}
+
+	ShowIntermissionTournamentHUD();
+}
+
+void AgGameRules::ShowIntermissionTournamentHUD()
+{
+	if (TOURNAMENT == AgGametype())
+	{
+		MESSAGE_BEGIN(MSG_BROADCAST, SVC_FINALE);
+		WRITE_STRING("");
+		MESSAGE_END();
+
+		char szMatchStart[128];
+		sprintf(szMatchStart, "Tournament gamemodewtf\n----------------------\nServer fps: %.1f\nFps limiter: %s\n", (1.0 / gpGlobals->frametime), (ag_fps_limit.value == 0 ? "Off" : std::to_string((int)ag_fps_limit.value).c_str()));
+		AgSay(NULL, szMatchStart, NULL, 10, -1.0, -0.125, 5, 0, 100, 200);
+	}
+	
 }
 
 bool AgGameRules::FPlayerCanTakeDamage(CBasePlayer* pPlayer, CBaseEntity* pAttacker)

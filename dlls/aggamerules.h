@@ -85,6 +85,8 @@ public:
 
 	bool ShouldRecordGame(CBasePlayer* pPlayer);
 
+	void ShowIntermissionTournamentHUD();
+
 	bool m_bProxyConnected;
 	// Helper classes
 	AgScoreCache m_ScoreCache;

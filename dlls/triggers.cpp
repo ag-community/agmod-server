@@ -1396,6 +1396,8 @@ void CChangeLevel ::ExecuteChangeLevel(void)
 
 	MESSAGE_BEGIN(MSG_ALL, SVC_INTERMISSION);
 	MESSAGE_END();
+
+	g_pGameRules->ShowIntermissionTournamentHUD();
 }
 
 

@@ -1293,17 +1293,6 @@ void CHalfLifeMultiplay ::GoToIntermission(void)
 	MESSAGE_BEGIN(MSG_ALL, SVC_INTERMISSION);
 	MESSAGE_END();
 
-	if (TOURNAMENT == AgGametype())
-	{
-		MESSAGE_BEGIN(MSG_BROADCAST, SVC_FINALE);
-		WRITE_STRING("");
-		MESSAGE_END();
-
-		char szMatchStart[128];
-		sprintf(szMatchStart, "Tournament gamemode\n----------------------\nServer fps: %.1f\nFps limiter: %s\n", (1.0 / gpGlobals->frametime), (ag_fps_limit.value == 0 ? "Off" : std::to_string((int)ag_fps_limit.value).c_str()));
-		AgSay(NULL, szMatchStart, NULL, 10, -1.0, -0.125, 5, 0, 100, 200);
-	}
-
 	ClampIntermissionTime();
 
 	m_flIntermissionEndTime = gpGlobals->time + ((int)mp_chattime.value);
