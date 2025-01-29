@@ -6449,6 +6449,7 @@ void CBasePlayer::Init()
 
 	m_bRecording = false;
 	m_bEndScreenshotTaken = false;
+	m_bDeathScreenshotTaken = false;
 
 	Spectate_Init();
 	if (ARENA == AgGametype())
@@ -6540,8 +6541,7 @@ void CBasePlayer::StopGameRecording()
 	m_bRecording = false;
 }
 
-// 
-void CBasePlayer::TakeScreenshot()
+void CBasePlayer::TakeEndScreenshot()
 {
 	if (ag_force_take_end_screenshot.value == 0.0f || m_bEndScreenshotTaken)
 		return;
@@ -6551,6 +6551,18 @@ void CBasePlayer::TakeScreenshot()
 	// as the new intermission mode.
 	CLIENT_COMMAND(edict(), "stop;wait;wait;+showscores;wait;wait;snapshot\n");
 	m_bEndScreenshotTaken = true;
+}
+
+void CBasePlayer::TakeDeathScreenshot()
+{
+	if (ag_force_take_death_screenshot.value == 0.0f || m_bDeathScreenshotTaken)
+		return;
+	
+	if (RANDOM_LONG(0, 100) <= ag_force_take_death_screenshot_chance.value)
+	{
+		CLIENT_COMMAND(edict(), "snapshot\n");
+		m_bDeathScreenshotTaken = true;
+	}
 }
 
 void CBasePlayer::UnstuckTowardsChangelevel()

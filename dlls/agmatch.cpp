@@ -136,6 +136,8 @@ void AgMatch::Start(const AgString& sSpawn)
 
 	for (const auto matchPlayer : matchPlayers)
 	{
+		matchPlayer->m_bDeathScreenshotTaken = false;
+
 		if (g_pGameRules->ShouldRecordGame(matchPlayer))
 		{
 			matchPlayer->RecordGame();

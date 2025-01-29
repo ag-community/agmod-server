@@ -207,6 +207,8 @@ extern cvar_t ag_enforcement_cooldown;
 
 extern cvar_t ag_force_match_recording;
 extern cvar_t ag_force_take_end_screenshot;
+extern cvar_t ag_force_take_death_screenshot;
+extern cvar_t ag_force_take_death_screenshot_chance;
 
 extern cvar_t ag_match_mute;
 

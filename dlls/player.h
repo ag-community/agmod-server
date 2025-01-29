@@ -454,6 +454,7 @@ public:
 
 	bool m_bRecording;
 	bool m_bEndScreenshotTaken;
+	bool m_bDeathScreenshotTaken;
 
 	double m_flLastGamemodeVarsRequest;
 
@@ -551,7 +552,8 @@ public:
 	void RecordGame();
 	void StopGameRecording();
 
-	void TakeScreenshot();
+	void TakeEndScreenshot();
+	void TakeDeathScreenshot();
 
 	bool HasVotingRestrictions();
 

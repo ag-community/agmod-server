@@ -71,7 +71,7 @@ bool AgGameRules::AgThink()
 				continue;
 
 			player->StopGameRecording();
-			player->TakeScreenshot();
+			player->TakeEndScreenshot();
 		}
 
 		return true;
@@ -907,6 +907,7 @@ bool AgGameRules::IsAllowedToSpawn(CBaseEntity* pEntity)
 
 void AgGameRules::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pevInflictor)
 {
+	pVictim->TakeDeathScreenshot();
 }
 
 void AgGameRules::ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobuffer)
