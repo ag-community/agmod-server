@@ -23,12 +23,12 @@ jobs:
       - name: Build
         run: cd linux && CFG=release make
       - name: Create output directory
-        run: mkdir -p output/ag
+        run: mkdir -p output/ag/dlls
       - name: Copy assets and the server .so to the output directory
         run: |
           cp -r assets/* output/ag
-          cp linux/release/ag.so output/ag
-          cp linux/release/ag.so.dbg output/ag
+          cp linux/release/ag.so output/ag/dlls
+          cp linux/release/ag.so.dbg output/ag/dlls
           cp network/delta.lst output/ag
       - name: Upload artifact (Only server .so)
         uses: actions/upload-artifact@v4
@@ -55,12 +55,12 @@ jobs:
       - name: Build
         run: MSBuild.exe projects/vs2019/projects.sln /p:Configuration=Release /p:Platform=Win32
       - name: Create output directory
-        run: mkdir -p output/ag
+        run: mkdir -p output/ag/dlls
       - name: Copy assets and the server .dll to the output directory
         run: |
           Copy-Item -Path assets/* -Destination output/ag -Recurse
-          Copy-Item projects/vs2019/Release/agdll/ag.dll output/ag/ag.dll
-          Copy-Item projects/vs2019/Release/agdll/ag.pdb output/ag/ag.pdb
+          Copy-Item projects/vs2019/Release/agdll/ag.dll output/ag/dlls/ag.dll
+          Copy-Item projects/vs2019/Release/agdll/ag.pdb output/ag/dlls/ag.pdb
           Copy-Item network/delta.lst output/ag/delta.lst
       - name: Upload artifact (Only server .dll)
         uses: actions/upload-artifact@v4
