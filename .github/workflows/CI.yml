@@ -31,14 +31,14 @@ jobs:
           cp linux/release/ag.so.dbg output/ag
           cp network/delta.lst output/ag
       - name: Upload artifact (Only server .so)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Linux-x86
           path: |
             linux/release/ag.so
             linux/release/ag.so.dbg
       - name: Upload artifact (Full package)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Linux-x86-Full
           path: output
@@ -63,7 +63,7 @@ jobs:
           Copy-Item projects/vs2019/Release/agdll/ag.pdb output/ag/ag.pdb
           Copy-Item network/delta.lst output/ag/delta.lst
       - name: Upload artifact (Only server .dll)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Win32
           path: |
@@ -71,7 +71,7 @@ jobs:
             projects/vs2019/Release/agdll/ag.pdb
       
       - name: Upload artifact (Full package)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Win32-Full
           path: output
