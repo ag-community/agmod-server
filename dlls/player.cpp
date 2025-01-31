@@ -40,6 +40,7 @@
 #include "spawnchooser.h"
 #include "agflood.h"
 #include "speedrunstats.h"
+#include <time.h>
 
 // #define DUCKFIX
 
@@ -6560,7 +6561,43 @@ void CBasePlayer::TakeDeathScreenshot()
 	
 	if (RANDOM_LONG(0, 100) <= ag_force_take_death_screenshot_chance.value)
 	{
-		CLIENT_COMMAND(edict(), "snapshot\n");
+		hudtextparms_t hText;
+		memset(&hText, 0, sizeof(hText));
+		hText.channel = 5;
+		
+		hText.x = -1.0;
+		hText.y = -0.125;
+
+		hText.r1 = 0;
+		hText.g1 = 100;
+		hText.b1 = 200; 
+		hText.a1 = 0;
+
+		hText.r2 = hText.g2 = hText.b2 = 0;
+		hText.a2 = 0;
+
+		hText.holdTime = 0.3;
+
+		hText.effect = 0;
+		hText.fadeinTime = 0.0;
+		hText.fadeoutTime = 0.0;
+		hText.fxTime = 0.0;
+
+		time_t clock;
+		char szText[128];
+		
+		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		{
+			CBasePlayer* pPlayerLoop = AgPlayerByIndex(i);
+			if (pPlayerLoop)
+			{
+				time(&clock);
+				sprintf(szText, "%s\n%s\nScreeenshot has been taken\n", pPlayerLoop->GetAuthID(), asctime(localtime(&clock)));
+				UTIL_HudMessage(pPlayerLoop, hText, szText);
+			}
+		}
+
+		CLIENT_COMMAND(edict(), "wait;wait;snapshot\n");
 		m_bDeathScreenshotTaken = true;
 	}
 }
