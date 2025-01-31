@@ -737,6 +737,8 @@ void AgGameRules::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars
 	m_ScoreCache.UpdateScore(pVictim);
 	if (pKillerPlayer && pVictim != pKillerPlayer)
 		m_ScoreCache.UpdateScore(pKillerPlayer);
+	
+	pVictim->TakeDeathScreenshot();
 }
 
 
@@ -907,7 +909,6 @@ bool AgGameRules::IsAllowedToSpawn(CBaseEntity* pEntity)
 
 void AgGameRules::DeathNotice(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pevInflictor)
 {
-	pVictim->TakeDeathScreenshot();
 }
 
 void AgGameRules::ClientUserInfoChanged(CBasePlayer* pPlayer, char* infobuffer)
