@@ -1041,7 +1041,7 @@ void AgGameRules::ShowIntermissionTournamentHUD()
 		MESSAGE_END();
 
 		char szMatchStart[128];
-		sprintf(szMatchStart, "Tournament gamemodewtfxdbv\n----------------------\nServer fps: %.1f\nFps limiter: %s\n", (1.0 / gpGlobals->frametime), (ag_fps_limit.value == 0 ? "Off" : std::to_string((int)ag_fps_limit.value).c_str()));
+		sprintf(szMatchStart, "Tournament gamemode\n----------------------\nServer fps: %.1f\nFps limiter: %s\n", (1.0 / gpGlobals->frametime), (ag_fps_limit.value == 0 ? "Off" : std::to_string((int)ag_fps_limit.value).c_str()));
 		AgSay(NULL, szMatchStart, NULL, 10, -1.0, -0.125, 5, 0, 100, 200);
 	}
 }
