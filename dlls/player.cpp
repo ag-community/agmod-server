@@ -6585,17 +6585,10 @@ void CBasePlayer::TakeDeathScreenshot()
 
 		time_t clock;
 		char szText[128];
-		
-		for (int i = 1; i <= gpGlobals->maxClients; i++)
-		{
-			CBasePlayer* pPlayerLoop = AgPlayerByIndex(i);
-			if (pPlayerLoop)
-			{
-				time(&clock);
-				sprintf(szText, "%s\n%s\nScreeenshot has been taken\n", pPlayerLoop->GetAuthID(), asctime(localtime(&clock)));
-				UTIL_HudMessage(pPlayerLoop, hText, szText);
-			}
-		}
+
+		time(&clock);
+		sprintf(szText, "%s\n%s\nScreeenshot has been taken\n", this->GetAuthID(), asctime(localtime(&clock)));
+		UTIL_HudMessage(this, hText, szText);
 
 		CLIENT_COMMAND(edict(), "wait;wait;snapshot\n");
 		m_bDeathScreenshotTaken = true;
