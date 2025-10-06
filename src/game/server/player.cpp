@@ -1523,19 +1523,6 @@ void CBasePlayer::PlayerDeathThink(void)
 		return;
 	}
 
-	// Player can already respawn. Wait a second to show them the game settings HUD
-	if (g_pGameRules->IsMultiplayer() && (gpGlobals->time > (minRespawnTime + 1.0f)) && !(m_afPhysicsFlags & PFLAG_OBSERVER))
-	{
-		//++ BulliT
-		m_fDisplayGamemode = gpGlobals->time + 1;
-		//-- Martin Webrant
-
-		// go to dead camera.
-		//++ BulliT
-		// StartDeathCam();
-		//-- Martin Webrant
-	}
-
 	if (pev->iuser1) // player is in spectator mode
 		return;
 
