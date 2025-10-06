@@ -1,0 +1,107 @@
+//++ BulliT
+
+#if !defined(AFX_AGGAMERULES_H__5F634943_35DD_4A80_922F_A0A82C815D99__INCLUDED_)
+#define AFX_AGGAMERULES_H__5F634943_35DD_4A80_922F_A0A82C815D99__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+#include "agscorecache.h"
+#include "agadmincache.h"
+#include "agglobal.h"
+#include "agsettings.h"
+#include "agtimer.h"
+#include "agmatch.h"
+#include "agscorelog.h"
+#include "agvote.h"
+#include "agclient.h"
+#include "agarena.h"
+#include "aglms.h"
+#include "agctf.h"
+#include "agdom.h"
+#include "aginfointermission.h"
+#include "agsuddendeath.h"
+#include "agtimeout.h"
+#include "aggamemode.h"
+
+class AgGameRules : public CGameRules
+{
+protected:
+	AgString m_sHostname;
+	typedef std::map<int, AgString, std::less<int>> AgIPAddress;
+	AgIPAddress m_mapIPAddress;
+
+public:
+	AgGameRules();
+	virtual ~AgGameRules();
+
+	// Overidden
+	virtual bool ClientCommand(CBasePlayer *pPlayer, const char *pcmd);
+
+	virtual int DeadPlayerWeapons(CBasePlayer *pPlayer);
+	virtual int DeadPlayerAmmo(CBasePlayer *pPlayer);
+
+	virtual bool FPlayerCanRespawn(CBasePlayer *pPlayer);
+	virtual void PlayerSpawn(CBasePlayer *pPlayer);
+	virtual bool FShouldSwitchWeapon(CBasePlayer *pPlayer, CBasePlayerItem *pWeapon); // should the player switch to this weapon?
+	virtual bool GetNextBestWeapon(CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon);
+
+	virtual bool ClientConnected(edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128]);
+	virtual void ClientDisconnected(edict_t *pClient); // a client just disconnected from the server
+
+	virtual int IPointsForKill(CBasePlayer *pAttacker, CBasePlayer *pKilled);
+	virtual bool CanHaveItem(CBasePlayer *pPlayer, CItem *pItem);
+	virtual bool CanHavePlayerItem(CBasePlayer *pPlayer, CBasePlayerItem *pWeapon); // The player is touching an CBasePlayerItem, do I give it to him?
+	virtual bool IsAllowedToSpawn(CBaseEntity *pEntity);
+	virtual void PlayerKilled(CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pInflictor); // Called each time a player dies
+	virtual void DeathNotice(CBasePlayer *pVictim, entvars_t *pKiller, entvars_t *pInflictor);
+
+	virtual void ClientUserInfoChanged(CBasePlayer *pPlayer, char *infobuffer);
+	virtual void InitHUD(CBasePlayer *pl);
+
+	virtual void GoToIntermission();
+
+	virtual bool FPlayerCanTakeDamage(CBasePlayer *pPlayer, CBaseEntity *pAttacker);
+
+	virtual void RefreshSkillData(void);
+
+	virtual const char *GetGameDescription(void) { return AgGamenameChar(); } // this is the game name that gets seen in the server browser
+	// New
+	bool AgThink();
+	void Start(const AgString &sSpawn);
+	void ChangeNextLevel();
+	void ResendScoreBoard();
+	void HLTV_ResendScoreBoard();
+	// AgString GetTeamWithFewestPlayers();
+	virtual bool IsAllowedToSpawn(const char *pszClass);
+
+	void SendMapListToClient(CBasePlayer *pPlayer, bool bStart);
+
+	const char *GetIPAddress(edict_t *pEntity);
+
+	bool ShouldRecordGame(CBasePlayer *pPlayer);
+
+	void ShowIntermissionTournamentHUD();
+
+	bool m_bProxyConnected;
+	// Helper classes
+	AgScoreCache m_ScoreCache;
+	AgSettings m_Settings;
+	AgTimer m_Timer;
+	AgMatch m_Match;
+	AgScoreLog m_ScoreLog;
+	AgVote m_Vote;
+	AgClient m_Client;
+	AgArena m_Arena;
+	AgLMS m_LMS;
+	AgCTF m_CTF;
+	AgDOM m_DOM;
+	AgInfoIntermission m_InfoInterMission;
+	AgSuddenDeath m_SuddenDeath;
+	AgTimeout m_Timeout;
+};
+
+#endif // !defined(AFX_AGGAMERULES_H__5F634943_35DD_4A80_922F_A0A82C815D99__INCLUDED_)
+
+//-- Martin Webrant
