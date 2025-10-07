@@ -23,6 +23,7 @@ list( APPEND CMAKE_MODULE_PATH
 include( FetchContent )
 include( InputFilesList )
 
+project( AGMod )
 include( PlatformInfo )
 include( CTest )
 
