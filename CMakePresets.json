@@ -26,7 +26,6 @@
       "inherits": ["base"],
       "generator": "Ninja Multi-Config",
       "cacheVariables": {
-        "BUILD_TESTING": true,
         "GNU_FORCE_COLORED_OUTPUT": false,
         "GENERATE_AMXX_OFFSETS": true,
         "WARNINGS_ARE_ERRORS": true
