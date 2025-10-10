@@ -73,6 +73,26 @@ void AgMatch::Think()
 		Abort();
 	}
 
+	if (ag_match_running.value != 0.0f && ag_restrict_vote.value == 1.0f && m_fMatchStart < 0.0f)
+	{
+		std::vector<CBasePlayer *> matchPlayers;
+
+		for (int i = 1; i <= gpGlobals->maxClients; i++)
+		{
+			CBasePlayer *pPlayerLoop = AgPlayerByIndex(i);
+			if (pPlayerLoop && !pPlayerLoop->IsSpectator() && pPlayerLoop->IsIngame())
+			{
+				matchPlayers.push_back(pPlayerLoop);
+			}
+		}
+
+		if (matchPlayers.size() == 0)
+		{
+			Abort();
+			UTIL_ClientPrintAll(HUD_PRINTCENTER, UTIL_VarArgs("Match aborted, no players in the game."));
+		}
+	}
+
 	if (m_fNextHLTV < gpGlobals->time)
 	{
 		// Send again in one minute.
